@@ -31,8 +31,10 @@ service cloud.firestore {
       allow read: if isAdmin();
       
       // Users can create their own document during registration
-      allow create: if isOwner(userId) && request.resource.data.role == "user";
-      
+    allow create: if isOwner(userId) 
+      && request.resource.data.role == "user"
+      && request.resource.data.kvkkAccepted == true
+      && request.resource.data.kvkkAcceptedAt != null;
       // Users can update their own non-role fields
       allow update: if isOwner(userId) 
         && request.resource.data.role == resource.data.role
@@ -50,11 +52,12 @@ service cloud.firestore {
       // Admins can read all applications
       allow read: if isAdmin();
       
-      // Users can create their first application
+      // Users can create their first application (requires KVKK acceptance)
       allow create: if isOwner(userId) 
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.status == "submitted"
-        && request.resource.data.eventType in ["gamejam", "hackathon"];
+        && request.resource.data.eventType in ["gamejam", "hackathon"]
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.kvkkAccepted == true;
       
       // Users can only update their draft applications
       allow update: if isOwner(userId) 

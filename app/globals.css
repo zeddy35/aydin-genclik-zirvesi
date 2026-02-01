@@ -1,65 +1,30 @@
-@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
-
 @import "tailwindcss";
 
-:root {
-  --background: #000000;
-  --foreground: #171717;
-  
-  /* Custom Event Colors */
-  --hackathon-green: #57e64c;
-  --gamejam-blue: #459ced;
-  --hackathon-purple: #9645ed;
-}
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: "Lexend", sans-serif;
-  
-  /* Event Colors */
-  --color-hackathon-green: var(--hackathon-green);
-  --color-gamejam-blue: var(--gamejam-blue);
-  --color-hackathon-purple: var(--hackathon-purple);
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Lexend", sans-serif;
-}
-
-html.scroll-lock {
-  overflow: hidden;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000;
-    --foreground: #171717;
+  body {
+    @apply bg-black text-white;
   }
 }
 
-/* Easter Egg Animations */
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .gradient-text {
+    @apply text-transparent bg-clip-text;
   }
 }
 
-.animate-slide-up {
-  animation: slide-up 0.3s ease-out;
-}
-
+/* Animations */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -69,12 +34,36 @@ html.scroll-lock {
   }
 }
 
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out;
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-/* Perspective for 3D effects */
-.perspective {
-  perspective: 1000px;
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
 }
 

@@ -1,17 +1,20 @@
 "use client";
 
+import { Suspense } from "react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-export default function LoginPage() {
+function LoginPageContent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextParam = searchParams.get("next");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +23,8 @@ export default function LoginPage() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard/status");
+      const destination = nextParam || "/dashboard/status";
+      router.push(destination);
     } catch (err: any) {
       if (err.code === "auth/user-not-found") {
         setError("Bu e-posta adresiyle kayıtlı hesap bulunamadı.");
@@ -92,7 +96,10 @@ export default function LoginPage() {
           <div className="mt-6 text-center">
             <p className="text-gray-600 text-sm">
               Hesabınız yok mu?{" "}
-              <Link href="/auth/register" className="text-purple-600 hover:text-purple-700 font-semibold">
+              <Link 
+                href={`/auth/register${nextParam ? `?next=${encodeURIComponent(nextParam)}` : ""}`} 
+                className="text-purple-600 hover:text-purple-700 font-semibold"
+              >
                 Kayıt Ol
               </Link>
             </p>
@@ -106,5 +113,13 @@ export default function LoginPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center"><p className="text-white">Yükleniyor...</p></div>}>
+      <LoginPageContent />
+    </Suspense>
   );
 }

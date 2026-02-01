@@ -1,3 +1,5 @@
+"use client";
+
 import { HeroExperience } from "@/components/HeroExperience";
 
 export default function Home() {

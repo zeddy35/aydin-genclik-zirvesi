@@ -89,7 +89,7 @@ export function Footer() {
           onMouseLeave={handleStarMouseUp}
           className="relative cursor-pointer group"
         >
-          <div className="text-2xl hover:text-yellow-400 transition-colors duration-200">
+          <div className="text-2xl text-gray-800 hover:text-yellow-400 transition-colors duration-200">
             ★
           </div>
 

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
-import { StarfieldCanvas } from "./StarfieldCanvas.tsx";
+import { StarfieldCanvas } from "./StarfieldCanvas";
 
 interface CreditItem {
   section: string;
@@ -126,7 +126,7 @@ export function CreditsCrawlOverlay({ isOpen, onClose, theme = "gamejam" }: Cred
               style={
                 {
                   "--crawl-duration": "60s",
-                  transform: "rotateX(75deg)",
+                  transform: "rotateX(25deg)",
                   transformStyle: "preserve-3d",
                   animation: "crawl 60s linear forwards",
                 } as React.CSSProperties & { "--crawl-duration": string }

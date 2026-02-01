@@ -7,7 +7,13 @@ Next.js 16 + Firebase tabanlı Game Jam ve Hackathon başvuru yönetim sistemi.
 ### Faz 1 (MVP - ✅ Tamamlandı)
 - ✅ Firebase Authentication (Email/Password)
 - ✅ Kullanıcı kayıt ve giriş
+- ✅ KVKK (Kişisel Verilerin Korunması) Uyumluluğu
+  - Zorunlu KVKK onay checkbox
+  - Modal ve dedicated sayfa ile KVKK metni
+  - Admin panel'de KVKK status badge
+  - Firestore security rules ile enforcement
 - ✅ Game Jam başvuru formu (Firestore entegrasyonu)
+- ✅ Hackathon başvuru formu
 - ✅ Kullanıcı Dashboard
   - Başvuru durumu takibi
   - Admin dökümanları görüntüleme
@@ -15,6 +21,7 @@ Next.js 16 + Firebase tabanlı Game Jam ve Hackathon başvuru yönetim sistemi.
   - Trailer yükleme (YouTube entegrasyonu)
 - ✅ Admin Panel
   - Başvuru listesi ve filtreleme
+  - KVKK status görüntüleme
   - Başvuru onaylama/reddetme
 - ✅ Middleware ile route koruması
 - ✅ TypeScript tip güvenliği
@@ -212,12 +219,15 @@ app/
   │   ├── layout.tsx                    # Admin panel layout
   │   └── participants/page.tsx         # Katılımcı yönetimi
   ├── gamejam/basvur/page.tsx           # Game Jam başvuru formu
-  └── hackathon/basvur/page.tsx         # Hackathon başvuru formu
+  ├── hackathon/basvur/page.tsx         # Hackathon başvuru formu
+  ├── kvkk/page.tsx                     # KVKK Aydınlatma Metni (public)
+  └── kvkk-onay/page.tsx                # KVKK Onayı Gerekli (protected)
 
 components/
   ├── auth/
   │   ├── AuthProvider.tsx              # Auth context
   │   └── ProtectedRoute.tsx            # Route guard
+  ├── KVKKModal.tsx                     # KVKK disclosure modal
   ├── HeroExperience.tsx                # Horizontal scroll container
   ├── ZigZagDivider.tsx                 # SVG divider
   └── PanelSplit.tsx                    # Split panel
@@ -239,7 +249,70 @@ middleware.ts                           # Route protection
 firestore.rules                         # Firestore security rules (Faz 2)
 ```
 
-## 🗄️ Firestore Collections
+## � URL Haritası
+
+### Genel Sayfalar
+| URL | Açıklama | Auth Gerekli? |
+|-----|----------|---------------|
+| `/` | Ana sayfa (horizontal scroll) | ❌ Hayır |
+| `/kvkk` | KVKK Aydınlatma Metni | ❌ Hayır |
+
+### Authentication
+| URL | Açıklama | Auth Gerekli? |
+|-----|----------|---------------|
+| `/auth/register` | Kayıt sayfası (KVKK checkbox zorunlu) | ❌ Hayır |
+| `/auth/login` | Giriş sayfası | ❌ Hayır |
+
+### Kullanıcı Paneli (Dashboard)
+| URL | Açıklama | Auth Gerekli? |
+|-----|----------|---------------|
+| `/kvkk-onay` | KVKK onayı gerekli sayfası | ✅ Evet |
+| `/dashboard/status` | Başvuru durumu takibi | ✅ Evet |
+| `/dashboard/documents` | Admin dökümanları indirme | ✅ Evet |
+| `/dashboard/game-submission` | Game Jam oyun yükleme (R2) | ✅ Evet (GameJam users) |
+| `/dashboard/trailer` | Hackathon trailer URL'si | ✅ Evet (Hackathon users) |
+
+### Başvuru Formu
+| URL | Açıklama | Auth Gerekli? |
+|-----|----------|---------------|
+| `/gamejam/basvur` | Game Jam başvuru formu | ✅ Evet |
+| `/hackathon/basvur` | Hackathon başvuru formu | ✅ Evet |
+
+### Admin Panel
+| URL | Açıklama | Auth Gerekli? | Admin Gerekli? |
+|-----|----------|---------------|----------------|
+| `/admin/participants` | Katılımcı yönetimi (KVKK status badge) | ✅ Evet | ✅ Evet |
+
+### API Endpoints
+| Endpoint | Metot | Açıklama | Auth Gerekli? |
+|----------|-------|----------|---------------|
+| `/api/upload/presigned` | POST | Presigned upload URL (R2) | ✅ Evet |
+| `/api/download/[key]` | GET | Presigned download URL (R2) | ✅ Evet (Admin) |
+| `/api/admin/action` | POST | Başvuru onay/ret işlemi | ✅ Evet (Admin) |
+| `/api/admin/check` | GET | Admin status kontrol | ✅ Evet |
+
+## 📋 KVKK Uyumluluğu
+
+**Detaylı Bilgi:** [KVKK_IMPLEMENTATION.md](./KVKK_IMPLEMENTATION.md)
+
+### KVKK Özellikleri
+- ✅ Zorunlu KVKK onay checkbox (kayıt sırasında)
+- ✅ Modal ile KVKK metni okuma (form'u terk etmeden)
+- ✅ Dedicated `/kvkk` sayfası (hukuki metin)
+- ✅ Admin panel'de KVKK status badge (🟢 🔴)
+- ✅ Firestore security rules ile enforcement
+- ✅ `kvkkAcceptedAt` timestamp ile audit trail
+- ✅ KVKK onayı olmadan başvuru yapılamıyor
+
+### Firestore KVKK Alanları
+```typescript
+// Users collection
+users/{uid}
+  kvkkAccepted: boolean         // KVKK onayı durumu
+  kvkkAcceptedAt: Timestamp     // Onayın yapıldığı zaman
+```
+
+## �🗄️ Firestore Collections
 
 ### `users`
 ```typescript
@@ -249,7 +322,9 @@ firestore.rules                         # Firestore security rules (Faz 2)
   email: string;
   phone: string;
   role: "user" | "admin";
-  createdAt: string;
+  kvkkAccepted: boolean;           // KVKK onay durumu (gerekli)
+  kvkkAcceptedAt: Timestamp;       // KVKK onayı tarihi/saati
+  createdAt: Timestamp;
 }
 ```
 

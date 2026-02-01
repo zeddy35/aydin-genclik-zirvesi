@@ -56,7 +56,7 @@ export function StarfieldCanvas({ width = 1200, height = 800 }: { width?: number
 
         ctx.fillStyle = `rgba(255, 255, 200, ${star.opacity})`;
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 1.85);
         ctx.fill();
 
         // Slow drift

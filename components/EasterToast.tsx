@@ -25,13 +25,13 @@ export function EasterToast({ message, duration = 4000, type = "success" }: Toas
   return (
     <div
       className={cn(
-        "fixed bottom-8 left-8 px-6 py-4 rounded-lg shadow-lg animate-slide-up",
+        "px-6 py-4 rounded-lg shadow-lg animate-slide-up",
         "font-semibold text-sm",
-        type === "success" && "bg-gradient-to-r from-purple-600 to-blue-600 text-white",
+        type === "success" && "bg-gradient-to-r from-purple-600 to-pink-600 text-white",
         type === "info" && "bg-gray-900 border border-gray-700 text-gray-100"
       )}
     >
-      {type === "success" && "🎉 "}
+      {type === "success" && "🏆 "}
       {message}
     </div>
   );
