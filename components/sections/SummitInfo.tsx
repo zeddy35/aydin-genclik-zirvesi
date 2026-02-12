@@ -4,7 +4,7 @@ import React from "react";
 
 export function SummitInfo() {
   return (
-    <div className="w-full bg-gradient-to-br from-orange-50 to-amber-50 py-16">
+    <div className="w-full bg-blue-50 py-16">
       <div className="max-w-6xl mx-auto px-6">
         {/* About Section */}
         <section className="mb-20">
@@ -18,22 +18,22 @@ export function SummitInfo() {
 
         {/* Stats Section */}
         <section className="mb-20">
-          <h3 className="text-2xl font-bold mb-8">Rakamlarla Summit</h3>
+          <h3 className="text-2xl text-black font-bold mb-8">Rakamlarla Summit</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-purple-100">
-              <div className="text-3xl font-black text-purple-600 mb-2">500+</div>
+              <div className="text-3xl font-black hackathon-text mb-2">100+</div>
               <p className="text-sm text-zinc-600">Katılımcı</p>
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-purple-100">
-              <div className="text-3xl font-black text-purple-600 mb-2">50+</div>
+              <div className="text-3xl font-black hackathon-text mb-2">25+</div>
               <p className="text-sm text-zinc-600">Takım</p>
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-purple-100">
-              <div className="text-3xl font-black text-purple-600 mb-2">96h</div>
+              <div className="text-3xl font-black hackathon-text mb-2">48h</div>
               <p className="text-sm text-zinc-600">Etkinlik Süresi</p>
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-purple-100">
-              <div className="text-3xl font-black text-purple-600 mb-2">$50K+</div>
+              <div className="text-3xl font-black hackathon-text mb-2">30K+</div>
               <p className="text-sm text-zinc-600">Toplam Ödül</p>
             </div>
           </div>
@@ -41,7 +41,7 @@ export function SummitInfo() {
 
         {/* Timeline Section */}
         <section className="mb-20">
-          <h3 className="text-2xl font-bold mb-8">Program Akışı</h3>
+          <h3 className="text-2xl text-black font-bold mb-8">Program Akışı</h3>
           <div className="space-y-4">
             <div className="bg-white rounded-xl p-4 border-l-4 border-purple-600">
               <p className="font-bold text-zinc-900">Gün 1: Açılış & Ekip Kurma</p>
@@ -60,7 +60,7 @@ export function SummitInfo() {
 
         {/* Sponsors Section */}
         <section className="mb-20">
-          <h3 className="text-2xl font-bold mb-8">Destekçilerimiz</h3>
+          <h3 className="text-2xl text-black font-bold mb-8">Destekçilerimiz</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
               <div

@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/cn";
-import jambg from "@/public/backgrounds/jambg.png";
-import hackbg from "@/public/backgrounds/hackbg.png";
 
 interface PanelSplitProps {
   onJamClick: () => void;
@@ -14,13 +12,17 @@ interface PanelSplitProps {
 
 export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
   const [hovered, setHovered] = useState<"left" | "right" | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-gradient-to-r from-[#9645ed] to-black/50">
-
+    <div className="relative w-full bg-gradient-to-r from-[#9645ed] to-black/50">
       {/* 3D Perspective Container */}
       <div
-        className="flex h-full w-full"
+        className="flex w-full min-h-[100svh] md:h-screen overflow-x-auto md:overflow-hidden snap-x snap-mandatory md:snap-none scroll-smooth touch-pan-x"
         style={{
           perspective: "1200px",
         }}
@@ -28,7 +30,7 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
         {/* Left Panel: Game Jam */}
         <div
           className={cn(
-            "flex-1 bg-[url('/backgrounds/jambg.png')] bg-no-repeat bg-center bg-contain flex flex-col items-center justify-center px-8 py-12 relative",
+            "min-w-full md:min-w-0 md:flex-1 bg-[url('/backgrounds/jambg.png')] bg-no-repeat bg-center bg-[length:420px_auto] md:bg-[length:620px_auto] lg:bg-[length:820px_auto] flex flex-col items-center justify-center px-6 py-10 sm:px-8 sm:py-12 relative snap-center overflow-hidden",
             "transition-all duration-300 ease-out motion-reduce:transition-none"
           )}
           onMouseEnter={() => setHovered("left")}
@@ -43,6 +45,15 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
                   : "perspective(1200px) translateZ(0) rotateY(0) scale(1)",
           }}
         >
+          {/* Animated Background Gradient */}
+          <div 
+            className="absolute inset-0 opacity-30 pointer-events-none"
+            style={{
+              background: "radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.3), transparent 70%)",
+              animation: "pulse 4s ease-in-out infinite",
+            }}
+          />
+
           {/* Specular Highlight (Left) */}
           <div
             className="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500 motion-reduce:opacity-0"
@@ -63,46 +74,47 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
             <div className="absolute inset-y-8 -inset-x-6 rounded-[32px] bg-black/30 blur-2xl" />
           </div>
 
-          <div className="relative z-10 text-center max-w-sm">
-            {/* Logo Area */}
-            <div className="mb-10 h-32 sm:h-36 flex items-center justify-center">
+          <div 
+            className={cn(
+              "relative z-10 text-center max-w-md transition-all duration-700",
+              mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            )}
+          >
+            {/* Logo Area with Hover Effect */}
+            <div className="mb-6 sm:mb-8 h-28 sm:h-32 md:h-36 flex items-center justify-center group/logo">
               <Image 
                 src="/logos/gamejam.png" 
                 alt="Game Jam Logo" 
-                width={250} 
+                width={300} 
                 height={150}
-                className="object-contain"
+                className="object-contain drop-shadow-2xl transition-transform duration-300 group-hover/logo:scale-110"
               />
             </div>
 
-            {/* Title */}
-            {/* 
-            <h1 className="text-4xl sm:text-5xl font-black tracking-tight mb-4 bg-white  bg-clip-text text-transparent">
-              Aydın Game Jam
-            </h1>
-
-            Tagline 
-            <p className="text-lg text-zinc-100 mb-9 leading-relaxed">
-              48 saat oyun geliştir, ekip kur, sunum yap
-            </p>
-              */}
-
-            {/* Buttons */}
-            <div className="flex flex-col gap-4 items-center">
-              <div className="bg-white rounded-2xl px-10 py-4 font-bold hover:shadow-lg hover:scale-105 transition-all duration-200 motion-reduce:hover:scale-100">
-                <Link
-                  href="/gamejam/basvur"
-                  className="px-10 py-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-bold rounded-2xl text-lg hover:shadow-lg hover:scale-105 transition-all duration-200 motion-reduce:hover:scale-100"
-                > 
-                  Başvur
-                </Link>
-              </div>
+            {/* Enhanced CTA Buttons */}
+            <div className="flex flex-col gap-3 pt-4 items-center">
+              <Link
+                href="/gamejam/basvur"
+                className="group/cta relative w-full sm:w-auto"
+              >
+                {/* Glowing Background */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-2xl blur-xl opacity-70 group-hover/cta:opacity-100 transition-opacity duration-300 animate-gradient-xy" />
+                
+                {/* Button */}
+                <div className="relative bg-white rounded-2xl px-12 py-4 font-black text-lg shadow-2xl group-hover/cta:shadow-purple-500/60 transition-all duration-200">
+                  <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-clip-text text-transparent inline-flex items-center gap-2">
+                    Hemen Başvur
+                  </span>
+                </div>
+              </Link>
+              
               <button
                 onClick={onJamClick}
-                className="group inline-flex items-center gap-3 text-white hover:text-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 transition-colors"
-                aria-label="Game Jam tam görünümü"
+                className="group/details inline-flex items-center gap-2 text-white/80 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 rounded-xl px-5 py-2.5 hover:bg-white/10 transition-all duration-200"
+                aria-label="Game Jam detayları"
               >
-                <span className="text-6xl leading-none transition-transform duration-200 group-hover:-translate-x-1 motion-reduce:transition-none">
+                <span className="text-sm font-semibold">Tüm Detaylar</span>
+                <span className="text-2xl leading-none transition-transform duration-200 group-hover/details:-translate-x-1">
                   ←
                 </span>
               </button>
@@ -113,7 +125,7 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
         {/* Right Panel: Hackathon */}
         <div
           className={cn(
-            "flex-1 flex flex-col bg-[url('/backgrounds/hackbg.png')] bg-no-repeat bg-center bg-contain items-center justify-center px-8 py-12 relative",
+            "min-w-full md:min-w-0 md:flex-1 flex flex-col bg-[url('/backgrounds/hackbg.png')] bg-no-repeat bg-center bg-[length:420px_auto] md:bg-[length:620px_auto] lg:bg-[length:820px_auto] items-center justify-center px-6 py-10 sm:px-8 sm:py-12 relative snap-center overflow-hidden",
             "transition-all duration-300 ease-out motion-reduce:transition-none"
           )}
           onMouseEnter={() => setHovered("right")}
@@ -129,6 +141,15 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
                   : "perspective(1200px) translateZ(0) rotateY(0) scale(1)",
           }}
         >
+          {/* Animated Background Gradient */}
+          <div 
+            className="absolute inset-0 opacity-20 pointer-events-none"
+            style={{
+              background: "radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.2), transparent 70%)",
+              animation: "pulse 4s ease-in-out infinite",
+            }}
+          />
+
           {/* Specular Highlight (Right) */}
           <div
             className="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500 motion-reduce:opacity-0"
@@ -149,54 +170,133 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
             <div className="absolute inset-y-8 -inset-x-6 rounded-[32px] bg-black/30 blur-2xl" />
           </div>
 
-          <div className="relative z-10 text-center max-w-sm">
-            {/* Logo Area */}
-            <div className="mb-15 h-32 sm:h-36 flex items-center justify-center">
+          <div 
+            className={cn(
+              "relative z-10 text-center max-w-md transition-all duration-700 delay-100",
+              mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            )}
+          >
+            {/* Logo Area with Hover Effect */}
+            <div className="mb-6 pb-8 sm:mb-8 h-28 sm:h-32 md:h-36 flex items-center justify-center group/logo">
               <Image 
-                src="/logos/hackathongif.gif" 
+                src="/logos/hackathonlogo.png" 
                 alt="Hackathon Logo" 
                 width={250} 
                 height={150}
-                className="object-contain"
+                className="object-contain drop-shadow-2xl transition-transform duration-300 group-hover/logo:scale-110"
               />
             </div>
 
-
-            {/* 
-              Title 
-            <h1 className="text-4xl sm:text-5xl font-black tracking-tight mb-4 text-white">
-              HackathOn Aydın
-            </h1>
-            
-              Tagline 
-            <p className="text-lg text-zinc-400 mb-9 leading-relaxed">
-              Ürün geliştir, çözüm üret, sahnede sun
-            </p>
-            
-            */}
-
-            {/* Buttons */}
-            <div className="flex flex-col gap-4 items-center">
-              <div className="bg-white rounded-2xl px-10 py-4 font-bold hover:shadow-lg hover:scale-105 transition-all duration-200 motion-reduce:hover:scale-100">
-                <Link
-                  href="/hackathon/basvur"
-                  className="px-3 py-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-bold rounded-2xl text-lg hover:shadow-lg hover:scale-105 transition-all duration-200 motion-reduce:hover:scale-100"
-                >
-                  Başvur
-                </Link>
-              </div>
+            {/* Enhanced CTA Buttons */}
+            <div className="flex flex-col gap-3 items-center">
+              <Link
+                href="/hackathon/basvur"
+                className="group/cta relative w-full sm:w-auto"
+              >
+                {/* Glowing Background */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-green-500 via-emerald-500 to-green-500 rounded-2xl blur-xl opacity-70 group-hover/cta:opacity-100 transition-opacity duration-300 animate-gradient-xy" />
+                
+                {/* Button */}
+                <div className="relative bg-white rounded-2xl px-12 py-4 font-black text-lg shadow-2xl group-hover/cta:shadow-green-500/60 transition-all duration-200">
+                  <span className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-600 bg-clip-text text-transparent inline-flex items-center gap-2">
+                    Hemen Başvur
+                  </span>
+                </div>
+              </Link>
+              
               <button
                 onClick={onHackClick}
-                className="group inline-flex items-center gap-3 text-zinc-300 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 transition-colors"
-                aria-label="Hackathon tam görünümü"
+                className="group/details inline-flex items-center gap-2 text-zinc-400 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 rounded-xl px-5 py-2.5 hover:bg-white/10 transition-all duration-200"
+                aria-label="Hackathon detayları"
               >
-                <span className="text-6xl leading-none transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transition-none">
+                <span className="text-sm font-semibold">Tüm Detaylar</span>
+                <span className="text-2xl leading-none transition-transform duration-200 group-hover/details:translate-x-1">
                   →
                 </span>
               </button>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Enhanced Navigation Hint */}
+      <div className="pointer-events-none absolute left-1/2 bottom-6 -translate-x-1/2 z-50">
+        <EnhancedHintGlyph /> 
+      </div>
+
+      {/* Custom Animations */}
+      <style jsx>{`
+        @keyframes gradient-xy {
+          0%, 100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+        }
+        .animate-gradient-xy {
+          background-size: 200% 200%;
+          animation: gradient-xy 3s ease infinite;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// Helper Components
+function InfoBadge({ icon, text }: { icon: string; text: string }) {
+  return (
+    <span className="bg-white/25 backdrop-blur-sm px-3 py-1.5 rounded-full text-white font-semibold inline-flex items-center gap-1.5 hover:bg-white/35 transition-colors">
+      <span>{icon}</span>
+      <span>{text}</span>
+    </span>
+  );
+}
+
+function InfoBadgeDark({ icon, text }: { icon: string; text: string }) {
+  return (
+    <span className="bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-full text-zinc-200 font-semibold inline-flex items-center gap-1.5 hover:bg-white/25 transition-colors">
+      <span>{icon}</span>
+      <span>{text}</span>
+    </span>
+  );
+}
+
+function StatItem({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="text-center">
+      <div className="text-lg sm:text-xl font-black text-white">{value}</div>
+      <div className="text-xs text-white/70 font-medium">{label}</div>
+    </div>
+  );
+}
+
+function StatItemDark({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="text-center">
+      <div className="text-lg sm:text-xl font-black text-white">{value}</div>
+      <div className="text-xs text-zinc-400 font-medium">{label}</div>
+    </div>
+  );
+}
+
+function EnhancedHintGlyph() {
+  return (
+    <div className="inline-flex flex-col items-center gap-4 rounded-full border border-white/25 bg-black/50 backdrop-blur-md px-5 py-3 text-white shadow-[0_10px_40px_rgba(0,0,0,0.5)] hover:scale-105 transition-transform">
+      <span className="text-xs flex font-semibold opacity-80 inline-block">
+          Kaydır
+      </span>
+
+      <div className="flex items-center gap-6">
+        <span className="text-lg font-bold leading-none animate-[nL2_1.8s_ease-in-out_infinite]">
+            ←
+        </span>
+        <span className="text-lg font-bold leading-none animate-[nD2_1.8s_ease-in-out_infinite]">
+          ↓
+        </span>
+        <span className="text-lg font-bold leading-none animate-[nR2_1.8s_ease-in-out_infinite]">
+          →
+        </span>
       </div>
     </div>
   );

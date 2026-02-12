@@ -16,12 +16,12 @@ const creditsData: CreditItem[] = [
   },
   {
     section: "Communities",
-    items: ["GDG on Campus ADÜ", "OTT", "HSD"],
+    items: ["GDG on Campus ADÜ", "OTT", "HSD", "IEE CS "],
   },
   {
     section: "Special Thanks",
-    items: ["All Participants", "Mentors", "Volunteers", "Dino"],
-  },
+    items: ["All Participants", "Mentors", "Volunteers", "Dino", "Beta"],
+  }
 ];
 
 const prefersReducedMotion =
@@ -126,7 +126,7 @@ export function CreditsCrawlOverlay({ isOpen, onClose, theme = "gamejam" }: Cred
               style={
                 {
                   "--crawl-duration": "60s",
-                  transform: "rotateX(25deg)",
+                  transform: "rotateX(60deg)",
                   transformStyle: "preserve-3d",
                   animation: "crawl 60s linear forwards",
                 } as React.CSSProperties & { "--crawl-duration": string }
@@ -134,7 +134,7 @@ export function CreditsCrawlOverlay({ isOpen, onClose, theme = "gamejam" }: Cred
             >
               <div className="mb-20">
                 <h1 className="text-6xl font-black tracking-widest text-yellow-100 mb-8">
-                  AYDÍN GENÇLIK ZİRVESİ
+                  AYDIN GENÇLİK ZİRVESİ
                 </h1>
                 <p className="text-2xl text-yellow-50/80">presents</p>
               </div>
@@ -165,7 +165,7 @@ export function CreditsCrawlOverlay({ isOpen, onClose, theme = "gamejam" }: Cred
         @keyframes crawl {
           from {
             opacity: 0;
-            transform: translateZ(0) rotateX(75deg) translateY(100px);
+            transform: translateZ(0) rotateX(25deg) translateY(100px);
           }
           10% {
             opacity: 1;
@@ -175,7 +175,7 @@ export function CreditsCrawlOverlay({ isOpen, onClose, theme = "gamejam" }: Cred
           }
           to {
             opacity: 0;
-            transform: translateZ(0) rotateX(75deg) translateY(-1500px);
+            transform: translateZ(0) rotateX(25deg) translateY(-1500px);
           }
         }
 
