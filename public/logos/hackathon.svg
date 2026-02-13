@@ -1,0 +1,30 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="hackGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="200" height="200" fill="url(#hackGradient)"/>
+  
+  <!-- Code brackets icon -->
+  <g transform="translate(50, 50)">
+    <!-- Left bracket -->
+    <path d="M 20 20 L 30 20 L 30 60 L 20 60" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <!-- Right bracket -->
+    <path d="M 80 20 L 70 20 L 70 60 L 80 60" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <!-- Code dots -->
+    <circle cx="45" cy="28" r="2" fill="white"/>
+    <circle cx="55" cy="28" r="2" fill="white"/>
+    <circle cx="50" cy="38" r="2" fill="white"/>
+    <circle cx="45" cy="48" r="2" fill="white"/>
+    <circle cx="55" cy="48" r="2" fill="white"/>
+    
+    <!-- Text -->
+    <text x="50" y="15" font-size="20" font-weight="bold" text-anchor="middle" fill="white">💻</text>
+  </g>
+</svg>
