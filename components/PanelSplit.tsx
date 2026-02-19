@@ -78,18 +78,6 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
               />
             </div>
 
-            {/* Title */}
-            {/* 
-            <h1 className="text-4xl sm:text-5xl font-black tracking-tight mb-4 bg-white  bg-clip-text text-transparent">
-              Aydın Game Jam
-            </h1>
-
-            Tagline 
-            <p className="text-lg text-zinc-100 mb-9 leading-relaxed">
-              48 saat oyun geliştir, ekip kur, sunum yap
-            </p>
-              */}
-
             {/* Buttons */}
             <div className="flex flex-col gap-3 sm:gap-4 items-center">
               <div className="bg-white rounded-xl sm:rounded-2xl px-6 sm:px-10 py-3 sm:py-4 font-bold hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 motion-reduce:hover:scale-100">

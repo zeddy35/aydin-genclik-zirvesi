@@ -3,6 +3,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface JamFullViewProps {
   onBack: () => void;
@@ -31,16 +32,21 @@ export function JamFullView({ onBack }: JamFullViewProps) {
       {/* Header */}
       <div className="sticky top-0 z-40 border-b border-purple-200/60 bg-white/80 backdrop-blur">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+          {/* Logo & Back Button */}
+          <div></div>
+          <Image 
+            src="/logos/gamejam.png" 
+            alt="Game Jam Logo" 
+            width={250} 
+            height={150}
+            className="right object-contain w-20 sm:w-52 md:w-64 h-auto"
+            />
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-sm font-black text-zinc-700 hover:text-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 transition-colors"
+            className="inline-flex items-center px-2 gap-2 text-sm font-black text-zinc-700 hover:text-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 transition-colors"
           >
-            ← Ana Ekran
+           Ana Ekran →
           </button>
-
-          <h1 className="text-xl sm:text-2xl font-black text-transparent bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text">
-            Aydın Game Jam
-          </h1>
 
           <div className="w-24" />
         </div>
