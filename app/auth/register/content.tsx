@@ -126,7 +126,7 @@ export default function RegisterPageContent() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 text-gray-900">
           <h1 className="text-3xl font-black text-gray-900 mb-2">Kayıt Ol</h1>
           <p className="text-gray-600 mb-8">Yeni hesap oluşturun</p>
 
@@ -147,7 +147,7 @@ export default function RegisterPageContent() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white text-gray-900"
                 placeholder="Adınız Soyadınız"
               />
             </div>
@@ -162,7 +162,7 @@ export default function RegisterPageContent() {
                 value={email}
                 onChange={(e) => handleEmailChange(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white text-gray-900"
                 placeholder="ornek@email.com"
               />
             </div>
@@ -176,7 +176,7 @@ export default function RegisterPageContent() {
                 type="tel"
                 value={phone}
                 onChange={(e) => handlePhoneChange(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white text-gray-900"
                 placeholder="05xx xxx xx xx"
               />
             </div>
@@ -191,7 +191,7 @@ export default function RegisterPageContent() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white text-gray-900"
                 placeholder="••••••••"
               />
             </div>
@@ -206,7 +206,7 @@ export default function RegisterPageContent() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white text-gray-900"
                 placeholder="••••••••"
               />
             </div>

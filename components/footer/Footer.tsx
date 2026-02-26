@@ -4,6 +4,40 @@ import React, { useState, useRef, useEffect } from "react";
 import { CreditsCrawlOverlay } from "./CreditsCrawlOverlay";
 import { StarfieldCanvas } from "./StarfieldCanvas";
 
+// ── Design tokens (mirror SummitInfo) ────────────────────────
+const F = {
+  bg:           "#07060f",
+  border:       "#1e1a2e",
+  text:         "#e2e0f0",
+  muted:        "#6b6880",
+  gold:         "#d4a843",
+  violetLight:  "#a78bfa",
+  display:      "'Syne', sans-serif",
+  mono:         "'Share Tech Mono', monospace",
+};
+
+function GDGMark() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="22" stroke={F.gold} strokeWidth="1.5" fill="none" />
+      <circle cx="24" cy="24" r="16" fill="#1a1730" />
+      <text x="24" y="30" textAnchor="middle" fontSize="18" fontWeight="700"
+        fontFamily="Syne, sans-serif" fill={F.gold}>G</text>
+    </svg>
+  );
+}
+
+function OTTMark() {
+  return (
+    <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="22" stroke={F.violetLight} strokeWidth="1.5" fill="none" />
+      <circle cx="24" cy="24" r="16" fill="#1a1730" />
+      <text x="24" y="30" textAnchor="middle" fontSize="18" fontWeight="700"
+        fontFamily="Syne, sans-serif" fill={F.violetLight}>O</text>
+    </svg>
+  );
+}
+
 export function Footer() {
   const [showCredits, setShowCredits] = useState(false);
   const [showIdleTooltip, setShowIdleTooltip] = useState(false);
@@ -74,31 +108,133 @@ export function Footer() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [showCredits]);
 
+  const SOCIALS = [
+    { label: "Instagram", href: "https://instagram.com" },
+    { label: "LinkedIn",  href: "https://linkedin.com" },
+    { label: "Twitter",   href: "https://twitter.com" },
+  ];
+
   return (
-    <footer className="w-full border-t border-gray-800 bg-gradient-to-r from-gray-900 via-gray-950 to-black">
-      <div className="max-w-7xl mx-auto px-4 py-6 flex items-center justify-between">
-        <div className="text-gray-500 text-sm">
-          © 2024 Aydın Gençlik Zirvesi. All rights reserved.
+    <footer
+      style={{
+        background: F.bg,
+        borderTop: `1px solid ${F.border}`,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Subtle starfield */}
+      <div style={{ position: "absolute", inset: 0, opacity: 0.35, pointerEvents: "none" }}>
+        <StarfieldCanvas />
+      </div>
+
+      {/* Gradient accent line */}
+      <div style={{
+        position: "absolute",
+        top: 0, left: 0, right: 0,
+        height: 1,
+        background: "linear-gradient(90deg, transparent 0%, #7c3aed 30%, #d4a843 70%, transparent 100%)",
+        opacity: 0.6,
+      }} />
+
+      <div style={{
+        position: "relative",
+        maxWidth: 1040,
+        margin: "0 auto",
+        padding: "clamp(20px,3vw,32px) clamp(16px,4vw,32px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        gap: 20,
+      }}>
+
+        {/* Left — organiser marks */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <GDGMark />
+          <div style={{ width: 1, height: 28, background: F.border }} />
+          <OTTMark />
         </div>
 
-        {/* Star Icon for Credits */}
-        <div
-          ref={starIconRef}
-          onMouseDown={handleStarMouseDown}
-          onMouseUp={handleStarMouseUp}
-          onMouseLeave={handleStarMouseUp}
-          className="relative cursor-pointer group"
-        >
-          <div className="text-2xl text-gray-800 hover:text-yellow-400 transition-colors duration-200">
-            ★
+        {/* Center — name + attribution */}
+        <div style={{ textAlign: "center", flex: 1, minWidth: 180 }}>
+          <div style={{ fontFamily: F.display, fontWeight: 700, fontSize: 13, color: F.text, letterSpacing: "-0.01em" }}>
+            Aydın Gençlik Zirvesi 2026
           </div>
+          <div style={{ fontFamily: F.mono, fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: F.muted, marginTop: 4 }}>
+            GDG on Campus Aydın × OTT
+          </div>
+        </div>
 
-          {/* Idle Tooltip */}
-          {showIdleTooltip && (
-            <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-xs text-gray-300 rounded whitespace-nowrap animate-fade-in">
-              Hold for credits ⭐
+        {/* Right — socials + star */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {SOCIALS.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: F.mono,
+                fontSize: 9,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase" as const,
+                color: F.muted,
+                padding: "6px 10px",
+                border: `1px solid ${F.border}`,
+                borderRadius: 6,
+                textDecoration: "none",
+                transition: "color 0.2s, border-color 0.2s",
+                minHeight: 32,
+                display: "inline-flex",
+                alignItems: "center",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = F.text; (e.currentTarget as HTMLAnchorElement).style.borderColor = "#2d2848"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = F.muted; (e.currentTarget as HTMLAnchorElement).style.borderColor = F.border; }}
+            >
+              {s.label}
+            </a>
+          ))}
+
+          {/* Star — long-press for credits */}
+          <div
+            ref={starIconRef}
+            onMouseDown={handleStarMouseDown}
+            onMouseUp={handleStarMouseUp}
+            onMouseLeave={handleStarMouseUp}
+            style={{ position: "relative", cursor: "pointer", marginLeft: 4 }}
+          >
+            <div
+              style={{
+                fontSize: 20,
+                color: showIdleTooltip ? F.gold : F.border,
+                transition: "color 0.3s",
+                userSelect: "none",
+              }}
+              role="button"
+              aria-label="Hold for credits"
+            >
+              ★
             </div>
-          )}
+            {showIdleTooltip && (
+              <div style={{
+                position: "absolute",
+                bottom: "calc(100% + 8px)",
+                right: 0,
+                whiteSpace: "nowrap",
+                background: "#13111f",
+                border: `1px solid ${F.border}`,
+                borderRadius: 6,
+                padding: "5px 10px",
+                fontFamily: F.mono,
+                fontSize: 10,
+                letterSpacing: "0.1em",
+                color: F.muted,
+              }}>
+                Hold for credits ⭐
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

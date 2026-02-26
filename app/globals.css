@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+@theme {
+  /* Hackathon design-system tokens */
+  --color-ink:     #1a1209;
+  --color-paper:   #f2e8d5;
+  --color-paper2:  #e8dcc4;
+  --color-aged:    #c9b99a;
+  --color-hackred: #9b1c1c;
+
+  --font-special:   'Special Elite', cursive;
+  --font-mono-tech: 'Share Tech Mono', monospace;
+  --font-display:   'Oswald', sans-serif;
+}
+
 @layer base {
   html {
     @apply scroll-smooth;

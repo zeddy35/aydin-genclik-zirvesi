@@ -1,7 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { useEasterEggs } from "@/components/EasterEggContext";
+import { cn } from "@/lib/cn";
 
 interface HackFullViewProps {
   onBack: () => void;
@@ -116,9 +119,11 @@ function EESVGPortrait() {
 // ── SUB COMPONENTS ──
 function SecHeader({ title, tag }: { title: string; tag: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 8 }}>
-      <h2 style={{ fontFamily: "'Oswald',sans-serif", fontSize: 21, letterSpacing: "0.06em", textTransform: "uppercase", color: "#1a1209", borderBottom: "2px solid #1a1209", paddingBottom: 2 }}>{title}</h2>
-      <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 11, letterSpacing: "0.28em", textTransform: "uppercase", color: "#aaa" }}>{tag}</span>
+    <div className="flex items-baseline justify-between mb-5 flex-wrap gap-2">
+      <h2 className="font-display text-[21px] [letter-spacing:0.06em] uppercase text-ink border-b-2 border-ink pb-[2px]">
+        {title}
+      </h2>
+      <span className="font-mono-tech text-[11px] [letter-spacing:0.28em] uppercase text-[#aaa]">{tag}</span>
     </div>
   );
 }
@@ -136,6 +141,10 @@ function ScrollReveal() {
       @keyframes hck-stamp { 0%{opacity:0;transform:rotate(-12deg) scale(2)} 15%{opacity:.9;transform:rotate(-12deg) scale(1)} 80%{opacity:.9;transform:rotate(-12deg) scale(1)} 100%{opacity:0;transform:rotate(-12deg) scale(1)} }
       .hck-stamp-anim { animation: hck-stamp 2.5s forwards; }
       .hck-rlog::-webkit-scrollbar{width:3px} .hck-rlog::-webkit-scrollbar-thumb{background:#2a1f0a}
+      @keyframes mc-drop { 0%{transform:translateY(-28px);opacity:0} 40%{transform:translateY(0);opacity:1} 55%{transform:translateY(-6px)} 70%{transform:translateY(0)} 90%{transform:translateY(0);opacity:1} 100%{transform:translateY(0);opacity:0} }
+      .mc-block { animation: mc-drop 1.8s ease forwards; position:absolute; top:8px; right:8px; pointer-events:none; }
+      @keyframes mc-cell-flash { 0%,100%{background:#e8dcc4} 50%{background:#c8a86a} }
+      .mc-cell-flash { animation: mc-cell-flash 0.25s ease 3; }
     `;
     document.head.appendChild(style);
 
@@ -171,6 +180,30 @@ export function HackFullView({ onBack }: HackFullViewProps) {
   const [showKonami, setShowKonami] = useState(false);
   const [showStamp, setShowStamp] = useState(false);
   const [stampClicks, setStampClicks] = useState(0);
+  const { markEggSeen } = useEasterEggs();
+  const mcTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [showMcBlock, setShowMcBlock] = useState(false);
+  const [mcFlash, setMcFlash] = useState(false);
+  const mcFireRef = useRef(false);
+
+  const handleMcEnter = useCallback(() => {
+    if (mcFireRef.current) return;
+    mcTimerRef.current = setTimeout(() => {
+      mcFireRef.current = true;
+      setMcFlash(true);
+      setTimeout(() => setMcFlash(false), 800);
+      setShowMcBlock(true);
+      markEggSeen("egg-minecraft");
+      setTimeout(() => {
+        setShowMcBlock(false);
+        mcFireRef.current = false;
+      }, 2400);
+    }, 1500);
+  }, [markEggSeen]);
+
+  const handleMcLeave = useCallback(() => {
+    if (mcTimerRef.current) { clearTimeout(mcTimerRef.current); mcTimerRef.current = null; }
+  }, []);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -206,17 +239,6 @@ export function HackFullView({ onBack }: HackFullViewProps) {
 
   const spkLabel = (s: Spk) => s === "beta" ? "Beta" : s === "dino" ? "Dino" : "⚠ Erken Erişim";
 
-  // shared style objects
-  const S = {
-    paper: { fontFamily: "'Special Elite',cursive", background: "#f2e8d5", borderRadius: 3, boxShadow: "0 0 0 1px #c4ab88, 0 2px 4px rgba(0,0,0,.4), 0 20px 60px rgba(0,0,0,.7)", overflow: "hidden" as const, position: "relative" as const },
-    mono: { fontFamily: "'Share Tech Mono',monospace" },
-    display: { fontFamily: "'Oswald',sans-serif" },
-    ink: "#1a1209",
-    paper2: "#e8dcc4",
-    aged: "#c9b99a",
-    red: "#9b1c1c",
-  };
-
   const FAQ_ITEMS = [
     { who: "Soru #01 · Dino", q: "Takımım yok, ne yapacağım?", a: "Sorun değil. Eşleşme akışı var — rolüne göre ekip bulmana yardım ediyoruz. Tek başına gelen çok kişi oluyor. RAWR!", hint: '// Dino: "İz tek başına da sürülür."' },
     { who: "Soru #02 · Beta", q: "Proje fikrim yok. Yine de gelebilir miyim?", a: "Evet. Problem alanları ve ipucu havuzu paylaşılacak. Mentorlar fikirleri netleştirmen için yanında.", hint: "// Beta: ○ × — bazen cevap soruda saklıdır." },
@@ -231,126 +253,172 @@ export function HackFullView({ onBack }: HackFullViewProps) {
 
       {/* KONAMI MODAL */}
       {showKonami && (
-        <div onClick={() => setShowKonami(false)} style={{ position: "fixed", inset: 0, zIndex: 9998, background: "rgba(0,0,0,.93)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, padding: 24, cursor: "pointer" }}>
-          <p style={{ ...S.mono, fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: "#664" }}>↑↑↓↓←→←→BA</p>
-          <p style={{ ...S.display, fontSize: "clamp(32px,8vw,64px)", letterSpacing: "0.1em", textTransform: "uppercase", color: "#f2e8d5" }}>Konami Kodu!</p>
-          <div style={{ display: "flex", gap: 32 }}><DinoSVG size={72} /><BetaSVG size={72} /></div>
-          <p style={{ fontFamily: "'Special Elite',cursive", color: "#a09070", fontSize: 15 }}>Gerçek bir dedektifsin, ajan.</p>
-          <p style={{ ...S.mono, fontSize: 11, color: "#443", letterSpacing: "0.2em", textTransform: "uppercase", marginTop: 8 }}>[ tıkla / kapat ]</p>
+        <div
+          onClick={() => setShowKonami(false)}
+          className="fixed inset-0 z-[9998] bg-black/95 flex flex-col items-center justify-center gap-5 p-6 cursor-pointer"
+        >
+          <p className="font-mono-tech text-[11px] [letter-spacing:0.3em] uppercase text-[#664]">↑↑↓↓←→←→BA</p>
+          <p className="font-display text-[clamp(32px,8vw,64px)] [letter-spacing:0.1em] uppercase text-paper">Konami Kodu!</p>
+          <div className="flex gap-8">
+            <DinoSVG size={72} />
+            <BetaSVG size={72} />
+          </div>
+          <p className="font-special text-[15px] text-[#a09070]">Gerçek bir dedektifsin, ajan.</p>
+          <div className="font-mono-tech text-[10px] [letter-spacing:0.2em] text-[#553] border border-[#332] px-3 py-1 rounded-[2px] mt-1">
+            EXTRA LIFE +1
+          </div>
+          <p className="font-mono-tech text-[11px] text-[#443] [letter-spacing:0.2em] uppercase mt-2">[ tıkla / kapat ]</p>
         </div>
       )}
 
       {/* STAMP OVERLAY */}
       {showStamp && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 8000, pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div className="hck-stamp-anim" style={{ ...S.display, fontSize: "clamp(36px,10vw,72px)", color: S.red, border: `5px solid ${S.red}`, padding: "10px 24px", borderRadius: 4, letterSpacing: "0.12em", lineHeight: 1 }}>
+        <div className="fixed inset-0 z-[8000] pointer-events-none flex items-center justify-center">
+          <div className="hck-stamp-anim font-display text-[clamp(36px,10vw,72px)] text-hackred border-[5px] border-hackred px-6 py-[10px] rounded-[4px] [letter-spacing:0.12em] leading-none">
             GİZLİ DOSYA
           </div>
         </div>
       )}
 
       {/* PAGE */}
-      <div style={{ fontFamily: "'Special Elite',cursive", minHeight: "100vh", width: "100%", background: "#111009", overflowX: "hidden" }}>
-        <div style={{ maxWidth: "1120px", margin: "0 auto", padding: "clamp(24px, 4vw, 48px) clamp(16px, 3vw, 40px) 96px" }}>
+      <div className="font-special min-h-screen w-full bg-[#111009] overflow-x-hidden">
+        <div className="max-w-[1120px] mx-auto px-[clamp(16px,3vw,40px)] pt-[clamp(24px,4vw,48px)] pb-24">
 
           {/* TOP BAR */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: "clamp(24px, 4vw, 40px)" }}>
-            <button onClick={onBack} style={{ ...S.mono, fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#c9b99a", background: "none", border: "1px solid #333", padding: "6px 12px", borderRadius: 4, cursor: "pointer" }}>
+          <div className="flex items-center justify-between gap-3 mb-[clamp(24px,4vw,40px)]">
+            <button
+              onClick={onBack}
+              className="font-mono-tech text-[11px] [letter-spacing:0.15em] uppercase text-aged bg-transparent border border-[#333] px-3 py-1.5 rounded-[4px] cursor-pointer"
+            >
               ← Ana Ekran
             </button>
-            <span style={{ ...S.mono, fontSize: 10, letterSpacing: "0.2em", color: "#555" }}>HCK-AYD-48 // GİZLİ</span>
+            <span className="font-mono-tech text-[10px] [letter-spacing:0.2em] text-[#555]">
+              SAVE SLOT 1 // HCK-AYD-48 // GİZLİ
+            </span>
           </div>
 
           {/* PAPER */}
-          <div style={S.paper}>
+          <div className="bg-paper rounded-[3px] shadow-[0_0_0_1px_#c4ab88,0_2px_4px_rgba(0,0,0,.4),0_20px_60px_rgba(0,0,0,.7)] overflow-hidden relative font-special">
 
             {/* HEADER BAND */}
-            <div style={{ background: S.ink, padding: "20px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+            <div className="bg-ink px-8 py-5 flex items-center justify-between flex-wrap gap-3">
               <div>
-                <div style={{ ...S.mono, fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: "#555", marginBottom: 3 }}>Dosya No</div>
-                <div style={{ ...S.mono, fontSize: 18, letterSpacing: "0.1em", color: "#f2e8d5" }}>HCK-AYD-48</div>
+                <div className="font-mono-tech text-[11px] [letter-spacing:0.3em] uppercase text-[#555] mb-[3px]">Dosya No</div>
+                <div className="font-mono-tech text-lg [letter-spacing:0.1em] text-paper">HCK-AYD-48</div>
               </div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "rgba(155,28,28,.18)", border: `1px solid ${S.red}`, padding: "5px 12px", borderRadius: 2 }}>
-                <span className="hck-blink" style={{ width: 5, height: 5, borderRadius: "50%", background: "#f87171", display: "inline-block" }} />
-                <span style={{ ...S.mono, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#f87171" }}>Aktif Soruşturma</span>
+              <div className="inline-flex items-center gap-[7px] bg-[rgba(155,28,28,.18)] border border-hackred px-3 py-[5px] rounded-[2px]">
+                <span className="hck-blink w-[5px] h-[5px] rounded-full bg-[#f87171] inline-block" />
+                <span className="font-mono-tech text-[11px] [letter-spacing:0.2em] uppercase text-[#f87171]">Aktif Soruşturma</span>
               </div>
             </div>
 
             {/* STAMP AREA */}
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", padding: "24px 32px", borderBottom: `1px dashed ${S.aged}`, flexWrap: "wrap", gap: 12 }}>
-              <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-                <button onClick={handleStampClick} title="Beni 5 kez tıkla 🔍" style={{ ...S.display, fontSize: 23, letterSpacing: "0.12em", border: `3px solid #7c2d12`, color: "#7c2d12", padding: "5px 14px", transform: "rotate(-5deg)", opacity: 0.75, lineHeight: 1, borderRadius: 2, background: "none", cursor: "pointer", display: "inline-block" }}>
+            <div className="flex items-start justify-between px-8 py-6 border-b border-dashed border-aged flex-wrap gap-3">
+              <div className="flex gap-3 items-center flex-wrap">
+                <button
+                  onClick={handleStampClick}
+                  title="Beni 5 kez tıkla 🔍"
+                  className="font-display text-[23px] [letter-spacing:0.12em] border-[3px] border-[#7c2d12] text-[#7c2d12] px-3.5 py-[5px] -rotate-[5deg] opacity-75 leading-none rounded-[2px] bg-transparent cursor-pointer inline-block"
+                >
                   GİZLİ DOSYA
                 </button>
-                <span style={{ ...S.display, fontSize: 15, letterSpacing: "0.1em", border: "2px solid #4a7c59", color: "#4a7c59", padding: "3px 10px", transform: "rotate(3deg)", opacity: 0.4, display: "inline-block" }}>AKTİF</span>
+                <span className="font-display text-[15px] [letter-spacing:0.1em] border-2 border-[#4a7c59] text-[#4a7c59] px-2.5 py-[3px] rotate-[3deg] opacity-40 inline-block">
+                  AKTİF
+                </span>
               </div>
-              <div style={{ ...S.mono, fontSize: 10, letterSpacing: "0.15em", lineHeight: 1.9, color: "#888", textAlign: "right" }}>
+              <div className="font-mono-tech text-[10px] [letter-spacing:0.15em] leading-[1.9] text-[#888] text-right">
                 <div>Son Başvuru</div>
-                <div style={{ fontSize: 15, color: S.ink }}>YAKINDA</div>
-                <div style={{ marginTop: 4 }}>Operasyon Süresi</div>
-                <div style={{ fontSize: 15, color: S.ink }}>48 SAAT</div>
+                <div className="text-[15px] text-ink">YAKINDA</div>
+                <div className="mt-1">Operasyon Süresi</div>
+                <div className="text-[15px] text-ink">48 SAAT</div>
               </div>
             </div>
 
             {/* HERO */}
-            <div className="hck-reveal" style={{ padding: "32px 32px", borderBottom: `1px dashed ${S.aged}` }}>
-              <div style={{ ...S.mono, fontSize: 11, letterSpacing: "0.35em", textTransform: "uppercase", color: "#888", marginBottom: 8 }}>Vaka Dosyası // İnşa Et · Sevk Et · Sun</div>
-              <h1 style={{ ...S.display, fontSize: "clamp(44px,11vw,88px)", lineHeight: 0.95, letterSpacing: "-0.02em", color: S.ink, marginBottom: 4 }}>
-                Hackathon<br /><span style={{ color: S.red }}>Aydın</span>
+            <div className="hck-reveal px-8 py-8 border-b border-dashed border-aged">
+              <div className="font-mono-tech text-[11px] [letter-spacing:0.35em] uppercase text-[#888] mb-2">
+                Vaka Dosyası // İnşa Et · Sevk Et · Sun
+              </div>
+              <h1 className="font-display text-[clamp(44px,11vw,88px)] leading-[0.95] [letter-spacing:-0.02em] text-ink mb-1">
+                Hackathon<br /><span className="text-hackred">Aydın</span>
               </h1>
-              <div style={{ ...S.mono, fontSize: 14, letterSpacing: "0.25em", textTransform: "uppercase", color: "#888", marginBottom: 24 }}>GDG × Oyun ve Tasarım Kulübü</div>
+              <div className="font-mono-tech text-sm [letter-spacing:0.25em] uppercase text-[#888] mb-6">
+                GDG × Oyun ve Tasarım Kulübü
+              </div>
 
               {/* Chars */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", gap: 1, border: `1px solid ${S.aged}`, borderRadius: 2, overflow: "hidden", marginBottom: 24 }}>
+              <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-[1px] border border-aged rounded-[2px] overflow-hidden mb-6">
                 {[
                   { svg: <DinoSVG size={48} />, name: "Dino", tag: "GDG", red: false },
                   { svg: null, name: "VS", tag: "", red: false, sep: true },
                   { svg: <EESVGSmall size={48} />, name: "Early Access", tag: "Şüpheli", red: true },
                   { svg: null, name: "VS", tag: "", red: false, sep: true },
-                  { svg: <BetaSVG size={48} />, name: "Beta", tag: "O&T Kulübü", red: false },
+                  { svg: <Image src="/hackathon/beta_profile.svg" alt="Beta" width={200} height={48} className="object-contain" />, name: "Beta", tag: "O&T Kulübü", red: false },
                 ].map((c, i) =>
                   c.sep ? (
-                    <div key={i} style={{ display: "none", alignItems: "center", justifyContent: "center", padding: "0 12px", background: S.paper2, borderRight: `1px solid ${S.aged}` }} className="sm-flex">
-                      <span style={{ ...S.display, fontSize: 11, letterSpacing: "0.1em", color: "#bbb" }}>VS</span>
+                    <div key={i} className="hidden items-center justify-center px-3 bg-paper2 border-r border-aged sm-flex">
+                      <span className="font-display text-[11px] [letter-spacing:0.1em] text-[#bbb]">VS</span>
                     </div>
                   ) : (
-                    <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "14px 8px", background: c.red ? "#f5e8e8" : S.paper2, borderRight: "none", cursor: "default" }}>
+                    <div
+                      key={i}
+                      className={cn(
+                        "flex-1 flex flex-col items-center gap-1.5 px-2 py-3.5 cursor-default",
+                        c.red ? "bg-[#f5e8e8]" : "bg-paper2"
+                      )}
+                    >
                       {c.svg}
-                      <span style={{ ...S.mono, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: c.red ? S.red : S.ink }}>{c.name}</span>
-                      <span style={{ ...S.mono, fontSize: 10, color: c.red ? S.red : "#888" }}>{c.tag}</span>
+                      <span className={cn("font-mono-tech text-[11px] [letter-spacing:0.2em] uppercase", c.red ? "text-hackred" : "text-ink")}>
+                        {c.name}
+                      </span>
+                      <span className={cn("font-mono-tech text-[10px]", c.red ? "text-hackred" : "text-[#888]")}>
+                        {c.tag}
+                      </span>
                     </div>
                   )
                 )}
               </div>
 
-              <p style={{ fontSize: 16, lineHeight: 1.75, color: "#3d2f1f", maxWidth: 560, marginBottom: 22 }}>
+              <p className="font-special text-base leading-[1.75] text-[#3d2f1f] max-w-[560px] mb-[22px]">
                 <strong>Beta</strong> ve <strong>Dino</strong> bir iz buldu. Ama gölgede biri var:{" "}
-                <strong style={{ color: S.red }}>Early Access</strong> — kocaman bıyığı, sinsi sırıtışı ve{" "}
-                <em style={{ color: "#888" }}>"v0.0.1"</em> tabelasıyla dolaşıyor. O seni{" "}
-                <em style={{ color: "#888" }}>"yarım işi sahneye sür"</em> diye kandırır.
+                <strong className="text-hackred">Erken Erişim</strong> — kocaman bıyığı, sinsi sırıtışı ve{" "}
                 Bizim kuralımız: <strong>gerçeği ortaya çıkar. 48 saat</strong> — tek operasyon penceresi.
               </p>
 
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <Link href="/hackathon/basvur" style={{ ...S.display, fontSize: 15, letterSpacing: "0.12em", padding: "10px 24px", background: S.ink, color: "#f2e8d5", borderRadius: 2, textDecoration: "none", display: "inline-block" }}>Vakaya Katıl →</Link>
-                <Link href="/hackathon/dosya" style={{ ...S.display, fontSize: 15, letterSpacing: "0.12em", padding: "10px 24px", border: `2px solid ${S.aged}`, color: S.ink, borderRadius: 2, textDecoration: "none", display: "inline-block", background: "none" }}>Vaka Dosyası</Link>
+              <div className="flex gap-3 flex-wrap">
+                <Link
+                  href="/hackathon/basvur"
+                  className="font-display text-[15px] [letter-spacing:0.12em] px-6 py-2.5 bg-ink text-paper rounded-[2px] no-underline inline-block"
+                >
+                  Vakaya Katıl →
+                </Link>
+                <Link
+                  href="/hackathon/dosya"
+                  className="font-display text-[15px] [letter-spacing:0.12em] px-6 py-2.5 border-2 border-aged text-ink rounded-[2px] no-underline inline-block bg-transparent"
+                >
+                  Vaka Dosyası
+                </Link>
               </div>
 
-              <p aria-hidden style={{ ...S.mono, fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", marginTop: 16, color: "#f2e8d5", userSelect: "none" }}>↑↑↓↓←→←→BA // biliyorsan biliyorsun</p>
+              <p aria-hidden className="font-mono-tech text-[11px] [letter-spacing:0.15em] uppercase mt-4 text-paper select-none">
+                ↑↑↓↓←→←→BA // biliyorsan biliyorsun
+              </p>
             </div>
 
             {/* ŞÜPHELI */}
-            <div className="hck-reveal" style={{ padding: "24px 32px", borderBottom: `1px dashed ${S.aged}` }}>
+            <div className="hck-reveal px-8 py-6 border-b border-dashed border-aged">
               <SecHeader title="Şüpheli Dosyası" tag="Suspect #1" />
-              <div style={{ display: "grid", gridTemplateColumns: "minmax(140px, 180px) 1fr", gap: 24, flexWrap: "wrap" }}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, padding: "16px 20px", background: S.paper2, border: `1px solid ${S.aged}`, minWidth: 130, flexShrink: 0 }}>
-                  <span style={{ ...S.mono, fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#888" }}>Fotoğraf</span>
+              <div className="grid grid-cols-[minmax(140px,180px)_1fr] gap-6">
+                <div className="flex flex-col items-center gap-2 px-5 py-4 bg-paper2 border border-aged min-w-[130px] shrink-0">
+                  <span className="font-mono-tech text-[10px] [letter-spacing:0.2em] uppercase text-[#888]">Fotoğraf</span>
                   <EESVGPortrait />
-                  <span style={{ ...S.display, fontSize: 15, letterSpacing: "0.06em", color: S.red }}>Erken Erişim</span>
-                  <span style={{ ...S.mono, fontSize: 10, letterSpacing: "0.15em", background: S.red, color: "#fff", padding: "2px 8px", borderRadius: 1 }}>Tehlike: Yüksek</span>
-                  <span style={{ ...S.mono, fontSize: 10, color: "#aaa" }}>Yakalanımadı</span>
+                  <span className="font-display text-[15px] [letter-spacing:0.06em] text-hackred">Erken Erişim</span>
+                  <span className="font-mono-tech text-[10px] [letter-spacing:0.15em] bg-hackred text-white px-2 py-0.5 rounded-[1px]">
+                    Tehlike: Yüksek
+                  </span>
+                  <span className="font-mono-tech text-[10px] text-[#aaa]">Yakalanımadı</span>
                 </div>
-                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 14 }}>
+                <div className="flex-1 flex flex-col gap-3.5">
                   {[
                     { label: "Alias", val: "Erken Erişim", em: false },
                     { label: "Bilinen Söylemler", val: '"Daha bitmedi ama yayınla." / "Sonra düzeltirsin." / "Demo mış gibi yap."', em: true },
@@ -358,8 +426,12 @@ export function HackFullView({ onBack }: HackFullViewProps) {
                     { label: "Panzehir", val: "1 net problem → 1 güçlü MVP → 1 keskin demo. Dino & Beta'nın kuralı.", em: false },
                   ].map((f) => (
                     <div key={f.label}>
-                      <div style={{ ...S.mono, fontSize: 11, letterSpacing: "0.25em", textTransform: "uppercase", color: "#888", borderBottom: `1px solid ${S.aged}`, paddingBottom: 3, marginBottom: 5 }}>{f.label}</div>
-                      <div style={{ fontSize: 15, lineHeight: 1.65, color: f.em ? "#666" : "#2d1f0e", fontStyle: f.em ? "italic" : "normal" }}>{f.val}</div>
+                      <div className="font-mono-tech text-[11px] [letter-spacing:0.25em] uppercase text-[#888] border-b border-aged pb-[3px] mb-[5px]">
+                        {f.label}
+                      </div>
+                      <div className={cn("text-[15px] leading-[1.65]", f.em ? "text-[#666] italic" : "text-[#2d1f0e]")}>
+                        {f.val}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -367,20 +439,34 @@ export function HackFullView({ onBack }: HackFullViewProps) {
             </div>
 
             {/* KANIT */}
-            <div className="hck-reveal" style={{ padding: "24px 32px", borderBottom: `1px dashed ${S.aged}` }}>
+            <div className="hck-reveal px-8 py-6 border-b border-dashed border-aged">
               <SecHeader title="Kanıt Panosu" tag="Evidence Log" />
-              <div style={{ border: `1px solid ${S.aged}`, borderRadius: 2, overflow: "hidden" }}>
+              <div className="border border-aged rounded-[2px] overflow-hidden">
                 {[
                   { code: "K-01", title: "İpucu: Problem", desc: "Beta'nın kuralı: problem net değilse çözüm de net olmaz. Tek cümlede yaz — Kimi, neyi, neden çözüyoruz?", note: '// Beta: "İpucu bulanıksa, dosya dağılır."', red: false },
                   { code: "K-02", title: "İpucu: Kanıt (MVP)", desc: "Dino'nun kuralı: kanıt göster. Akış, ekran, çalışan demo. Az ama sağlam — tutarlı.", note: '// Dino: "Süs değil, iz bırak."', red: false },
                   { code: "K-03", title: "Tehdit: Erken Erişim", desc: 'Düşmanımız: yarım işi "yayınla geç" diye fısıldar. Panzehir: net kapsam + sağlam demo.', note: "⚠ Erken erişim tuzağına düşme.", red: true },
                 ].map((ev, i) => (
-                  <div key={ev.code} style={{ display: "flex", borderTop: i > 0 ? `1px solid ${S.aged}` : undefined, background: ev.red ? "#fdf8f4" : S.paper2 }}>
-                    <div style={{ ...S.mono, fontSize: 11, background: ev.red ? "#7c2d12" : S.ink, color: ev.red ? "#f2e8d5" : S.aged, writingMode: "vertical-rl", display: "flex", alignItems: "center", justifyContent: "center", minWidth: 40, padding: "10px 0", letterSpacing: "0.1em" }}>{ev.code}</div>
-                    <div style={{ padding: "12px 16px", flex: 1 }}>
-                      <div style={{ ...S.display, fontSize: 15, letterSpacing: "0.06em", color: ev.red ? S.red : S.ink, marginBottom: 4 }}>{ev.title}</div>
-                      <div style={{ fontSize: 14, lineHeight: 1.65, color: "#3d2f1f" }}>{ev.desc}</div>
-                      <div style={{ ...S.mono, fontSize: 11, color: ev.red ? S.red : "#999", marginTop: 6 }}>{ev.note}</div>
+                  <div
+                    key={ev.code}
+                    className={cn("flex", i > 0 && "border-t border-aged", ev.red ? "bg-[#fdf8f4]" : "bg-paper2")}
+                  >
+                    <div
+                      className={cn(
+                        "font-mono-tech text-[11px] flex items-center justify-center min-w-[40px] py-[10px] [writing-mode:vertical-rl] [letter-spacing:0.1em]",
+                        ev.red ? "bg-[#7c2d12] text-paper" : "bg-ink text-aged"
+                      )}
+                    >
+                      {ev.code}
+                    </div>
+                    <div className="px-4 py-3 flex-1">
+                      <div className={cn("font-display text-[15px] [letter-spacing:0.06em] mb-1", ev.red ? "text-hackred" : "text-ink")}>
+                        {ev.title}
+                      </div>
+                      <div className="font-special text-sm leading-[1.65] text-[#3d2f1f]">{ev.desc}</div>
+                      <div className={cn("font-mono-tech text-[11px] mt-1.5", ev.red ? "text-hackred" : "text-[#999]")}>
+                        {ev.note}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -388,67 +474,107 @@ export function HackFullView({ onBack }: HackFullViewProps) {
             </div>
 
             {/* TEMEL BİLGİLER */}
-            <div className="hck-reveal" style={{ padding: "24px 32px", borderBottom: `1px dashed ${S.aged}` }}>
+            <div className="hck-reveal px-8 py-6 border-b border-dashed border-aged">
               <SecHeader title="Temel Bilgiler" tag="Case Overview" />
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 1, border: `1px solid ${S.aged}`, background: S.aged, borderRadius: 2, overflow: "hidden" }}>
-                {[["Dosya Açılışı","Yakında"],["Bölge","Aydın"],["Süre","48 Saat"],["Erişim","Ücretsiz"]].map(([k,v]) => (
-                  <div key={k} style={{ background: S.paper2, padding: "12px 14px" }}>
-                    <div style={{ ...S.mono, fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#888", marginBottom: 4 }}>{k}</div>
-                    <div style={{ ...S.display, fontSize: 16, letterSpacing: "0.04em", color: S.ink }}>{v}</div>
+              <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-[1px] border border-aged bg-aged rounded-[2px] overflow-hidden">
+                {([ ["Dosya Açılışı","Yakında"], ["Bölge","Aydın"], ["Süre","48 Saat"] ] as [string,string][]).map(([k,v]) => (
+                  <div key={k} className="bg-paper2 px-3.5 py-3">
+                    <div className="font-mono-tech text-[10px] [letter-spacing:0.2em] uppercase text-[#888] mb-1">{k}</div>
+                    <div className="font-display text-base [letter-spacing:0.04em] text-ink">{v}</div>
                   </div>
                 ))}
+                {/* Minecraft egg cell */}
+                <div
+                  className={cn("bg-paper2 px-3.5 py-3 relative cursor-default", mcFlash && "mc-cell-flash")}
+                  onMouseEnter={handleMcEnter}
+                  onMouseLeave={handleMcLeave}
+                >
+                  <div className="font-mono-tech text-[10px] [letter-spacing:0.2em] uppercase text-[#888] mb-1">
+                    Erişim {mcFireRef.current && <span className="ml-1">⛏️</span>}
+                  </div>
+                  <div className="font-display text-base [letter-spacing:0.04em] text-ink">Ücretsiz</div>
+                  {!mcFireRef.current && (
+                    <div className="font-mono-tech text-[9px] text-[#bbb] mt-[2px]">1.5s basılı tut ⛏️</div>
+                  )}
+                  {showMcBlock && (
+                    <div className="mc-block">
+                      <svg width="20" height="20" viewBox="0 0 8 8">
+                        <rect x="0" y="0" width="8" height="4" fill="#5d9e44" />
+                        <rect x="0" y="4" width="8" height="4" fill="#8b6340" />
+                        <rect x="0" y="0" width="2" height="2" fill="#4a8535" opacity="0.5" />
+                        <rect x="4" y="1" width="2" height="1" fill="#4a8535" opacity="0.5" />
+                        <rect x="2" y="5" width="2" height="2" fill="#7a5530" opacity="0.5" />
+                        <rect x="5" y="6" width="2" height="1" fill="#7a5530" opacity="0.5" />
+                      </svg>
+                      <div className="font-special text-[9px] text-[#3d2f1f] whitespace-nowrap mt-[2px]">Bir blok düştü! ⛏️</div>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div style={{ marginTop: 14, padding: "11px 14px", borderLeft: `3px solid ${S.aged}`, background: S.paper2, fontSize: 14, lineHeight: 1.7, color: "#555" }}>
-                <span style={{ ...S.mono, color: S.ink }}>Beta:</span> "Net problem = hızlı yön." &nbsp;·&nbsp;{" "}
-                <span style={{ ...S.mono, color: S.ink }}>Dino:</span> "Kanıt yoksa iddia yok." &nbsp;·&nbsp;{" "}
-                <span style={{ ...S.mono, color: S.red }}>Erken Erişim:</span> "Yarım iş de olur…" →{" "}
-                <span style={{ ...S.mono, color: S.ink }}>Biz:</span> "Olmaz."
+              <div className="mt-3.5 px-3.5 py-[11px] border-l-[3px] border-aged bg-paper2 font-special text-sm leading-[1.7] text-[#555]">
+                <span className="font-mono-tech text-ink">Beta:</span> "Net problem = hızlı yön." &nbsp;·&nbsp;{" "}
+                <span className="font-mono-tech text-ink">Dino:</span> "Kanıt yoksa iddia yok." &nbsp;·&nbsp;{" "}
+                <span className="font-mono-tech text-hackred">Erken Erişim:</span> "Yarım iş de olur…" →{" "}
+                <span className="font-mono-tech text-ink">Biz:</span> "Olmaz."
               </div>
             </div>
 
             {/* AJAN PROFİLLERİ */}
-            <div className="hck-reveal" style={{ padding: "24px 32px", borderBottom: `1px dashed ${S.aged}` }}>
+            <div className="hck-reveal px-8 py-6 border-b border-dashed border-aged">
               <SecHeader title="Ajan Profilleri" tag="Role Matching" />
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 1, border: `1px solid ${S.aged}`, background: S.aged, borderRadius: 2, overflow: "hidden" }}>
+              <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[1px] border border-aged bg-aged rounded-[2px] overflow-hidden">
                 {[
                   { badge: "Rol 01 // Dino Ekibi", title: "Kod Dedektifi", desc: "Sistemi kurar. API, veri, akış. Hatanın nerede saklandığını bulur. Herkes uyurken o çalışır.", tags: ["Back-end","Entegrasyon","Hızlı Fix"], note: "// RAWR!" },
                   { badge: "Rol 02 // Beta Ekibi", title: "UI İz Sürücü", desc: "Kullanıcıyı doğru yere götüren tasarım. Hiyerarşi, akış, etkileşim — her piksel bir ipucu.", tags: ["UI/UX","Prototip","Sunum Hissi"], note: "// ○ × ile tasarım yaparız." },
                   { badge: "Rol 03 // Beta Ekibi", title: "Ürün Analisti", desc: "Problem–çözüm uyumu. Hedef kitle + değer önerisi + ölçüm. Dosyanın omurgası.", tags: ["Ürün","Araştırma","Kapsam"], note: "// Kapsam netse, çözüm nettir." },
                   { badge: "Rol 04 // Dino Ekibi", title: "Pitch Avukatı", desc: "Jüri karşısında dosyayı kapatır. Hikâye + kanıt + net kapanış. Sözler biter, iş konuşur.", tags: ["Sunum","Demo","Hikâye"], note: "// Sonuç odaklı ol." },
                 ].map((r) => (
-                  <div key={r.badge} style={{ background: S.paper2, padding: "14px 16px" }}>
-                    <div style={{ ...S.mono, fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "#888", marginBottom: 3 }}>{r.badge}</div>
-                    <div style={{ ...S.display, fontSize: 15, letterSpacing: "0.06em", color: S.ink, marginBottom: 6 }}>{r.title}</div>
-                    <div style={{ fontSize: 14, lineHeight: 1.6, color: "#3d2f1f", marginBottom: 10 }}>{r.desc}</div>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-                      {r.tags.map((t) => <span key={t} style={{ ...S.mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", border: `1px solid ${S.aged}`, padding: "2px 7px", color: "#666", borderRadius: 1 }}>{t}</span>)}
+                  <div key={r.badge} className="bg-paper2 px-4 py-3.5">
+                    <div className="font-mono-tech text-[10px] [letter-spacing:0.22em] uppercase text-[#888] mb-[3px]">{r.badge}</div>
+                    <div className="font-display text-[15px] [letter-spacing:0.06em] text-ink mb-1.5">{r.title}</div>
+                    <div className="font-special text-sm leading-[1.6] text-[#3d2f1f] mb-2.5">{r.desc}</div>
+                    <div className="flex flex-wrap gap-[5px]">
+                      {r.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="font-mono-tech text-[10px] [letter-spacing:0.12em] uppercase border border-aged px-[7px] py-0.5 text-[#666] rounded-[1px]"
+                        >
+                          {t}
+                        </span>
+                      ))}
                     </div>
-                    <div style={{ ...S.mono, fontSize: 10, color: "#aaa", marginTop: 8 }}>{r.note}</div>
+                    <div className="font-mono-tech text-[10px] text-[#aaa] mt-2">{r.note}</div>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* SORUŞTURMA AKIŞI */}
-            <div className="hck-reveal" style={{ padding: "24px 32px", borderBottom: `1px dashed ${S.aged}` }}>
+            <div className="hck-reveal px-8 py-6 border-b border-dashed border-aged">
               <SecHeader title="Soruşturma Akışı" tag="Checkpoints" />
-              <div style={{ border: `1px solid ${S.aged}`, borderRadius: 2, overflow: "hidden" }}>
+              <div className="border border-aged rounded-[2px] overflow-hidden">
                 {[
                   { n:"01", lbl:"AÇILIŞ", speaker:"Beta Raporu", title:"Dosya Açılışı", desc:"Vaka brifingi, kurallar, hedefler. Takım eşleşmesi ve hızlı yönlendirme.", checks:["T+0: Dosya açılır","T+2: Roller netleşir","T+4: Plan çıkar"], red:false },
                   { n:"02", lbl:"İNŞA", speaker:"Dino Raporu", title:"İz Sürme (İnşa Et)", desc:"Kod, tasarım, iş modeli. Mentor checkpoint'leri ile hızlı iterasyon.", checks:["T+12: İlk prototip","T+24: Kritik kanıt","T+36: Demo hazır"], red:false },
                   { n:"03", lbl:"KAPANIŞ", speaker:"⚠ Erken Erişim Tehdidi Aktif", title:"Final Sorgu (Demo)", desc:"Pitch + canlı demo. Jüri değerlendirmesi. Dosya kapanır — ya zaferle, ya yarım işle.", checks:["T+44: Son prova","T+48: Sunum","T+48+: Sonuç"], red:true },
                 ].map((tl, i) => (
-                  <div key={tl.n} style={{ display: "flex", borderTop: i > 0 ? `1px solid ${S.aged}` : undefined, background: S.paper2 }}>
-                    <div style={{ background: S.ink, minWidth: 52, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2, padding: "16px 0", flexShrink: 0 }}>
-                      <span style={{ ...S.display, fontSize: 22, color: "#444" }}>{tl.n}</span>
-                      <span style={{ ...S.mono, fontSize: 10, letterSpacing: "0.1em", color: "#555" }}>{tl.lbl}</span>
+                  <div key={tl.n} className={cn("flex bg-paper2", i > 0 && "border-t border-aged")}>
+                    <div className="bg-ink min-w-[52px] flex flex-col items-center justify-center gap-0.5 py-4 shrink-0">
+                      <span className="font-display text-[22px] text-[#444]">{tl.n}</span>
+                      <span className="font-mono-tech text-[10px] [letter-spacing:0.1em] text-[#555]">{tl.lbl}</span>
                     </div>
-                    <div style={{ padding: "14px 16px", flex: 1 }}>
-                      <div style={{ ...S.mono, fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: tl.red ? S.red : "#aaa", marginBottom: 3 }}>{tl.speaker}</div>
-                      <div style={{ ...S.display, fontSize: 14, letterSpacing: "0.04em", color: S.ink, marginBottom: 5 }}>{tl.title}</div>
-                      <div style={{ fontSize: 14, lineHeight: 1.6, color: "#3d2f1f", marginBottom: 10 }}>{tl.desc}</div>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-                        {tl.checks.map((c) => <span key={c} style={{ ...S.mono, fontSize: 11, background: "#f2e8d5", border: `1px solid ${S.aged}`, color: "#777", padding: "2px 8px", borderRadius: 1 }}>{c}</span>)}
+                    <div className="px-4 py-3.5 flex-1">
+                      <div className={cn("font-mono-tech text-[10px] [letter-spacing:0.2em] uppercase mb-[3px]", tl.red ? "text-hackred" : "text-[#aaa]")}>
+                        {tl.speaker}
+                      </div>
+                      <div className="font-display text-sm [letter-spacing:0.04em] text-ink mb-[5px]">{tl.title}</div>
+                      <div className="font-special text-sm leading-[1.6] text-[#3d2f1f] mb-2.5">{tl.desc}</div>
+                      <div className="flex flex-wrap gap-[5px]">
+                        {tl.checks.map((c) => (
+                          <span key={c} className="font-mono-tech text-[11px] bg-paper border border-aged text-[#777] px-2 py-0.5 rounded-[1px]">
+                            {c}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -457,21 +583,31 @@ export function HackFullView({ onBack }: HackFullViewProps) {
             </div>
 
             {/* SORU ODASI */}
-            <div className="hck-reveal" style={{ padding: "24px 32px", borderBottom: `1px dashed ${S.aged}` }}>
+            <div className="hck-reveal px-8 py-6 border-b border-dashed border-aged">
               <SecHeader title="Soru Odası" tag="Sorgu Kaydı" />
-              <div style={{ border: `1px solid ${S.aged}`, borderRadius: 2, overflow: "hidden" }}>
+              <div className="border border-aged rounded-[2px] overflow-hidden">
                 {FAQ_ITEMS.map((f, i) => (
-                  <div key={f.q} style={{ borderTop: i > 0 ? `1px solid ${S.aged}` : undefined, background: S.paper2 }}>
-                    <button onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ width: "100%", textAlign: "left", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "14px 16px", background: "none", border: "none", cursor: "pointer" }}>
+                  <div key={f.q} className={cn("bg-paper2", i > 0 && "border-t border-aged")}>
+                    <button
+                      onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                      className="w-full text-left flex items-center justify-between gap-3 px-4 py-3.5 bg-transparent border-none cursor-pointer"
+                    >
                       <div>
-                        <div style={{ ...S.mono, fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "#aaa", marginBottom: 3 }}>{f.who}</div>
-                        <div style={{ fontSize: 15, color: S.ink }}>{f.q}</div>
+                        <div className="font-mono-tech text-[10px] [letter-spacing:0.2em] uppercase text-[#aaa] mb-[3px]">{f.who}</div>
+                        <div className="font-special text-[15px] text-ink">{f.q}</div>
                       </div>
-                      <span style={{ ...S.mono, fontSize: 18, color: openFaq === i ? S.ink : S.aged, transform: openFaq === i ? "rotate(45deg)" : "none", display: "inline-block", transition: "transform .2s", flexShrink: 0 }}>+</span>
+                      <span
+                        className={cn(
+                          "font-mono-tech text-[18px] inline-block transition-transform duration-200 shrink-0",
+                          openFaq === i ? "text-ink rotate-45" : "text-aged"
+                        )}
+                      >
+                        +
+                      </span>
                     </button>
                     <div className={`hck-faq-body${openFaq === i ? " open" : ""}`}>
-                      <div style={{ fontSize: 15, lineHeight: 1.7, color: "#3d2f1f" }}>{f.a}</div>
-                      <div style={{ ...S.mono, fontSize: 11, color: "#aaa", marginTop: 6 }}>{f.hint}</div>
+                      <div className="font-special text-[15px] leading-[1.7] text-[#3d2f1f]">{f.a}</div>
+                      <div className="font-mono-tech text-[11px] text-[#aaa] mt-1.5">{f.hint}</div>
                     </div>
                   </div>
                 ))}
@@ -479,34 +615,49 @@ export function HackFullView({ onBack }: HackFullViewProps) {
             </div>
 
             {/* CTA */}
-            <div className="hck-reveal" style={{ padding: "24px 32px" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center", justifyContent: "space-between" }}>
-                <div style={{ flex: 1, minWidth: 200 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                    <DinoSVG size={40} /><BetaSVG size={40} />
+            <div className="hck-reveal px-8 py-6">
+              <div className="grid grid-cols-[1fr_auto] gap-10 items-center justify-between">
+                <div className="flex-1 min-w-[200px]">
+                  <div className="flex items-center gap-3 mb-3">
+                    <DinoSVG size={40} />
+                    <BetaSVG size={40} />
                     <div>
-                      <div style={{ ...S.mono, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#888" }}>Dino & Beta</div>
-                      <div style={{ ...S.mono, fontSize: 10, color: "#aaa" }}>Seni bekliyor</div>
+                      <div className="font-mono-tech text-[11px] [letter-spacing:0.2em] uppercase text-[#888]">Dino & Beta</div>
+                      <div className="font-mono-tech text-[10px] text-[#aaa]">Seni bekliyor</div>
                     </div>
                   </div>
-                  <div style={{ ...S.display, fontSize: 22, letterSpacing: "0.06em", textTransform: "uppercase", color: S.ink, marginBottom: 8 }}>Dosya Seni Bekliyor.</div>
-                  <p style={{ fontSize: 15, lineHeight: 1.7, color: "#3d2f1f", maxWidth: 400, marginBottom: 8 }}>
+                  <div className="font-display text-[22px] [letter-spacing:0.06em] uppercase text-ink mb-2">Dosya Seni Bekliyor.</div>
+                  <p className="font-special text-[15px] leading-[1.7] text-[#3d2f1f] max-w-[400px] mb-2">
                     Beta ve Dino bu soruşturmayı tek başına kapatamaz. Erken Erişim gölgede dolaşıyor.{" "}
                     <strong>Senin görevin:</strong> kanıtla, sun, dosyayı kapat.
                   </p>
-                  <div style={{ ...S.mono, fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "#888" }}>// "kanu0131tın varsa varsın."</div>
+                  <div className="font-mono-tech text-[11px] [letter-spacing:0.22em] uppercase text-[#888]">
+                    // &quot;kanıtın varsa varsın.&quot;
+                  </div>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 10, minWidth: 200, maxWidth: 260 }}>
-                  <Link href="/hackathon/basvur" style={{ ...S.display, fontSize: 15, letterSpacing: "0.1em", padding: "11px 20px", background: S.ink, color: "#f2e8d5", borderRadius: 2, textDecoration: "none", display: "block", textAlign: "center" }}>Başvuruyu Aç →</Link>
-                  <Link href="/hackathon/dosya" style={{ ...S.display, fontSize: 15, letterSpacing: "0.1em", padding: "11px 20px", border: `2px solid ${S.aged}`, color: S.ink, borderRadius: 2, textDecoration: "none", display: "block", textAlign: "center", background: "none" }}>Vaka Dosyasını Gör</Link>
+                <div className="flex flex-col gap-2.5 min-w-[200px] max-w-[260px]">
+                  <Link
+                    href="/hackathon/basvur"
+                    className="font-display text-[15px] [letter-spacing:0.1em] px-5 py-[11px] bg-ink text-paper rounded-[2px] no-underline block text-center"
+                  >
+                    Başvuruyu Aç →
+                  </Link>
+                  <Link
+                    href="/hackathon/dosya"
+                    className="font-display text-[15px] [letter-spacing:0.1em] px-5 py-[11px] border-2 border-aged text-ink rounded-[2px] no-underline block text-center bg-transparent"
+                  >
+                    Vaka Dosyasını Gör
+                  </Link>
                 </div>
               </div>
             </div>
 
             {/* FOOTER */}
-            <div style={{ background: S.ink, padding: "14px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-              <span style={{ ...S.mono, fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#333" }}>Dosya, kanu0131tla kapatılır. <span style={{ color: "#444" }}>Erken Erişim ile değil.</span></span>
-              <span style={{ ...S.mono, fontSize: 11, color: "#222" }}>GDG × O&T // v1.0</span>
+            <div className="bg-ink px-8 py-3.5 flex items-center justify-between flex-wrap gap-2">
+              <span className="font-mono-tech text-[11px] [letter-spacing:0.15em] uppercase text-[#333]">
+                Dosya, kanıtla kapatılır. <span className="text-[#444]">Erken Erişim ile değil.</span>
+              </span>
+              <span className="font-mono-tech text-[11px] text-[#222]">GDG × O&T // v1.0.0 // BUILD 2026</span>
             </div>
 
           </div>{/* /paper */}
@@ -515,33 +666,59 @@ export function HackFullView({ onBack }: HackFullViewProps) {
 
       {/* RADIO */}
       {radioOpen ? (
-        <div style={{ position: "fixed", bottom: 16, left: 12, zIndex: 500, width: 272, maxWidth: "calc(100vw - 24px)", background: "#1a1108", border: "1px solid #3a2d1a", borderRadius: 4, boxShadow: "0 8px 32px rgba(0,0,0,.7)", overflow: "hidden" }}>
-          <div style={{ background: "#0d0a05", padding: "8px 12px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ ...S.mono, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#664" }}>📻 Saha Telsizi</span>
-            <button onClick={() => setRadioOpen(false)} style={{ background: "none", border: "none", color: "#554", cursor: "pointer", fontSize: 14, padding: "0 4px" }}>✕</button>
+        <div className="fixed bottom-4 left-3 z-[500] w-[272px] max-w-[calc(100vw-24px)] bg-[#1a1108] border border-[#3a2d1a] rounded-[4px] shadow-[0_8px_32px_rgba(0,0,0,.7)] overflow-hidden">
+          <div className="bg-[#0d0a05] px-3 py-2 flex items-center justify-between">
+            <span className="font-mono-tech text-[11px] [letter-spacing:0.2em] uppercase text-[#664]">📻 TELSİZ — KANAL 3</span>
+            <button onClick={() => setRadioOpen(false)} className="bg-transparent border-none text-[#554] cursor-pointer text-sm px-1">
+              ✕
+            </button>
           </div>
-          <div style={{ display: "flex", borderBottom: "1px solid #2a1f0a" }}>
+          <div className="flex border-b border-[#2a1f0a]">
             {(["beta","dino","ee"] as Spk[]).map((s) => (
-              <button key={s} onClick={() => setCurSpk(s)} style={{ flex: 1, padding: "7px 4px", background: curSpk === s ? "#2a1f0a" : "none", color: curSpk === s ? "#c9a870" : "#554", border: "none", borderRight: s !== "ee" ? "1px solid #2a1f0a" : "none", ...S.mono, fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer" }}>
+              <button
+                key={s}
+                onClick={() => setCurSpk(s)}
+                className={cn(
+                  "flex-1 py-[7px] px-1 border-none font-mono-tech text-[10px] [letter-spacing:0.1em] uppercase cursor-pointer",
+                  s !== "ee" && "border-r border-[#2a1f0a]",
+                  curSpk === s ? "bg-[#2a1f0a] text-[#c9a870]" : "bg-transparent text-[#554]"
+                )}
+              >
                 {s === "beta" ? "Beta" : s === "dino" ? "Dino" : "Erken E."}
               </button>
             ))}
           </div>
-          <div className="hck-rlog" style={{ padding: 8, maxHeight: 150, overflowY: "auto", display: "flex", flexDirection: "column", gap: 6 }}>
+          <div className="hck-rlog px-2 py-2 max-h-[150px] overflow-y-auto flex flex-col gap-1.5">
             {logs.map((l, i) => (
-              <div key={i} style={{ background: l.spk === "ee" ? "#120505" : "#110d04", border: `1px solid ${l.spk === "ee" ? "#3a1010" : "#221808"}`, padding: "6px 8px", borderRadius: 2 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-                  <span style={{ ...S.mono, fontSize: 10, color: "#776" }}>{spkLabel(l.spk)} — {l.t}</span>
-                  <span style={{ ...S.mono, fontSize: 10, color: "#443" }}>{l.time}</span>
+              <div
+                key={i}
+                className={cn(
+                  "border px-2 py-1.5 rounded-[2px]",
+                  l.spk === "ee" ? "bg-[#120505] border-[#3a1010]" : "bg-[#110d04] border-[#221808]"
+                )}
+              >
+                <div className="flex justify-between mb-[3px]">
+                  <span className="font-mono-tech text-[10px] text-[#776]">{spkLabel(l.spk)} — {l.t}</span>
+                  <span className="font-mono-tech text-[10px] text-[#443]">{l.time}</span>
                 </div>
-                <div style={{ ...S.mono, fontSize: 11, color: "#a0906a", lineHeight: 1.5 }}>{l.m}</div>
+                <div className="font-mono-tech text-[11px] text-[#a0906a] leading-[1.5]">{l.m}</div>
               </div>
             ))}
           </div>
-          <button onClick={addLog} style={{ ...S.mono, fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", width: "calc(100% - 16px)", margin: "6px 8px 8px", background: "#c9a870", color: "#0d0a05", border: "none", padding: "8px", borderRadius: 2, cursor: "pointer" }}>Mesaj Al</button>
+          <button
+            onClick={addLog}
+            className="font-mono-tech text-[11px] [letter-spacing:0.2em] uppercase w-[calc(100%-16px)] mx-2 mb-2 mt-1.5 bg-[#c9a870] text-[#0d0a05] border-none py-2 rounded-[2px] cursor-pointer"
+          >
+            Mesaj Al
+          </button>
         </div>
       ) : (
-        <button onClick={() => setRadioOpen(true)} style={{ position: "fixed", bottom: 16, left: 12, zIndex: 500, ...S.mono, fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", padding: "7px 12px", background: "#1a1108", border: "1px solid #3a2d1a", color: "#664", cursor: "pointer", borderRadius: 4 }}>📻 Radyo</button>
+        <button
+          onClick={() => setRadioOpen(true)}
+          className="fixed bottom-4 left-3 z-[500] font-mono-tech text-[11px] [letter-spacing:0.15em] uppercase px-3 py-[7px] bg-[#1a1108] border border-[#3a2d1a] text-[#664] cursor-pointer rounded-[4px]"
+        >
+          📻 Radyo
+        </button>
       )}
     </>
   );

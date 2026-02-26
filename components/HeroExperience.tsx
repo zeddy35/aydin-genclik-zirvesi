@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef, useEffect, useState, useCallback } from "react";
-import { PanelSplit } from "./PanelSplit";
-import { JamFullView } from "./views/JamFullView";
+import { LandingView } from "./views/LandingView";
+import { GameJamFullView } from "./views/GameJamFullView";
 import { HackFullView } from "./views/HackFullView";
 import { SummitInfo } from "./sections/SummitInfo";
 import { Footer } from "./footer/Footer";
@@ -158,7 +158,7 @@ export function HeroExperience() {
           className="w-screen h-screen shrink-0 overflow-y-auto overflow-x-hidden"
           style={{ WebkitOverflowScrolling: "touch" }}
         >
-          <JamFullView onBack={goToMid} />
+          <GameJamFullView onBack={goToMid} />
         </section>
 
         {/* Physical 1 — Mid Page (Split Hero) ◀ STARTS HERE */}
@@ -167,10 +167,7 @@ export function HeroExperience() {
           className="w-screen h-screen shrink-0 overflow-y-auto overflow-x-hidden"
           style={{ WebkitOverflowScrolling: "touch" }}
         >
-          <div className="relative min-h-screen">
-            <PanelSplit onJamClick={goToJam} onHackClick={goToHack} />
-          </div>
-          <EventCountdown />
+          <LandingView onJamClick={goToJam} onHackClick={goToHack} />
           <SummitInfo />
           <Footer />
         </section>

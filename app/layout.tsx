@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { EasterEggProvider } from "@/components/EasterEggProvider";
+import { EasterEggContext } from "@/components/EasterEggContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,9 +25,11 @@ export default function RootLayout({
   return (
     <html lang="tr" suppressHydrationWarning>
       <body className="antialiased">
-        <EasterEggProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </EasterEggProvider>
+        <EasterEggContext>
+          <EasterEggProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </EasterEggProvider>
+        </EasterEggContext>
       </body>
     </html>
   );
