@@ -1,125 +1,96 @@
-"use client";
+'use client';
 
-import { Suspense } from "react";
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { auth } from "@/lib/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase/config';
+import './login.css';
 
-function LoginPageContent() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+export default function LoginPage() {
+  const [eposta, setEposta] = useState('');
+  const [sifre, setSifre] = useState('');
+  const [sifreGoster, setSifreGoster] = useState(false);
+  const [hata, setHata] = useState('');
+  const [yukleniyor, setYukleniyor] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const nextParam = searchParams.get("next");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
+    setHata('');
+    setYukleniyor(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      const destination = nextParam || "/dashboard/status";
-      router.push(destination);
-    } catch (err: any) {
-      if (err.code === "auth/user-not-found") {
-        setError("Bu e-posta adresiyle kayıtlı hesap bulunamadı.");
-      } else if (err.code === "auth/wrong-password") {
-        setError("Şifre hatalı.");
-      } else if (err.code === "auth/invalid-email") {
-        setError("Geçersiz e-posta adresi.");
+      const { user } = await signInWithEmailAndPassword(auth, eposta, sifre);
+      const adminSnap = await getDoc(doc(db, 'admins', user.uid));
+      router.push(adminSnap.exists() ? '/admin' : '/panel');
+    } catch (err: unknown) {
+      const code = (err as { code?: string }).code;
+      if (code === 'auth/user-not-found' || code === 'auth/invalid-credential') {
+        setHata('E-posta veya şifre hatalı.');
+      } else if (code === 'auth/wrong-password') {
+        setHata('Şifre hatalı.');
+      } else if (code === 'auth/invalid-email') {
+        setHata('Geçersiz e-posta adresi.');
+      } else if (code === 'auth/too-many-requests') {
+        setHata('Çok fazla başarısız deneme. Lütfen bir süre bekleyin.');
       } else {
-        setError(err.message || "Giriş başarısız. Lütfen tekrar deneyin.");
+        setHata('Giriş başarısız. Lütfen tekrar deneyin.');
       }
     } finally {
-      setLoading(false);
+      setYukleniyor(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center px-6 py-12">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 text-gray-900">
-          <h1 className="text-3xl font-black text-gray-900 mb-2">Giriş Yap</h1>
-          <p className="text-gray-600 mb-8">Hesabınıza giriş yapın</p>
+    <div className="lgn-page">
+        <div className="lgn-card">
+          <p className="lgn-eyebrow">◈ AGZ — GİRİŞ SİSTEMİ ◈</p>
+          <h1 className="lgn-title">Giriş Yap</h1>
+          <p className="lgn-sub">Hesabınıza erişmek için giriş yapın.</p>
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-              {error}
-            </div>
-          )}
+          {hata && <div className="lgn-error">{hata}</div>}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                E-posta
-              </label>
+          <form onSubmit={handleSubmit} autoComplete="on">
+            <div className="lgn-group">
+              <label className="lgn-label" htmlFor="eposta">E-POSTA</label>
               <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white text-gray-900"
-                placeholder="ornek@email.com"
+                id="eposta" type="email" className="lgn-input"
+                placeholder="ornek@eposta.com"
+                value={eposta} onChange={e => setEposta(e.target.value)}
+                autoComplete="email" required
               />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
-                Şifre
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all bg-white text-gray-900"
-                placeholder="••••••••"
-              />
+            <div className="lgn-group">
+              <label className="lgn-label" htmlFor="sifre">ŞİFRE</label>
+              <div className="lgn-pw-wrap">
+                <input
+                  id="sifre" type={sifreGoster ? 'text' : 'password'} className="lgn-input"
+                  placeholder="············"
+                  value={sifre} onChange={e => setSifre(e.target.value)}
+                  autoComplete="current-password" required
+                />
+                <button type="button" className="lgn-eye"
+                  onClick={() => setSifreGoster(v => !v)}
+                  aria-label={sifreGoster ? 'Şifreyi gizle' : 'Şifreyi göster'}
+                >
+                  {sifreGoster ? '🙈' : '👁'}
+                </button>
+              </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
+            <button type="submit" className="lgn-btn" disabled={yukleniyor}>
+              {yukleniyor ? 'GİRİŞ YAPILIYOR...' : 'GİRİŞ YAP →'}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-gray-600 text-sm">
-              Hesabınız yok mu?{" "}
-              <Link 
-                href={`/auth/register${nextParam ? `?next=${encodeURIComponent(nextParam)}` : ""}`} 
-                className="text-purple-600 hover:text-purple-700 font-semibold"
-              >
-                Kayıt Ol
-              </Link>
-            </p>
-          </div>
+          <hr className="lgn-hr" />
 
-          <div className="mt-6 text-center">
-            <Link href="/" className="text-gray-500 hover:text-gray-700 text-sm">
-              ← Ana sayfaya dön
-            </Link>
+          <div className="lgn-links">
+            <a href="/auth/register">Hesabın yok mu? <span>Kayıt Ol →</span></a>
           </div>
         </div>
-      </div>
-    </main>
-  );
-}
-
-export default function LoginPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center"><p className="text-white">Yükleniyor...</p></div>}>
-      <LoginPageContent />
-    </Suspense>
+    </div>
   );
 }

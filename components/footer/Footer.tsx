@@ -2,39 +2,40 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { CreditsCrawlOverlay } from "./CreditsCrawlOverlay";
-import { StarfieldCanvas } from "./StarfieldCanvas";
+import Image from "next/image";
 
-// ── Design tokens (mirror SummitInfo) ────────────────────────
+// ── Design tokens (mirror SummitInfo light theme) ───────────
 const F = {
-  bg:           "#07060f",
-  border:       "#1e1a2e",
-  text:         "#e2e0f0",
-  muted:        "#6b6880",
-  gold:         "#d4a843",
-  violetLight:  "#a78bfa",
-  display:      "'Syne', sans-serif",
-  mono:         "'Share Tech Mono', monospace",
+  bg:          "#f0edf8",
+  surf:        "#faf9fd",
+  border:      "#ddd8ef",
+  borderHigh:  "#c4bce0",
+  text:        "#16142a",
+  muted:       "#5c5778",
+  faint:       "#c0b9d8",
+  gold:        "#b8891e",
+  violetLight: "#7c3aed",
+  display:     "'Syne', sans-serif",
+  mono:        "'Share Tech Mono', monospace",
 };
 
 function GDGMark() {
   return (
-    <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
-      <circle cx="24" cy="24" r="22" stroke={F.gold} strokeWidth="1.5" fill="none" />
-      <circle cx="24" cy="24" r="16" fill="#1a1730" />
-      <text x="24" y="30" textAnchor="middle" fontSize="18" fontWeight="700"
-        fontFamily="Syne, sans-serif" fill={F.gold}>G</text>
-    </svg>
+    <button >
+      <Image src="/logos/gdg-logo.svg" alt="GDG Mark" width={40} height={40} style={{ borderRadius: "20%" }} />
+    </button>
   );
 }
 
 function OTTMark() {
   return (
-    <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
-      <circle cx="24" cy="24" r="22" stroke={F.violetLight} strokeWidth="1.5" fill="none" />
-      <circle cx="24" cy="24" r="16" fill="#1a1730" />
-      <text x="24" y="30" textAnchor="middle" fontSize="18" fontWeight="700"
-        fontFamily="Syne, sans-serif" fill={F.violetLight}>O</text>
-    </svg>
+    <Image src="/logos/ott-logo.png" alt="OTT Mark" width={40} height={40} style={{ borderRadius: "20%" }} />
+  );
+}
+
+function HSDMark() {
+  return (
+    <Image src="/logos/hsd-logo.svg" alt="HSD Mark" width={40} height={40} style={{ borderRadius: "20%" }} />
   );
 }
 
@@ -109,9 +110,9 @@ export function Footer() {
   }, [showCredits]);
 
   const SOCIALS = [
-    { label: "Instagram", href: "https://instagram.com" },
-    { label: "LinkedIn",  href: "https://linkedin.com" },
-    { label: "Twitter",   href: "https://twitter.com" },
+    { label: "GDG Instagram", href: "#" },
+    { label: "OTT Instagram",  href: "#" },
+    { label: "HSD Instagram",   href: "#" },
   ];
 
   return (
@@ -123,18 +124,13 @@ export function Footer() {
         overflow: "hidden",
       }}
     >
-      {/* Subtle starfield */}
-      <div style={{ position: "absolute", inset: 0, opacity: 0.35, pointerEvents: "none" }}>
-        <StarfieldCanvas />
-      </div>
-
       {/* Gradient accent line */}
       <div style={{
         position: "absolute",
         top: 0, left: 0, right: 0,
-        height: 1,
-        background: "linear-gradient(90deg, transparent 0%, #7c3aed 30%, #d4a843 70%, transparent 100%)",
-        opacity: 0.6,
+        height: 2,
+        background: `linear-gradient(90deg, transparent 0%, ${F.violetLight} 30%, ${F.gold} 70%, transparent 100%)`,
+        opacity: 0.5,
       }} />
 
       <div style={{
@@ -154,47 +150,19 @@ export function Footer() {
           <GDGMark />
           <div style={{ width: 1, height: 28, background: F.border }} />
           <OTTMark />
+          <div style={{ width: 1, height: 28, background: F.border }} />
+          <HSDMark />
         </div>
 
         {/* Center — name + attribution */}
         <div style={{ textAlign: "center", flex: 1, minWidth: 180 }}>
-          <div style={{ fontFamily: F.display, fontWeight: 700, fontSize: 13, color: F.text, letterSpacing: "-0.01em" }}>
+          <div style={{ fontFamily: F.display, fontWeight: 700, fontSize: 15, color: F.text, letterSpacing: "-0.01em" }}>
             Aydın Gençlik Zirvesi 2026
-          </div>
-          <div style={{ fontFamily: F.mono, fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", color: F.muted, marginTop: 4 }}>
-            GDG on Campus Aydın × OTT
           </div>
         </div>
 
         {/* Right — socials + star */}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {SOCIALS.map((s) => (
-            <a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontFamily: F.mono,
-                fontSize: 9,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase" as const,
-                color: F.muted,
-                padding: "6px 10px",
-                border: `1px solid ${F.border}`,
-                borderRadius: 6,
-                textDecoration: "none",
-                transition: "color 0.2s, border-color 0.2s",
-                minHeight: 32,
-                display: "inline-flex",
-                alignItems: "center",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = F.text; (e.currentTarget as HTMLAnchorElement).style.borderColor = "#2d2848"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = F.muted; (e.currentTarget as HTMLAnchorElement).style.borderColor = F.border; }}
-            >
-              {s.label}
-            </a>
-          ))}
 
           {/* Star — long-press for credits */}
           <div
@@ -207,7 +175,7 @@ export function Footer() {
             <div
               style={{
                 fontSize: 20,
-                color: showIdleTooltip ? F.gold : F.border,
+                color: showIdleTooltip ? F.gold : F.faint,
                 transition: "color 0.3s",
                 userSelect: "none",
               }}
@@ -222,7 +190,7 @@ export function Footer() {
                 bottom: "calc(100% + 8px)",
                 right: 0,
                 whiteSpace: "nowrap",
-                background: "#13111f",
+                background: F.surf,
                 border: `1px solid ${F.border}`,
                 borderRadius: 6,
                 padding: "5px 10px",
@@ -230,6 +198,7 @@ export function Footer() {
                 fontSize: 10,
                 letterSpacing: "0.1em",
                 color: F.muted,
+                boxShadow: "0 4px 16px rgba(109,40,217,0.08)",
               }}>
                 Hold for credits ⭐
               </div>

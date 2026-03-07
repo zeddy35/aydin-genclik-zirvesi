@@ -279,8 +279,7 @@ export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
                 backgroundImage: "url('/backgrounds/jambg.png')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                opacity: 0.18,
-                mixBlendMode: "luminosity",
+                opacity: 0.33,
               }}
             />
 
@@ -310,8 +309,8 @@ export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
                   src="/logos/gamejam.png"
                   alt="AGZ Game Jam Logo"
                   width={240}
-                  height={144}
-                  className="object-contain w-36 sm:w-52 h-auto"
+                  height={240}
+                  className="object-contain w-36 sm:w-52 h-auto hover:scale-150 transition-transform duration-300"
                   draggable={false}
                 />
               </div>
@@ -327,7 +326,7 @@ export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
                 borderRadius: 100,
                 padding: "4px 14px",
               }}>
-                INSERT COIN TO CONTINUE
+                Sola KAYDIR // HCK-AYD-48
               </div>
 
               {/* CTA row */}
@@ -374,8 +373,7 @@ export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
                 backgroundImage: "url('/backgrounds/hackbg.png')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                opacity: 0.18,
-                mixBlendMode: "luminosity",
+                opacity: 0.35,
               }}
             />
 
@@ -406,7 +404,7 @@ export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
                   alt="AGZ Hackathon Logo"
                   width={240}
                   height={144}
-                  className="object-contain w-36 sm:w-52 h-auto"
+                  className="object-contain w-36 sm:w-52 h-auto hover:scale-150 transition-transform duration-300"
                   unoptimized
                   draggable={false}
                 />
@@ -423,7 +421,7 @@ export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
                 borderRadius: 100,
                 padding: "4px 14px",
               }}>
-                SAVE SLOT 1 // HCK-AYD-48
+                Sağa KAYDIR // HCK-AYD-48
               </div>
 
               {/* CTA row */}

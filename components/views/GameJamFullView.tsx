@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useEasterEggs } from "@/components/EasterEggContext";
+import styles from "./GameJamFullView.module.css";
 
 interface GameJamFullViewProps {
   onBack: () => void;
@@ -75,27 +76,9 @@ function GameCountdown() {
   if (!mounted) return null;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 10,
-        padding: "20px 0",
-      }}
-    >
-      <div
-        style={{
-          fontFamily: "'Press Start 2P', monospace",
-          fontSize: 8,
-          color: "#7c3aed",
-          letterSpacing: "0.2em",
-          textTransform: "uppercase",
-        }}
-      >
-        — Ba\u015flamasına Kalan —
-      </div>
-      <div style={{ display: "flex", gap: 6, alignItems: "flex-end", flexWrap: "wrap", justifyContent: "center" }}>
+    <div className={styles.countdownWrap}>
+      <div className={styles.countdownLabel}>— Başlamasına Kalan —</div>
+      <div className={styles.countdownUnits}>
         {[
           { v: t.days, l: "GÜN" },
           { v: t.hours, l: "SAAT" },
@@ -103,47 +86,10 @@ function GameCountdown() {
           { v: t.seconds, l: "SN" },
         ].map(({ v, l }, i) => (
           <React.Fragment key={l}>
-            {i > 0 && (
-              <span
-                style={{
-                  fontFamily: "'Press Start 2P', monospace",
-                  fontSize: 18,
-                  color: "#c4b5fd",
-                  paddingBottom: 18,
-                  lineHeight: 1,
-                }}
-              >
-                :
-              </span>
-            )}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-              <div
-                style={{
-                  fontFamily: "'Press Start 2P', monospace",
-                  fontSize: "clamp(18px,4vw,28px)",
-                  color: "#1e0050",
-                  background: "#ede9fe",
-                  border: "2px solid #7c3aed",
-                  borderRadius: 6,
-                  padding: "8px 10px",
-                  minWidth: 58,
-                  textAlign: "center",
-                  boxShadow: "3px 3px 0 #7c3aed",
-                  fontVariantNumeric: "tabular-nums",
-                }}
-              >
-                {String(v).padStart(2, "0")}
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Press Start 2P', monospace",
-                  fontSize: 6,
-                  color: "#a78bfa",
-                  letterSpacing: "0.1em",
-                }}
-              >
-                {l}
-              </div>
+            {i > 0 && <span className={styles.countdownColon}>:</span>}
+            <div className={styles.countdownUnit}>
+              <div className={styles.countdownValue}>{String(v).padStart(2, "0")}</div>
+              <div className={styles.countdownUnitLabel}>{l}</div>
             </div>
           </React.Fragment>
         ))}
@@ -175,7 +121,6 @@ function GJReveal() {
 // ── MAIN ──
 export function GameJamFullView({ onBack }: GameJamFullViewProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [hoveredRole, setHoveredRole] = useState<number | null>(null);
   const { markEggSeen } = useEasterEggs();
 
   // ── Egg 4: Among Us crewmate ────────────────────────────
@@ -280,80 +225,13 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
     },
   ];
 
-  const C = {
-    purple: "#7c3aed",
-    purpleLight: "#ede9fe",
-    purpleMid: "#a78bfa",
-    bg: "#f5f3ff",
-    white: "#ffffff",
-    dark: "#1e0050",
-    text: "#3b0764",
-    muted: "#6d28d9",
-    pixel: "'Press Start 2P', monospace",
-    body: "'Nunito', sans-serif",
-    display: "'Fredoka One', cursive",
-  };
-
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
-
-        @keyframes sus-walk { from { transform:translateX(110vw); } to { transform:translateX(-160px); } }
-        @keyframes portal-egg-in { from { transform:translateY(30px); opacity:0; } to { transform:translateY(0); opacity:1; } }
-        .sus-crewmate { position:fixed; bottom:200px; right:0; z-index:8500; animation:sus-walk 4s linear forwards; pointer-events:none; }
-        .sus-bubble { position:absolute; top:-30px; left:-20px; background:white; border-radius:10px 10px 10px 0; padding:4px 8px; font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; color:#1a1a1a; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,0.3); }
-        .gj-card { transition: transform .18s ease, box-shadow .18s ease; }
-        .gj-card:hover { transform: translateY(-4px); }
-        .gj-btn-primary { transition: transform .15s, box-shadow .15s; }
-        .gj-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,0.4) !important; }
-        .gj-btn-outline { transition: all .15s; }
-        .gj-btn-outline:hover { background: #ede9fe !important; }
-        .gj-role { transition: all .2s ease; }
-        .gj-role:hover { transform: scale(1.03); }
-        .gj-equip-badge {
-          position: absolute; top: 10px; right: 10px;
-          font-family: 'Press Start 2P', monospace; font-size: 7px;
-          color: #fff; background: #7c3aed; padding: 3px 7px; border-radius: 4px;
-          opacity: 0; transition: opacity .18s ease; pointer-events: none;
-          box-shadow: 2px 2px 0 #4c1d95; letter-spacing: 0.05em;
-        }
-        .gj-role:hover .gj-equip-badge { opacity: 1; }
-        .gj-faq-body { max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .2s; padding: 0 16px; }
-        .gj-faq-body.open { max-height: 120px; padding: 0 16px 14px; }
-        @keyframes gj-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-        .gj-float { animation: gj-float 3s ease-in-out infinite; }
-        @keyframes gj-float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-        .gj-float2 { animation: gj-float2 3.5s ease-in-out infinite 0.5s; }
-        .gj-reveal { opacity:0; transform:translateY(16px); transition: opacity .5s ease, transform .5s ease; }
-        .gj-reveal.in { opacity:1; transform:translateY(0); }
-        @media (prefers-reduced-motion: reduce) {
-          .gj-float, .gj-float2 { animation: none; }
-          .gj-reveal { opacity:1; transform:none; transition:none; }
-          .gj-card:hover, .gj-role:hover { transform: none; }
-        }
-      `}</style>
       <GJReveal />
 
-      <div
-        style={{
-          fontFamily: C.body,
-          background: C.bg,
-          minHeight: "100vh",
-          overflowX: "hidden",
-          width: "100%",
-        }}
-      >
+      <div className={styles.wrapper}>
         {/* ── BG DECORATION ── */}
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            pointerEvents: "none",
-            zIndex: 0,
-            overflow: "hidden",
-          }}
-        >
+        <div className={styles.bgDecoration}>
           <svg width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
             <defs>
               <radialGradient id="gj-radial1" cx="10%" cy="20%" r="50%">
@@ -388,704 +266,202 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
           </svg>
         </div>
 
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 860,
-            margin: "0 auto",
-            padding: "0 16px 80px",
-          }}
-        >
+        <div className={styles.container}>
           {/* ── TOP NAV ── */}
-          {/* Fixed back button — top-right */}
-          <button
-            onClick={onBack}
-            style={{
-              position: "fixed",
-              top: 16,
-              right: 16,
-              zIndex: 100,
-              fontFamily: "'Nunito', sans-serif",
-              fontSize: 13,
-              fontWeight: 700,
-              color: "#7c3aed",
-              background: "rgba(124,58,237,0.08)",
-              border: "1px solid rgba(124,58,237,0.22)",
-              cursor: "pointer",
-              letterSpacing: "0.04em",
-              padding: "8px 18px",
-              borderRadius: 100,
-              transition: "background .15s",
-              minHeight: 44,
-              backdropFilter: "blur(8px)",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.background = "rgba(124,58,237,0.16)")}
-            onMouseOut={(e) => (e.currentTarget.style.background = "rgba(124,58,237,0.08)")}
-          >
-            ← Geri
-          </button>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              padding: "20px 0 0",
-              gap: 12,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-end",
-                gap: 3,
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  background: "#ede9fe",
-                  border: "2px solid #c4b5fd",
-                  borderRadius: 20,
-                  padding: "5px 14px",
-                }}
-              >
+          <button onClick={onBack} className={styles.backBtn}>← Geri</button>
+          <div className={styles.topNav}>
+            <div className={styles.topNavInfo}>
+              <div className={styles.topNavBadge}>
                 <ControllerIcon size={16} />
-                <span
-                  style={{
-                    fontFamily: C.pixel,
-                    fontSize: 7,
-                    color: C.purple,
-                    letterSpacing: "0.1em",
-                  }}
-                >
-                  JAM MODE · 48 SAAT
-                </span>
+                <span className={styles.topNavBadgeText}>JAM MODE · 48 SAAT</span>
               </div>
-              <span
-                style={{
-                  fontFamily: C.pixel,
-                  fontSize: 5,
-                  color: "#c4b5fd",
-                  letterSpacing: "0.15em",
-                  paddingRight: 14,
-                }}
-              >
-                INSERT COIN TO CONTINUE
-              </span>
+              <span className={styles.topNavSubtext}>INSERT COIN TO CONTINUE</span>
             </div>
           </div>
 
           {/* ── HERO ── */}
-          <section
-            className="gj-reveal"
-            style={{ textAlign: "center", padding: "48px 0 36px" }}
-          >
-            <div
-              className="gj-float"
-              style={{ display: "inline-block", marginBottom: 8, fontSize: 40, lineHeight: 1 }}
-            >
-              🎮
-            </div>
-            <div style={{ position: "relative", display: "inline-block" }}>
-              <div
-                style={{ position: "absolute", top: -12, left: -24 }}
-                className="gj-float2"
-              >
-                <PixelStar size={10} color="#f472b6" />
-              </div>
-              <div
-                style={{ position: "absolute", top: 4, right: -20 }}
-                className="gj-float"
-              >
-                <PixelStar size={8} color="#34d399" />
-              </div>
-              <div
-                style={{ position: "absolute", bottom: -8, left: -16 }}
-                className="gj-float2"
-              >
-                <PixelStar size={7} color="#fbbf24" />
-              </div>
-
-              <h1
-                style={{
-                  fontFamily: C.display,
-                  fontSize: "clamp(42px,9vw,80px)",
-                  color: C.dark,
-                  margin: "0 0 4px",
-                  lineHeight: 1.05,
-                  letterSpacing: "-0.01em",
-                }}
-              >
+          <section className={`gj-reveal ${styles.heroSection}`}>
+            <div className={styles.heroIcon}>🎮</div>
+            <div className={styles.heroTitleWrapper}>
+              <div className={styles.heroStarTL}><PixelStar size={10} color="#f472b6" /></div>
+              <div className={styles.heroStarTR}><PixelStar size={8} color="#34d399" /></div>
+              <div className={styles.heroStarBL}><PixelStar size={7} color="#fbbf24" /></div>
+              <h1 className={styles.heroTitle}>
                 Aydın{" "}
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  Game Jam
-                </span>
+                <span className={styles.heroTitleGradient}>Game Jam</span>
               </h1>
             </div>
-
-            <p
-              style={{
-                fontSize: 16,
-                color: "#4c1d95",
-                maxWidth: 520,
-                margin: "12px auto 6px",
-                lineHeight: 1.7,
-                fontWeight: 600,
-              }}
-            >
+            <p className={styles.heroDesc}>
               48 saat boyunca harika oyunlar geliştir, yetenekli takımlar kur ve fikirlerini
               dünyaya sun. Tam bir{" "}
-              <em style={{ fontStyle: "italic", color: C.purple }}>"cartoonish chaos"</em>{" "}
+              <em className={styles.heroDescEm}>"cartoonish chaos"</em>{" "}
               — ama üretken.
             </p>
-            <div
-              style={{
-                fontFamily: C.pixel,
-                fontSize: 7,
-                color: "#a78bfa",
-                letterSpacing: "0.15em",
-                marginBottom: 22,
-              }}
-            >
-              ★ PLAYER 1 READY? ★
-            </div>
+            <div className={styles.heroTagline}>★ PLAYER 1 READY? ★</div>
 
-            {/* Countdown */}
-            <div
-              style={{
-                background: C.white,
-                border: "2px solid #e9d5ff",
-                borderRadius: 16,
-                padding: "4px 0 8px",
-                maxWidth: 420,
-                margin: "0 auto 28px",
-                boxShadow: "0 4px 24px rgba(124,58,237,0.08)",
-              }}
-            >
+            <div className={styles.countdownBox}>
               <GameCountdown />
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                gap: 12,
-                justifyContent: "center",
-                flexWrap: "wrap",
-              }}
-            >
-              <Link
-                href="/apply/gamejam"
-                className="gj-btn-primary"
-                style={{
-                  fontFamily: C.display,
-                  fontSize: 16,
-                  background: "linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)",
-                  color: "#fff",
-                  padding: "12px 28px",
-                  borderRadius: 12,
-                  textDecoration: "none",
-                  display: "inline-block",
-                  boxShadow: "0 4px 14px rgba(124,58,237,0.3), 0 0 0 3px #ddd6fe",
-                  border: "none",
-                  minHeight: 44,
-                }}
-              >
-                Başvur 🚀
-              </Link>
-              <button
-                className="gj-btn-outline"
-                style={{
-                  fontFamily: C.display,
-                  fontSize: 16,
-                  background: C.white,
-                  color: C.purple,
-                  padding: "12px 28px",
-                  borderRadius: 12,
-                  border: "2px solid #c4b5fd",
-                  cursor: "pointer",
-                  minHeight: 44,
-                }}
-              >
-                Detayları Gör
-              </button>
+            <div className={styles.heroCta}>
+              <Link href="/auth/register" className={styles.btnPrimary}>Başvur 🚀</Link>
+              <button className={styles.btnOutline}>Detayları Gör</button>
             </div>
           </section>
 
           {/* ── FEATURE CARDS ── */}
-          <section
-            className="gj-reveal"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-              gap: 14,
-              marginBottom: 40,
-            }}
-          >
+          <section className={`gj-reveal ${styles.featureGrid}`}>
             {FEATURES.map((f) => (
-              <div
-                key={f.title}
-                className="gj-card"
-                style={{
-                  background: C.white,
-                  borderRadius: 16,
-                  padding: "20px 16px",
-                  border: "2px solid #e9d5ff",
-                  boxShadow: "0 2px 12px rgba(124,58,237,0.06)",
-                  cursor: "default",
-                }}
-              >
-                <div style={{ fontSize: 28, marginBottom: 10 }}>{f.icon}</div>
-                <div style={{ fontFamily: C.display, fontSize: 15, color: C.dark, marginBottom: 6 }}>
-                  {f.title}
-                </div>
-                <div style={{ fontSize: 12, color: "#6d28d9", lineHeight: 1.6 }}>{f.desc}</div>
+              <div key={f.title} className={styles.featureCard}>
+                <div className={styles.featureIcon}>{f.icon}</div>
+                <div className={styles.featureTitle}>{f.title}</div>
+                <div className={styles.featureDesc}>{f.desc}</div>
               </div>
             ))}
           </section>
 
           {/* ── TEMEL BİLGİLER ── */}
-          <section
-            className="gj-reveal"
-            style={{
-              background: C.white,
-              borderRadius: 20,
-              padding: "24px",
-              border: "2px solid #e9d5ff",
-              boxShadow: "0 4px 24px rgba(124,58,237,0.06)",
-              marginBottom: 32,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 18,
-                flexWrap: "wrap",
-                gap: 8,
-              }}
-            >
-              <h2 style={{ fontFamily: C.display, fontSize: 20, color: C.dark, margin: 0 }}>
-                Temel Bilgiler
-              </h2>
-              <div style={{ display: "flex", gap: 6 }}>
+          <section className={`gj-reveal ${styles.infoSection}`}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Temel Bilgiler</h2>
+              <div className={styles.infoEmojis}>
                 {["🎮", "🕹️", "👾"].map((e) => (
-                  <span key={e} style={{ fontSize: 16 }}>
-                    {e}
-                  </span>
+                  <span key={e} style={{ fontSize: 16 }}>{e}</span>
                 ))}
               </div>
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: 10,
-              }}
-            >
+            <div className={styles.infoGrid}>
               {[
                 { label: "BAŞLAMA TARİHİ", value: "Yakında", color: "#ede9fe", border: "#c4b5fd" },
-                { label: "YER", value: "Aydın", color: "#fce7f3", border: "#f9a8d4" },
-                { label: "SÜRE", value: "48 Saat", color: "#d1fae5", border: "#6ee7b7" },
-                { label: "KATILIM", value: "Ücretsiz", color: "#fef3c7", border: "#fde68a" },
+                { label: "YER",            value: "Aydın",   color: "#fce7f3", border: "#f9a8d4" },
+                { label: "SÜRE",           value: "48 Saat", color: "#d1fae5", border: "#6ee7b7" },
+                { label: "KATILIM",        value: "Ücretsiz",color: "#fef3c7", border: "#fde68a" },
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="gj-card"
-                  style={{
-                    background: item.color,
-                    border: `2px solid ${item.border}`,
-                    borderRadius: 12,
-                    padding: "14px 16px",
-                    cursor: "default",
-                  }}
+                  className={styles.infoCard}
+                  style={{ "--card-bg": item.color, "--card-border": item.border } as React.CSSProperties}
                 >
-                  <div
-                    style={{
-                      fontFamily: "'Share Tech Mono', monospace",
-                      fontSize: 7,
-                      letterSpacing: "0.15em",
-                      color: C.muted,
-                      marginBottom: 6,
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {item.label}
-                  </div>
-                  <div style={{ fontFamily: C.display, fontSize: 20, color: C.dark }}>
-                    {item.value}
-                  </div>
+                  <div className={styles.infoCardLabel}>{item.label}</div>
+                  <div className={styles.infoCardValue}>{item.value}</div>
                 </div>
               ))}
             </div>
           </section>
 
           {/* ── ROLLER ── */}
-          <section className="gj-reveal" style={{ marginBottom: 32 }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 18,
-              }}
-            >
-              <h2 style={{ fontFamily: C.display, fontSize: 22, color: C.dark, margin: 0 }}>
-                Takımda Rolün Ne?
-              </h2>
+          <section className={`gj-reveal ${styles.rolesSection}`}>
+            <div className={styles.sectionHeaderRow}>
+              <h2 className={styles.sectionTitleLg}>Takımda Rolün Ne?</h2>
               <PixelStar size={12} color="#f472b6" />
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                gap: 12,
-              }}
-            >
-              {ROLES.map((r, i) => (
+            <div className={styles.rolesGrid}>
+              {ROLES.map((r) => (
                 <div
                   key={r.title}
-                  className="gj-role"
+                  className={styles.roleCard}
                   style={{
-                    background: hoveredRole === i ? r.color : C.white,
-                    borderRadius: 16,
-                    padding: "18px 16px",
-                    border: `2px solid ${hoveredRole === i ? r.border : "#e9d5ff"}`,
-                    boxShadow:
-                      hoveredRole === i
-                        ? `4px 4px 0 ${r.shadow}`
-                        : "0 2px 10px rgba(124,58,237,0.05)",
-                    cursor: "default",
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                  onMouseEnter={() => setHoveredRole(i)}
-                  onMouseLeave={() => setHoveredRole(null)}
+                    "--role-bg": r.color,
+                    "--role-border": r.border,
+                    "--role-shadow": r.shadow,
+                  } as React.CSSProperties}
                 >
-                  <span className="gj-equip-badge">[ EQUIP ]</span>
-                  <div style={{ fontSize: 28, marginBottom: 8 }}>{r.emoji}</div>
-                  <div
-                    style={{
-                      fontFamily: C.display,
-                      fontSize: 16,
-                      color: C.dark,
-                      marginBottom: 5,
-                    }}
-                  >
-                    {r.title}
-                  </div>
-                  <div style={{ fontSize: 12, color: "#4c1d95", lineHeight: 1.6 }}>{r.desc}</div>
+                  <span className={styles.equipBadge}>[ EQUIP ]</span>
+                  <div className={styles.roleEmoji}>{r.emoji}</div>
+                  <div className={styles.roleTitle}>{r.title}</div>
+                  <div className={styles.roleDesc}>{r.desc}</div>
                 </div>
               ))}
             </div>
           </section>
 
           {/* ── GAME GENRES ── */}
-          <section className="gj-reveal" style={{ marginBottom: 32 }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 10,
-              }}
-            >
-              <h2 style={{ fontFamily: C.display, fontSize: 22, color: C.dark, margin: 0 }}>
-                Ne Yapabilirsin?
-              </h2>
+          <section className={`gj-reveal ${styles.genresSection}`}>
+            <div className={styles.sectionHeaderRow}>
+              <h2 className={styles.sectionTitleLg}>Ne Yapabilirsin?</h2>
               <PixelStar size={10} color="#34d399" />
             </div>
-            <div
-              style={{
-                fontFamily: C.pixel,
-                fontSize: 7,
-                color: "#a78bfa",
-                letterSpacing: "0.2em",
-                marginBottom: 14,
-              }}
-            >
-              SELECT GENRE:
-            </div>
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-                flexWrap: "wrap",
-                overflowX: "auto",
-                WebkitOverflowScrolling: "touch",
-                scrollbarWidth: "none",
-                paddingBottom: 4,
-              }}
-            >
+            <div className={styles.genresLabel}>SELECT GENRE:</div>
+            <div className={styles.genresList}>
               {[
-                { label: "Platformer", color: "#ede9fe", border: "#a78bfa", icon: "🏃" },
-                { label: "Puzzle", color: "#fce7f3", border: "#f9a8d4", icon: "🧩" },
-                { label: "RPG", color: "#d1fae5", border: "#6ee7b7", icon: "⚔️" },
-                { label: "Arcade", color: "#fef3c7", border: "#fde68a", icon: "👾" },
-                { label: "Horror", color: "#fee2e2", border: "#fca5a5", icon: "👻" },
-                { label: "Endless Runner", color: "#e0f2fe", border: "#7dd3fc", icon: "🏁" },
-                { label: "Visual Novel", color: "#f3e8ff", border: "#d8b4fe", icon: "📖" },
+                { label: "Platformer",    color: "#ede9fe", border: "#a78bfa", icon: "🏃" },
+                { label: "Puzzle",        color: "#fce7f3", border: "#f9a8d4", icon: "🧩" },
+                { label: "RPG",           color: "#d1fae5", border: "#6ee7b7", icon: "⚔️" },
+                { label: "Arcade",        color: "#fef3c7", border: "#fde68a", icon: "👾" },
+                { label: "Horror",        color: "#fee2e2", border: "#fca5a5", icon: "👻" },
+                { label: "Endless Runner",color: "#e0f2fe", border: "#7dd3fc", icon: "🏁" },
+                { label: "Visual Novel",  color: "#f3e8ff", border: "#d8b4fe", icon: "📖" },
                 { label: "... Her şey!", color: "#f0fdf4", border: "#86efac", icon: "✨" },
               ].map((t) => (
                 <div
                   key={t.label}
-                  className="gj-card"
-                  style={{
-                    background: t.color,
-                    border: `2px solid ${t.border}`,
-                    borderRadius: 24,
-                    padding: "7px 14px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    cursor: "default",
-                    whiteSpace: "nowrap",
-                    minHeight: 44,
-                  }}
+                  className={styles.genreTag}
+                  style={{ "--tag-bg": t.color, "--tag-border": t.border } as React.CSSProperties}
                 >
-                  <span style={{ fontSize: 14 }}>{t.icon}</span>
-                  <span style={{ fontFamily: C.display, fontSize: 13, color: C.dark }}>
-                    {t.label}
-                  </span>
+                  <span className={styles.genreTagIcon}>{t.icon}</span>
+                  <span className={styles.genreTagLabel}>{t.label}</span>
                 </div>
               ))}
             </div>
           </section>
 
           {/* ── TIMELINE ── */}
-          <section
-            className="gj-reveal"
-            style={{
-              background: C.white,
-              borderRadius: 20,
-              padding: "24px",
-              border: "2px solid #e9d5ff",
-              marginBottom: 32,
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 18,
-              }}
-            >
-              <h2 style={{ fontFamily: C.display, fontSize: 20, color: C.dark, margin: 0 }}>
-                Nasıl İlerler?
-              </h2>
+          <section className={`gj-reveal ${styles.timelineSection}`}>
+            <div className={styles.timelineHeaderRow}>
+              <h2 className={styles.sectionTitle}>Nasıl İlerler?</h2>
               <PixelStar size={10} color="#fbbf24" />
             </div>
             {[
               {
-                stage: "STAGE 01",
-                icon: "🚀",
-                title: "Tema Açıklanır",
+                stage: "STAGE 01", icon: "🚀", title: "Tema Açıklanır",
                 desc: "Tüm takımlar aynı anda öğreniyor. Beyin fırtınası başlasın!",
-                time: "T+0",
-                color: "#ede9fe",
-                border: "#a78bfa",
+                time: "T+0", color: "#ede9fe", border: "#a78bfa",
               },
               {
-                stage: "STAGE 02",
-                icon: "🛠️",
-                title: "İnşa Et",
+                stage: "STAGE 02", icon: "🛠️", title: "İnşa Et",
                 desc: "Tasarım, kod, ses, sanat. 48 saat boyunca tam gaz.",
-                time: "T+1 — T+46",
-                color: "#d1fae5",
-                border: "#6ee7b7",
+                time: "T+1 — T+46", color: "#d1fae5", border: "#6ee7b7",
               },
               {
-                stage: "STAGE 03",
-                icon: "🎮",
-                title: "Sun & Oyna",
+                stage: "STAGE 03", icon: "🎮", title: "Sun & Oyna",
                 desc: "Demo sunumu, jüri oylaması, ve birbirinin oyunlarını oynama zamanı!",
-                time: "T+48",
-                color: "#fce7f3",
-                border: "#f9a8d4",
+                time: "T+48", color: "#fce7f3", border: "#f9a8d4",
               },
             ].map((step) => (
-              <div
-                key={step.stage}
-                style={{
-                  display: "flex",
-                  gap: 16,
-                  marginBottom: 14,
-                  alignItems: "flex-start",
-                }}
-              >
+              <div key={step.stage} className={styles.timelineStep}>
                 <div
-                  style={{
-                    background: step.color,
-                    border: `2px solid ${step.border}`,
-                    borderRadius: 12,
-                    width: 56,
-                    minHeight: 56,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 2,
-                    flexShrink: 0,
-                  }}
+                  className={styles.timelineStepIcon}
+                  style={{ "--step-bg": step.color, "--step-border": step.border } as React.CSSProperties}
                 >
-                  <span style={{ fontSize: 20 }}>{step.icon}</span>
-                  <span
-                    style={{
-                      fontFamily: C.pixel,
-                      fontSize: 5,
-                      color: C.muted,
-                      letterSpacing: "0.05em",
-                    }}
-                  >
-                    {step.stage}
-                  </span>
+                  <span className={styles.timelineStepEmoji}>{step.icon}</span>
+                  <span className={styles.timelineStepStage}>{step.stage}</span>
                 </div>
-                <div style={{ flex: 1, paddingTop: 4 }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      gap: 10,
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <span style={{ fontFamily: C.display, fontSize: 15, color: C.dark }}>
-                      {step.title}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: C.pixel,
-                        fontSize: 7,
-                        color: C.muted,
-                        background: "#f3e8ff",
-                        padding: "2px 7px",
-                        borderRadius: 4,
-                      }}
-                    >
-                      {step.time}
-                    </span>
+                <div className={styles.timelineStepBody}>
+                  <div className={styles.timelineStepTitleRow}>
+                    <span className={styles.timelineStepTitle}>{step.title}</span>
+                    <span className={styles.timelineStepTime}>{step.time}</span>
                   </div>
-                  <p
-                    style={{
-                      fontSize: 12,
-                      color: "#4c1d95",
-                      lineHeight: 1.6,
-                      margin: "3px 0 0",
-                    }}
-                  >
-                    {step.desc}
-                  </p>
+                  <p className={styles.timelineStepDesc}>{step.desc}</p>
                 </div>
               </div>
             ))}
           </section>
 
           {/* ── FAQ ── */}
-          <section className="gj-reveal" style={{ marginBottom: 32 }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 18,
-              }}
-            >
-              <h2 style={{ fontFamily: C.display, fontSize: 22, color: C.dark, margin: 0 }}>
-                ❓ Quest Log
-              </h2>
-              <div
-                style={{
-                  fontFamily: C.pixel,
-                  fontSize: 6,
-                  color: "#a78bfa",
-                  letterSpacing: "0.15em",
-                  alignSelf: "center",
-                  paddingBottom: 2,
-                }}
-              >
-                AKLINDAKI SORULAR
-              </div>
+          <section className={`gj-reveal ${styles.faqSection}`}>
+            <div className={styles.faqHeaderRow}>
+              <h2 className={styles.sectionTitleLg}>❓ Quest Log</h2>
+              <div className={styles.faqHeaderLabel}>AKLINDAKI SORULAR</div>
             </div>
-            <div
-              style={{
-                background: C.white,
-                borderRadius: 20,
-                border: "2px solid #e9d5ff",
-                overflow: "hidden",
-              }}
-            >
+            <div className={styles.faqList}>
               {FAQS.map((f, i) => (
-                <div
-                  key={f.q}
-                  style={{ borderTop: i > 0 ? "1px solid #f3e8ff" : undefined }}
-                >
-                  <button
-                    onClick={() => handleFaqToggle(i)}
-                    style={{
-                      width: "100%",
-                      textAlign: "left",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 12,
-                      padding: "14px 18px",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      minHeight: 44,
-                    }}
-                    onMouseOver={(e) =>
-                      (e.currentTarget.style.background = "#faf5ff")
-                    }
-                    onMouseOut={(e) =>
-                      (e.currentTarget.style.background = "none")
-                    }
-                  >
-                    <span
-                      style={{
-                        fontFamily: C.body,
-                        fontWeight: 700,
-                        fontSize: 13,
-                        color: C.dark,
-                        textAlign: "left",
-                      }}
-                    >
-                      {f.q}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: C.pixel,
-                        fontSize: 14,
-                        color: openFaq === i ? C.purple : "#c4b5fd",
-                        transform: openFaq === i ? "rotate(45deg)" : "none",
-                        display: "inline-block",
-                        transition: "transform .2s",
-                        flexShrink: 0,
-                      }}
-                    >
-                      +
-                    </span>
+                <div key={f.q} className={styles.faqItem}>
+                  <button onClick={() => handleFaqToggle(i)} className={styles.faqBtn}>
+                    <span className={styles.faqQuestion}>{f.q}</span>
+                    <span className={`${styles.faqArrow}${openFaq === i ? ` ${styles.faqArrowOpen}` : ""}`}>+</span>
                   </button>
-                  <div
-                    className={`gj-faq-body${openFaq === i ? " open" : ""}`}
-                  >
-                    <div
-                      style={{ fontSize: 13, color: "#4c1d95", lineHeight: 1.7 }}
-                    >
-                      {f.a}
-                    </div>
+                  <div className={`${styles.faqBody}${openFaq === i ? ` ${styles.faqBodyOpen}` : ""}`}>
+                    <div className={styles.faqAnswer}>{f.a}</div>
                   </div>
                 </div>
               ))}
@@ -1093,38 +469,9 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
           </section>
 
           {/* ── CTA BANNER ── */}
-          <section
-            className="gj-reveal"
-            style={{
-              background:
-                "linear-gradient(135deg, #7c3aed 0%, #6d28d9 60%, #4c1d95 100%)",
-              borderRadius: 24,
-              padding: "clamp(24px,5vw,40px) clamp(16px,4vw,28px)",
-              textAlign: "center",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            {/* Scanline effect */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px)",
-                pointerEvents: "none",
-                borderRadius: "inherit",
-              }}
-            />
-            {/* Pixel grid decoration */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                pointerEvents: "none",
-                overflow: "hidden",
-              }}
-            >
+          <section className={`gj-reveal ${styles.ctaBanner}`}>
+            <div className={styles.ctaScanline} />
+            <div className={styles.ctaBgDeco}>
               <svg width="100%" height="100%">
                 {Array.from({ length: 18 }, (_, i) => (
                   <rect
@@ -1138,151 +485,110 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
                     opacity={0.04 + (i % 3) * 0.03}
                   />
                 ))}
-                <PixelBurst x={50} y={40} color="#ddd6fe" />
+                <PixelBurst x={50}  y={40} color="#ddd6fe" />
                 <PixelBurst x={750} y={30} color="#f9a8d4" />
                 <PixelBurst x={400} y={20} color="#6ee7b7" />
               </svg>
             </div>
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <div
-                style={{ fontSize: 40, marginBottom: 12 }}
-                className="gj-float"
-              >
-                🎮
-              </div>
-              <h3
-                style={{
-                  fontFamily: C.display,
-                  fontSize: "clamp(22px,5vw,36px)",
-                  color: "#fff",
-                  margin: "0 0 10px",
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                48 saatin var. Ne inşa edeceksin?
-              </h3>
-              <p
-                style={{
-                  fontSize: 14,
-                  color: "#ddd6fe",
-                  maxWidth: 420,
-                  margin: "0 auto 24px",
-                  lineHeight: 1.7,
-                }}
-              >
+            <div className={styles.ctaContent}>
+              <div className={styles.ctaIcon}>🎮</div>
+              <h3 className={styles.ctaTitle}>48 saatin var. Ne inşa edeceksin?</h3>
+              <p className={styles.ctaDesc}>
                 Takımını kur, temayı bekle, oyununu yap. Kazanmak değil,{" "}
-                <strong style={{ color: "#fff" }}>üretmek</strong> burada kural.
+                <strong className={styles.ctaDescStrong}>üretmek</strong> burada kural.
               </p>
-              <div
-                style={{
-                  display: "flex",
-                  gap: 12,
-                  justifyContent: "center",
-                  flexWrap: "wrap",
-                }}
-              >
-                <Link
-                  href="/apply/gamejam"
-                  className="gj-btn-primary"
-                  style={{
-                    fontFamily: C.display,
-                    fontSize: 16,
-                    background: "#fff",
-                    color: C.purple,
-                    padding: "12px 28px",
-                    borderRadius: 12,
-                    textDecoration: "none",
-                    display: "inline-block",
-                    boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
-                    border: "none",
-                    minHeight: 44,
-                  }}
-                >
-                  Hemen Başvur 🚀
-                </Link>
-                <button
-                  className="gj-btn-outline"
-                  style={{
-                    fontFamily: C.display,
-                    fontSize: 16,
-                    background: "rgba(255,255,255,0.1)",
-                    color: "#ddd6fe",
-                    padding: "12px 28px",
-                    borderRadius: 12,
-                    textDecoration: "none",
-                    display: "inline-block",
-                    border: "2px solid rgba(255,255,255,0.2)",
-                    cursor: "pointer",
-                    minHeight: 44,
-                  }}
-                >
-                  Detaylar
-                </button>
+              <div className={styles.ctaButtons}>
+                <Link href="/apply/gamejam" className={styles.btnPrimaryWhite}>Hemen Başvur 🚀</Link>
+                <button className={styles.btnOutlineDark}>Detaylar</button>
               </div>
             </div>
           </section>
 
           {/* ── FOOTER ── */}
-          <div
-            style={{
-              textAlign: "center",
-              padding: "28px 0 0",
-              display: "flex",
-              flexDirection: "column",
-              gap: 8,
-              alignItems: "center",
-            }}
-          >
-            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <PixelStar size={8} color="#c4b5fd" />
-              <span
-                style={{
-                  fontFamily: "'Share Tech Mono', monospace",
-                  fontSize: 7,
-                  color: "#c4b5fd",
-                  letterSpacing: "0.15em",
-                }}
-              >
-                GDG ON CAMPUS × OYUN VE TASARIM KULÜBÜ
-              </span>
-              <PixelStar size={8} color="#c4b5fd" />
-            </div>
-            <span
-              style={{
-                fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 6,
-                color: "#ddd6fe",
-                letterSpacing: "0.1em",
-              }}
-            >
-              AYDIN GENÇLİK ZİRVESİ · 2026
-            </span>
-            <span
-              style={{
-                fontFamily: C.pixel,
-                fontSize: 5,
-                color: "#a78bfa",
-                letterSpacing: "0.12em",
-              }}
-            >
-              1UP · HIGH SCORE: TBD · © 2026 AGZ STUDIOS · ALL RIGHTS RESERVED
-            </span>
-          </div>
+          {/* Footer removed for better mobile navigation - back button is sufficient */}
         </div>
       </div>
 
       {/* ── Egg 4: Among Us crewmate ── */}
       {showSus && (
-        <div className="sus-crewmate">
-          <div className="sus-bubble">Sus. 🔴</div>
-          <svg width="32" height="40" viewBox="0 0 16 20">
-            <rect x="3" y="8" width="10" height="10" rx="3" fill="#c8312a" />
-            <rect x="2" y="1" width="12" height="9" rx="4" fill="#c8312a" />
-            <rect x="3" y="3" width="8" height="5" rx="2" fill="#7dd3fc" opacity="0.85" />
-            <rect x="10" y="9" width="4" height="6" rx="1" fill="#a02520" />
-          </svg>
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: '#000000',
+            zIndex: 9998,
+            pointerEvents: 'none'
+          }}
+        >
+          {/* Yazı - sol panel'in ortasında */}
+          <div 
+            style={{
+              position: 'fixed',
+              top: '10vh',
+              left: '0',
+              width: '50vw',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 9999,
+              pointerEvents: 'none'
+            }}
+          >
+            <h1 
+              style={{
+                fontFamily: "'Press Start 2P', monospace",
+                fontSize: 'clamp(20px, 4vw, 36px)',
+                color: '#ff0000',
+                textShadow: '0 0 60px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 1), 4px 4px 0 #000, -4px -4px 0 #000, 4px -4px 0 #000, -4px 4px 0 #000',
+                letterSpacing: '0.15em',
+                margin: '0',
+                padding: '0 20px',
+                lineHeight: 1.4,
+                display: 'block',
+                textAlign: 'center'
+              }}
+            >
+              IMPOSTER IS SUS
+            </h1>
+          </div>
+
+          {/* Among us - sol panel'in sağından soluna yürüyecek */}
+          <div 
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50vw',
+              marginTop: '-100px',
+              zIndex: 9999,
+              pointerEvents: 'none',
+              animation: 'sus-walk-left-panel 4s linear forwards'
+            }}
+          >
+            <img 
+              src="/amongus/red-walk.gif" 
+              alt="sus" 
+              style={{ 
+                display: 'block',
+                height: '200px',
+                width: 'auto',
+                imageRendering: 'pixelated',
+                transform: 'scaleX(-1)'
+              }}
+            />
+          </div>
+
+          <style>{`
+            @keyframes sus-walk-left-panel {
+              from { transform: translateX(0) scaleX(-1); }
+              to { transform: translateX(-50vw) scaleX(-1); }
+            }
+          `}</style>
         </div>
       )}
     </>
   );
 }
+

@@ -1,0 +1,32 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper: is the requester signed in?
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Helper: is the requester the owner?
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // User-uploaded documents: belgeler/{uid}/**
+    match /belgeler/{uid}/{allPaths=**} {
+      allow read:   if isOwner(uid) || request.auth.token.admin == true;
+      allow create: if isOwner(uid)
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('application/(pdf)|image/(jpeg|png|webp)');
+      allow update, delete: if false;
+    }
+
+    // Admin-uploaded documents: admin_belgeler/{uid}/**
+    match /admin_belgeler/{uid}/{allPaths=**} {
+      allow read:   if isOwner(uid) || request.auth.token.admin == true;
+      allow create: if request.auth.token.admin == true
+        && request.resource.size < 20 * 1024 * 1024;
+      allow update, delete: if false;
+    }
+  }
+}

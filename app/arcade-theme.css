@@ -1,0 +1,245 @@
+/* Arcade Theme — Global CSS Variables & Animations */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  /* Color Palette */
+  --bg-primary: #F0EEFF;
+  --bg-dark: #1A0A2E;
+  --neon-purple: #9B59F5;
+  --neon-pink: #FF6AC1;
+  --neon-cyan: #00F5FF;
+  --neon-yellow: #FFE44D;
+  --pixel-green: #4ADE80;
+  --text-primary: #2D1B5A;
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(155, 89, 245, 0.3);
+
+  /* Glow Effects */
+  --glow-purple: 0 0 20px rgba(155, 89, 245, 0.5);
+  --glow-pink: 0 0 20px rgba(255, 106, 193, 0.5);
+  --glow-cyan: 0 0 15px rgba(0, 245, 255, 0.4);
+  --glow-yellow: 0 0 15px rgba(255, 228, 77, 0.4);
+
+  /* Typography */
+  --font-display: 'Press Start 2P', monospace;
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Keyframe Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(5deg);
+  }
+}
+
+@keyframes neon-flicker {
+  0%, 95%, 100% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.8;
+  }
+  97% {
+    opacity: 1;
+  }
+  98% {
+    opacity: 0.6;
+  }
+  99% {
+    opacity: 1;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes digit-flip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes cta-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shake-light {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(155, 89, 245, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(155, 89, 245, 0.6);
+  }
+}
+
+/* CRT Scanline Overlay */
+@keyframes scanline-move {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(4px);
+  }
+}
+
+/* Global Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  color: var(--text-primary);
+}
+
+/* Scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* CRT Effect Mixin */
+.crt-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Arcade Cursor (optional) */
+/* 
+html {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><text x="3" y="18" font-size="20" fill="%239B59F5">▶</text></svg>') 2 20, auto;
+}
+*/
+
+/* Utility Classes */
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.neon-flicker {
+  animation: neon-flicker 3s infinite;
+}
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--glow-purple);
+}
+
+.neon-button {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  min-height: 44px;
+}
+
+.neon-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-purple);
+}
+
+.neon-button-primary {
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+  color: white;
+}
+
+.neon-button-outline {
+  background: transparent;
+  border: 2px solid var(--neon-purple);
+  color: var(--neon-purple);
+}
+
+.neon-button-outline:hover {
+  background: rgba(155, 89, 245, 0.1);
+}
+
+/* Mobile Touch Optimization */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .neon-button {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+}

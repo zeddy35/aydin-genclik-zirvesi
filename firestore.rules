@@ -1,90 +1,63 @@
-// Firestore Security Rules for Production
+// Firestore Security Rules for AGZ v2
 // Deploy with: firebase deploy --only firestore:rules
 
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Helper functions
+
+    // Helper: is the requester signed in?
     function isSignedIn() {
       return request.auth != null;
     }
-    
+
+    // Helper: is the requester an admin? (checks admins/{uid} document existence)
     function isAdmin() {
-      return request.auth.token.admin == true;
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
-    
+
+    // Helper: is the requester the owner of the given uid?
     function isOwner(uid) {
-      return request.auth.uid == uid;
+      return isSignedIn() && request.auth.uid == uid;
     }
-    
-    function hasRole(uid, role) {
-      return get(/databases/$(database)/documents/users/$(uid)).data.role == role;
+
+    // ── users ──────────────────────────────────────────────────────────────
+    match /users/{uid} {
+      allow read:   if isOwner(uid) || isAdmin();
+      allow create: if isOwner(uid);
+      allow update: if isOwner(uid) || isAdmin();
+      allow delete: if isAdmin();
     }
-    
-    // Users collection
-    match /users/{userId} {
-      // Users can read their own document
-      allow read: if isOwner(userId);
-      
-      // Admins can read any user document
-      allow read: if isAdmin();
-      
-      // Users can create their own document during registration
-    allow create: if isOwner(userId) 
-      && request.resource.data.role == "user"
-      && request.resource.data.kvkkAccepted == true
-      && request.resource.data.kvkkAcceptedAt != null;
-      // Users can update their own non-role fields
-      allow update: if isOwner(userId) 
-        && request.resource.data.role == resource.data.role
-        && request.resource.data.keys().hasAll(['name', 'email', 'uid']);
-      
-      // Only admins can change roles
-      allow write: if isAdmin();
+
+    // ── basvuru_durumlari ──────────────────────────────────────────────────
+    match /basvuru_durumlari/{uid} {
+      allow read:   if isOwner(uid) || isAdmin();
+      allow create: if isOwner(uid);
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
     }
-    
-    // Applications collection
-    match /applications/{userId} {
-      // Users can read their own application
-      allow read: if isOwner(userId);
-      
-      // Admins can read all applications
-      allow read: if isAdmin();
-      
-      // Users can create their first application (requires KVKK acceptance)
-      allow create: if isOwner(userId) 
-        && request.resource.data.uid == request.auth.uid
-        && request.resource.data.status == "submitted"
-        && request.resource.data.eventType in ["gamejam", "hackathon"]
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.kvkkAccepted == true;
-      
-      // Users can only update their draft applications
-      allow update: if isOwner(userId) 
-        && resource.data.status == "draft"
-        && request.resource.data.uid == resource.data.uid;
-      
-      // Only admins can approve/reject applications
-      allow update: if isAdmin()
-        && request.resource.data.status in ["approved", "rejected", "draft"]
-        && request.resource.data.eventType == resource.data.eventType;
-      
-      // Prevent deletion
-      allow delete: if false;
+
+    // ── belgeler ───────────────────────────────────────────────────────────
+    match /belgeler/{belgeId} {
+      allow read:   if isAdmin() || (isSignedIn() && resource.data.kullaniciId == request.auth.uid);
+      allow create: if isSignedIn() && request.resource.data.kullaniciId == request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
     }
-    
-    // Submissions collection (game uploads, trailers)
-    match /submissions/{userId} {
-      // Users can read/write their own submissions
-      allow read, write: if isOwner(userId)
-        && request.resource.data.uid == request.auth.uid;
-      
-      // Admins can read all submissions
-      allow read: if isAdmin();
-      
-      // Prevent deletion
-      allow delete: if false;
+
+    // ── projeler ───────────────────────────────────────────────────────────
+    match /projeler/{uid} {
+      allow read:   if isOwner(uid) || isAdmin();
+      allow create: if isOwner(uid);
+      allow update: if isOwner(uid) || isAdmin();
+      allow delete: if isAdmin();
     }
-    
+
+    // ── admins ─────────────────────────────────────────────────────────────
+    // Only admins can read admin list; writes done via Firebase Admin SDK only
+    match /admins/{uid} {
+      allow read:  if isAdmin() || isOwner(uid);
+      allow write: if false;
+    }
   }
 }

@@ -260,8 +260,8 @@ export function HackFullView({ onBack }: HackFullViewProps) {
           <p className="font-mono-tech text-[11px] [letter-spacing:0.3em] uppercase text-[#664]">↑↑↓↓←→←→BA</p>
           <p className="font-display text-[clamp(32px,8vw,64px)] [letter-spacing:0.1em] uppercase text-paper">Konami Kodu!</p>
           <div className="flex gap-8">
-            <DinoSVG size={72} />
-            <BetaSVG size={72} />
+            <Image src="/dino/dino1.png" alt="Dino" width={200} height={48} className="object-contain" />
+            <Image src="/beta/beta_kaban.png" alt="Beta" width={200} height={48} className="object-contain" />
           </div>
           <p className="font-special text-[15px] text-[#a09070]">Gerçek bir dedektifsin, ajan.</p>
           <div className="font-mono-tech text-[10px] [letter-spacing:0.2em] text-[#553] border border-[#332] px-3 py-1 rounded-[2px] mt-1">
@@ -342,18 +342,18 @@ export function HackFullView({ onBack }: HackFullViewProps) {
               <h1 className="font-display text-[clamp(44px,11vw,88px)] leading-[0.95] [letter-spacing:-0.02em] text-ink mb-1">
                 Hackathon<br /><span className="text-hackred">Aydın</span>
               </h1>
-              <div className="font-mono-tech text-sm [letter-spacing:0.25em] uppercase text-[#888] mb-6">
-                GDG × Oyun ve Tasarım Kulübü
+              <div className="font-mono-tech text-md  [letter-spacing:0.25em] uppercase text-[#888] mb-6 pt-4">
+                GDG × Oyun ve Tasarım Kulübü × HuaweI Student Developer Program
               </div>
 
               {/* Chars */}
               <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-[1px] border border-aged rounded-[2px] overflow-hidden mb-6">
                 {[
-                  { svg: <DinoSVG size={48} />, name: "Dino", tag: "GDG", red: false },
+                  { svg: <Image src="/dino/dino1.png" alt="Dedektif Dino" width={200} height={48} className="object-contain" />, name: "DEDEKTIF DINO", tag: "GDG on Campus ADÜ", red: false },
                   { svg: null, name: "VS", tag: "", red: false, sep: true },
-                  { svg: <EESVGSmall size={48} />, name: "Early Access", tag: "Şüpheli", red: true },
+                  { svg: <Image src="/early-akses/early_ai_hackathon.png" alt="Beta" width={263} height={48} className="object-contain" />, name: "EARLY AKSES", tag: "Şüpheli", red: true },
                   { svg: null, name: "VS", tag: "", red: false, sep: true },
-                  { svg: <Image src="/hackathon/beta_profile.svg" alt="Beta" width={200} height={48} className="object-contain" />, name: "Beta", tag: "O&T Kulübü", red: false },
+                  { svg: <Image src="/beta/beta_ai_hackathon.png" alt="Beta" width={230} height={48} className="object-contain" />, name: "BETA", tag: "OTT Kulübü", red: false },
                 ].map((c, i) =>
                   c.sep ? (
                     <div key={i} className="hidden items-center justify-center px-3 bg-paper2 border-r border-aged sm-flex">
@@ -368,10 +368,10 @@ export function HackFullView({ onBack }: HackFullViewProps) {
                       )}
                     >
                       {c.svg}
-                      <span className={cn("font-mono-tech text-[11px] [letter-spacing:0.2em] uppercase", c.red ? "text-hackred" : "text-ink")}>
+                      <span className={cn("font-mono-tech text-[20px] [letter-spacing:0.2em] uppercase", c.red ? "text-hackred" : "text-ink")}>
                         {c.name}
                       </span>
-                      <span className={cn("font-mono-tech text-[10px]", c.red ? "text-hackred" : "text-[#888]")}>
+                      <span className={cn("font-mono-tech text-[15px]", c.red ? "text-hackred" : "text-[#888]")}>
                         {c.tag}
                       </span>
                     </div>
@@ -381,8 +381,8 @@ export function HackFullView({ onBack }: HackFullViewProps) {
 
               <p className="font-special text-base leading-[1.75] text-[#3d2f1f] max-w-[560px] mb-[22px]">
                 <strong>Beta</strong> ve <strong>Dino</strong> bir iz buldu. Ama gölgede biri var:{" "}
-                <strong className="text-hackred">Erken Erişim</strong> — kocaman bıyığı, sinsi sırıtışı ve{" "}
-                Bizim kuralımız: <strong>gerçeği ortaya çıkar. 48 saat</strong> — tek operasyon penceresi.
+                <strong className="text-hackred">Early Akses</strong> — kocaman bıyığı, sinsi sırıtışı ve{" "}
+                 <strong>gerçeği ortaya çıkar. 48 saat</strong> — tek operasyon penceresi.
               </p>
 
               <div className="flex gap-3 flex-wrap">
@@ -411,12 +411,12 @@ export function HackFullView({ onBack }: HackFullViewProps) {
               <div className="grid grid-cols-[minmax(140px,180px)_1fr] gap-6">
                 <div className="flex flex-col items-center gap-2 px-5 py-4 bg-paper2 border border-aged min-w-[130px] shrink-0">
                   <span className="font-mono-tech text-[10px] [letter-spacing:0.2em] uppercase text-[#888]">Fotoğraf</span>
-                  <EESVGPortrait />
-                  <span className="font-display text-[15px] [letter-spacing:0.06em] text-hackred">Erken Erişim</span>
+                  <Image src="/early-akses/early_aks.svg" alt="Beta" width={230} height={48} className="object-contain" />
+                  <span className="font-display text-[20px] [letter-spacing:0.06em] text-hackred">Early Akses</span>
                   <span className="font-mono-tech text-[10px] [letter-spacing:0.15em] bg-hackred text-white px-2 py-0.5 rounded-[1px]">
                     Tehlike: Yüksek
                   </span>
-                  <span className="font-mono-tech text-[10px] text-[#aaa]">Yakalanımadı</span>
+                  <span className="font-mono-tech text-[15px] text-[#aaa]">Yakalanamadı</span>
                 </div>
                 <div className="flex-1 flex flex-col gap-3.5">
                   {[
@@ -657,69 +657,13 @@ export function HackFullView({ onBack }: HackFullViewProps) {
               <span className="font-mono-tech text-[11px] [letter-spacing:0.15em] uppercase text-[#333]">
                 Dosya, kanıtla kapatılır. <span className="text-[#444]">Erken Erişim ile değil.</span>
               </span>
-              <span className="font-mono-tech text-[11px] text-[#222]">GDG × O&T // v1.0.0 // BUILD 2026</span>
+              <span className="font-mono-tech text-[11px] text-[#222]">GDG × OTT × HSD// v1.0.0 // BUILD 2026</span>
             </div>
 
-          </div>{/* /paper */}
+          </div >
         </div>
       </div>
 
-      {/* RADIO */}
-      {radioOpen ? (
-        <div className="fixed bottom-4 left-3 z-[500] w-[272px] max-w-[calc(100vw-24px)] bg-[#1a1108] border border-[#3a2d1a] rounded-[4px] shadow-[0_8px_32px_rgba(0,0,0,.7)] overflow-hidden">
-          <div className="bg-[#0d0a05] px-3 py-2 flex items-center justify-between">
-            <span className="font-mono-tech text-[11px] [letter-spacing:0.2em] uppercase text-[#664]">📻 TELSİZ — KANAL 3</span>
-            <button onClick={() => setRadioOpen(false)} className="bg-transparent border-none text-[#554] cursor-pointer text-sm px-1">
-              ✕
-            </button>
-          </div>
-          <div className="flex border-b border-[#2a1f0a]">
-            {(["beta","dino","ee"] as Spk[]).map((s) => (
-              <button
-                key={s}
-                onClick={() => setCurSpk(s)}
-                className={cn(
-                  "flex-1 py-[7px] px-1 border-none font-mono-tech text-[10px] [letter-spacing:0.1em] uppercase cursor-pointer",
-                  s !== "ee" && "border-r border-[#2a1f0a]",
-                  curSpk === s ? "bg-[#2a1f0a] text-[#c9a870]" : "bg-transparent text-[#554]"
-                )}
-              >
-                {s === "beta" ? "Beta" : s === "dino" ? "Dino" : "Erken E."}
-              </button>
-            ))}
-          </div>
-          <div className="hck-rlog px-2 py-2 max-h-[150px] overflow-y-auto flex flex-col gap-1.5">
-            {logs.map((l, i) => (
-              <div
-                key={i}
-                className={cn(
-                  "border px-2 py-1.5 rounded-[2px]",
-                  l.spk === "ee" ? "bg-[#120505] border-[#3a1010]" : "bg-[#110d04] border-[#221808]"
-                )}
-              >
-                <div className="flex justify-between mb-[3px]">
-                  <span className="font-mono-tech text-[10px] text-[#776]">{spkLabel(l.spk)} — {l.t}</span>
-                  <span className="font-mono-tech text-[10px] text-[#443]">{l.time}</span>
-                </div>
-                <div className="font-mono-tech text-[11px] text-[#a0906a] leading-[1.5]">{l.m}</div>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={addLog}
-            className="font-mono-tech text-[11px] [letter-spacing:0.2em] uppercase w-[calc(100%-16px)] mx-2 mb-2 mt-1.5 bg-[#c9a870] text-[#0d0a05] border-none py-2 rounded-[2px] cursor-pointer"
-          >
-            Mesaj Al
-          </button>
-        </div>
-      ) : (
-        <button
-          onClick={() => setRadioOpen(true)}
-          className="fixed bottom-4 left-3 z-[500] font-mono-tech text-[11px] [letter-spacing:0.15em] uppercase px-3 py-[7px] bg-[#1a1108] border border-[#3a2d1a] text-[#664] cursor-pointer rounded-[4px]"
-        >
-          📻 Radyo
-        </button>
-      )}
     </>
   );
 }

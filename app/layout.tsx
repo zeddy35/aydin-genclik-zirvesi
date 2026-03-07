@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { AuthProvider as AGZAuthProvider } from "@/contexts/AuthContext";
 import { EasterEggProvider } from "@/components/EasterEggProvider";
 import { EasterEggContext } from "@/components/EasterEggContext";
 import "./globals.css";
+import "./arcade-theme.css";
 
 export const metadata: Metadata = {
   title: "Aydın Gençlik Zirvesi 2026",
@@ -27,7 +29,9 @@ export default function RootLayout({
       <body className="antialiased">
         <EasterEggContext>
           <EasterEggProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <AGZAuthProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </AGZAuthProvider>
           </EasterEggProvider>
         </EasterEggContext>
       </body>

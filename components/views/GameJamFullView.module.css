@@ -1,0 +1,848 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Press+Start+2P&display=swap');
+/* ── Keyframes ── */
+@keyframes sus-walk {
+  from { transform: translateX(calc(100vw - 200px)); }
+  to   { transform: translateX(-200px); }
+}
+
+@keyframes sus-appear {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes gj-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes gj-float2 {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-4px); }
+}
+
+/* ── Wrapper ── */
+.wrapper {
+  font-family: 'Lexend', sans-serif;
+  background: #f5f3ff;
+  min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* ── BG decoration ── */
+.bgDecoration {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ── Content container ── */
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+}
+
+/* ── Back button ── */
+.backBtn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  font-family: 'Lexend', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.22);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  padding: 8px 18px;
+  border-radius: 100px;
+  transition: background 0.15s;
+  min-height: 44px;
+  backdrop-filter: blur(8px);
+}
+.backBtn:hover {
+  background: rgba(124, 58, 237, 0.16);
+}
+
+/* ── Top nav ── */
+.topNav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 20px 0 0;
+  gap: 12px;
+}
+.topNavInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+.topNavBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ede9fe;
+  border: 2px solid #c4b5fd;
+  border-radius: 20px;
+  padding: 5px 14px;
+}
+.topNavBadgeText {
+  font-family: 'Lexend', sans-serif;
+  font-size: 7px;
+  color: #7c3aed;
+  letter-spacing: 0.1em;
+}
+.topNavSubtext {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: #c4b5fd;
+  letter-spacing: 0.15em;
+  padding-right: 14px;
+}
+
+/* ── Hero section ── */
+.heroSection {
+  text-align: center;
+  padding: 48px 0 36px;
+}
+.heroIcon {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 40px;
+  line-height: 1;
+  animation: gj-float 3s ease-in-out infinite;
+}
+.heroTitleWrapper {
+  position: relative;
+  display: inline-block;
+}
+.heroStarTL {
+  position: absolute;
+  top: -12px;
+  left: -24px;
+  animation: gj-float2 3.5s ease-in-out infinite 0.5s;
+}
+.heroStarTR {
+  position: absolute;
+  top: 4px;
+  right: -20px;
+  animation: gj-float 3s ease-in-out infinite;
+}
+.heroStarBL {
+  position: absolute;
+  bottom: -8px;
+  left: -16px;
+  animation: gj-float2 3.5s ease-in-out infinite 0.5s;
+}
+.heroTitle {
+  font-family: 'Lexend', sans-serif;
+  font-size: clamp(42px, 9vw, 80px);
+  color: #1e0050;
+  margin: 0 0 4px;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.heroTitleGradient {
+  background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.heroDesc {
+  font-size: 16px;
+  color: #4c1d95;
+  max-width: 520px;
+  margin: 12px auto 6px;
+  line-height: 1.7;
+  font-weight: 600;
+}
+.heroDescEm {
+  font-style: italic;
+  color: #7c3aed;
+}
+.heroTagline {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #a78bfa;
+  letter-spacing: 0.15em;
+  margin-bottom: 22px;
+}
+.heroCta {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── Countdown box (wrapper) ── */
+.countdownBox {
+  background: #ffffff;
+  border: 2px solid #e9d5ff;
+  border-radius: 16px;
+  padding: 4px 0 8px;
+  max-width: 420px;
+  margin: 0 auto 28px;
+  box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+}
+
+/* ── Countdown internals ── */
+.countdownWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0;
+}
+.countdownLabel {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: #7c3aed;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.countdownUnits {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.countdownColon {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 18px;
+  color: #c4b5fd;
+  padding-bottom: 18px;
+  line-height: 1;
+}
+.countdownUnit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.countdownValue {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(18px, 4vw, 28px);
+  color: #1e0050;
+  background: #ede9fe;
+  border: 2px solid #7c3aed;
+  border-radius: 6px;
+  padding: 8px 10px;
+  min-width: 58px;
+  text-align: center;
+  box-shadow: 3px 3px 0 #7c3aed;
+  font-variant-numeric: tabular-nums;
+}
+.countdownUnitLabel {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: #a78bfa;
+  letter-spacing: 0.1em;
+}
+
+/* ── Buttons ── */
+.btnPrimary {
+  font-family: 'Lexend', sans-serif;
+  font-size: 16px;
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3), 0 0 0 3px #ddd6fe;
+  border: none;
+  min-height: 44px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+.btnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+}
+
+.btnOutline {
+  font-family: 'Lexend', sans-serif;
+  font-size: 16px;
+  background: #ffffff;
+  color: #7c3aed;
+  padding: 12px 28px;
+  border-radius: 12px;
+  border: 2px solid #c4b5fd;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.15s;
+}
+.btnOutline:hover {
+  background: #ede9fe;
+}
+
+.btnPrimaryWhite {
+  font-family: 'Lexend', sans-serif;
+  font-size: 16px;
+  background: #fff;
+  color: #7c3aed;
+  padding: 12px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  border: none;
+  min-height: 44px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+.btnPrimaryWhite:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.btnOutlineDark {
+  font-family: 'Lexend', sans-serif;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ddd6fe;
+  padding: 12px 28px;
+  border-radius: 12px;
+  display: inline-block;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.15s;
+}
+.btnOutlineDark:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ── Feature cards ── */
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 40px;
+}
+.featureCard {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 16px;
+  border: 2px solid #e9d5ff;
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.06);
+  cursor: default;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.featureCard:hover {
+  transform: translateY(-4px);
+}
+.featureIcon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+.featureTitle {
+  font-family: 'Lexend', sans-serif;
+  font-size: 15px;
+  color: #1e0050;
+  margin-bottom: 6px;
+}
+.featureDesc {
+  font-size: 12px;
+  color: #6d28d9;
+  line-height: 1.6;
+}
+
+/* ── Info section ── */
+.infoSection {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  border: 2px solid #e9d5ff;
+  box-shadow: 0 4px 24px rgba(124, 58, 237, 0.06);
+  margin-bottom: 32px;
+}
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sectionTitle {
+  font-family: 'Lexend', sans-serif;
+  font-size: 20px;
+  color: #1e0050;
+  margin: 0;
+}
+.sectionTitleLg {
+  font-family: 'Lexend', sans-serif ;
+  font-size: 22px;
+  color: #1e0050;
+  margin: 0;
+}
+.sectionHeaderRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.infoEmojis {
+  display: flex;
+  gap: 6px;
+}
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.infoCard {
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: default;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  transition: transform 0.18s ease;
+}
+.infoCard:hover {
+  transform: translateY(-4px);
+}
+.infoCardLabel {
+  font-family: 'Lexend', sans-serif;
+  font-size: 7px;
+  letter-spacing: 0.15em;
+  color: #6d28d9;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.infoCardValue {
+  font-family: 'Lexend', sans-serif;
+  font-size: 20px;
+  color: #1e0050;
+}
+
+/* ── Roles ── */
+.rolesSection {
+  margin-bottom: 32px;
+}
+.rolesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+.roleCard {
+  border-radius: 16px;
+  padding: 18px 16px;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  border: 2px solid #e9d5ff;
+  box-shadow: 0 2px 10px rgba(124, 58, 237, 0.05);
+}
+.roleCard:hover {
+  transform: scale(1.03);
+  background: var(--role-bg);
+  border-color: var(--role-border);
+  box-shadow: 4px 4px 0 var(--role-shadow);
+}
+.equipBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #fff;
+  background: #7c3aed;
+  padding: 3px 7px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+  box-shadow: 2px 2px 0 #4c1d95;
+  letter-spacing: 0.05em;
+}
+.roleCard:hover .equipBadge {
+  opacity: 1;
+}
+.roleEmoji {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.roleTitle {
+  font-family: 'Lexend', sans-serif;
+  font-size: 16px;
+  color: #1e0050;
+  margin-bottom: 5px;
+}
+.roleDesc {
+  font-size: 12px;
+  color: #4c1d95;
+  line-height: 1.6;
+}
+
+/* ── Genres ── */
+.genresSection {
+  margin-bottom: 32px;
+}
+.genresLabel {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #a78bfa;
+  letter-spacing: 0.2em;
+  margin-bottom: 14px;
+}
+.genresList {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.genreTag {
+  border-radius: 24px;
+  padding: 7px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+  white-space: nowrap;
+  min-height: 44px;
+  background: var(--tag-bg);
+  border: 2px solid var(--tag-border);
+  transition: transform 0.18s ease;
+}
+.genreTag:hover {
+  transform: translateY(-4px);
+}
+.genreTagIcon {
+  font-size: 14px;
+}
+.genreTagLabel {
+  font-family: 'Lexend', sans-serif;
+  font-size: 13px;
+  color: #1e0050;
+}
+
+/* ── Timeline ── */
+.timelineSection {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  border: 2px solid #e9d5ff;
+  margin-bottom: 32px;
+}
+.timelineHeaderRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.timelineStep {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+.timelineStepIcon {
+  border-radius: 12px;
+  width: 56px;
+  min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex-shrink: 0;
+  background: var(--step-bg);
+  border: 2px solid var(--step-border);
+}
+.timelineStepEmoji {
+  font-size: 20px;
+}
+.timelineStepStage {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: #6d28d9;
+  letter-spacing: 0.05em;
+}
+.timelineStepBody {
+  flex: 1;
+  padding-top: 4px;
+}
+.timelineStepTitleRow {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.timelineStepTitle {
+  font-family: 'Lexend', sans-serif;
+  font-size: 15px;
+  color: #1e0050;
+}
+.timelineStepTime {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 7px;
+  color: #6d28d9;
+  background: #f3e8ff;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+.timelineStepDesc {
+  font-size: 12px;
+  color: #4c1d95;
+  line-height: 1.6;
+  margin: 3px 0 0;
+}
+
+/* ── FAQ ── */
+.faqSection {
+  margin-bottom: 32px;
+}
+.faqHeaderRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.faqHeaderLabel {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 6px;
+  color: #a78bfa;
+  letter-spacing: 0.15em;
+  align-self: center;
+  padding-bottom: 2px;
+}
+.faqList {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 2px solid #e9d5ff;
+  overflow: hidden;
+}
+.faqItem {
+  border-top: 1px solid #f3e8ff;
+}
+.faqItem:first-child {
+  border-top: none;
+}
+.faqBtn {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.1s;
+}
+.faqBtn:hover {
+  background: #faf5ff;
+}
+.faqQuestion {
+  font-family: 'Lexend', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #1e0050;
+  text-align: left;
+}
+.faqArrow {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  color: #c4b5fd;
+  display: inline-block;
+  transition: transform 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.faqArrowOpen {
+  color: #7c3aed;
+  transform: rotate(45deg);
+}
+.faqBody {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.2s;
+  padding: 0 16px;
+}
+.faqBodyOpen {
+  max-height: 120px;
+  padding: 0 16px 14px;
+}
+.faqAnswer {
+  font-size: 13px;
+  color: #4c1d95;
+  line-height: 1.7;
+}
+
+/* ── CTA banner ── */
+.ctaBanner {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 60%, #4c1d95 100%);
+  border-radius: 24px;
+  padding: clamp(24px, 5vw, 40px) clamp(16px, 4vw, 28px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.ctaScanline {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.04) 3px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
+.ctaBgDeco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ctaContent {
+  position: relative;
+  z-index: 1;
+}
+.ctaIcon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  animation: gj-float 3s ease-in-out infinite;
+}
+.ctaTitle {
+  font-family: 'Lexend', sans-serif;
+  font-size: clamp(22px, 5vw, 36px);
+  color: #fff;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+.ctaDesc {
+  font-size: 14px;
+  color: #ddd6fe;
+  max-width: 420px;
+  margin: 0 auto 24px;
+  line-height: 1.7;
+}
+.ctaDescStrong {
+  color: #fff;
+}
+.ctaButtons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  padding: 28px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.footerRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.footerOrgs {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 7px;
+  color: #c4b5fd;
+  letter-spacing: 0.15em;
+}
+.footerYear {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 6px;
+  color: #ddd6fe;
+  letter-spacing: 0.1em;
+}
+.footerScore {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 5px;
+  color: #a78bfa;
+  letter-spacing: 0.12em;
+}
+
+/* ── Sus crewmate egg ── */
+.susCrewmate {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9998;
+  background-color: #000000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 15vh;
+}
+.susTitle {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(18px, 3.5vw, 32px);
+  color: #ff0000;
+  text-shadow: 
+    0 0 50px rgba(255, 0, 0, 1),
+    0 0 25px rgba(255, 0, 0, 0.8),
+    3px 3px 0 #000,
+    -3px -3px 0 #000,
+    3px -3px 0 #000,
+    -3px 3px 0 #000;
+  letter-spacing: 0.15em;
+  margin-bottom: 10vh;
+  text-align: center;
+  padding: 0 20px;
+  line-height: 1.5;
+  z-index: 9999;
+}
+.susWalker {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  margin-top: -100px;
+  animation: sus-walk 4s linear forwards;
+  pointer-events: none;
+  z-index: 9999;
+}
+.susGif {
+  height: 200px;
+  width: auto;
+  display: block;
+  image-rendering: pixelated;
+  /* GIF sağa bakıyorsa aşağıdaki satırı aç: */
+  /* transform: scaleX(-1); */
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .heroIcon,
+  .heroStarTL,
+  .heroStarTR,
+  .heroStarBL,
+  .ctaIcon {
+    animation: none;
+  }
+  .featureCard:hover,
+  .roleCard:hover {
+    transform: none;
+  }
+}

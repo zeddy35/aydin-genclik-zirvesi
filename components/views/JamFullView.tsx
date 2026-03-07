@@ -68,7 +68,7 @@ function GameCountdown() {
   if (!mounted) return null;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, padding: "20px 0" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, padding: "20px " }}>
       <div style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 8, color: "#7c3aed", letterSpacing: "0.2em", textTransform: "uppercase" }}>
         — Başlamasına Kalan —
       </div>

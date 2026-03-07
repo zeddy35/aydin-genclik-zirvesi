@@ -17,7 +17,7 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
   const [tapped, setTapped] = useState<"left" | "right" | null>(null);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-gradient-to-r from-[#9645ed] to-black/50">
+    <div className="relative h-screen w-full overflow-hidden bg-gradient-to-b from-black via-[#0B0B0F] to-black">
 
       {/* 3D Perspective Container */}
       <div
