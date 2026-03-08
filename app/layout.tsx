@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "Aydın Gençlik Zirvesi 2026",
   description:
     "Aydın Gençlik Zirvesi - Game Jam ve HackathOn etkinliğine katıl",
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     title: "Aydın Gençlik Zirvesi 2026",
     description:
