@@ -4,6 +4,11 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useEasterEggs } from "@/components/EasterEggContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth as firebaseAuth, db } from "@/lib/firebase/config";
 
 /* ─────────────────────────────────────────────────────────────────
    LandingView — Premium split hero  (replaces PanelSplit)
@@ -33,7 +38,7 @@ const T = {
     bgDeep:   "#030304",
     accent:   "#d4a843",
     accentBr: "#f5c842",
-    glow:     "rgba(212,168,67,0.35)",
+    glow:     "rgba(57, 233, 17, 0.35)",
     btn:      "linear-gradient(135deg,#b7791f 0%,#d97706 100%)",
   },
   text:  "#f0eeff",
@@ -41,10 +46,18 @@ const T = {
 };
 
 export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
+  const { user } = useAuth();
+  const router = useRouter();
   const [hovered, setHovered] = useState<"jam" | "hack" | null>(null);
   const [tapped,  setTapped]  = useState<"jam" | "hack" | null>(null);
   const [mounted, setMounted] = useState(false);
   const badgeRef = useRef<HTMLDivElement>(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [modalEmail,    setModalEmail]    = useState('');
+  const [modalPassword, setModalPassword] = useState('');
+  const [modalError,    setModalError]    = useState('');
+  const [modalLoading,  setModalLoading]  = useState(false);
+  const [modalShowPw,   setModalShowPw]   = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -139,6 +152,32 @@ export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
     ? "perspective(1400px) translateZ(-12px) rotateY(4deg) scale(0.985)"
     : "perspective(1400px) translateZ(0px) rotateY(0deg)";
 
+  const handleModalLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setModalError('');
+    setModalLoading(true);
+    try {
+      const { user: fbUser } = await signInWithEmailAndPassword(firebaseAuth, modalEmail, modalPassword);
+      const adminSnap = await getDoc(doc(db, 'admins', fbUser.uid));
+      router.push(adminSnap.exists() ? '/admin' : '/panel');
+    } catch (err: unknown) {
+      const code = (err as { code?: string }).code;
+      if (code === 'auth/user-not-found' || code === 'auth/invalid-credential') {
+        setModalError('E-posta veya şifre hatalı.');
+      } else if (code === 'auth/wrong-password') {
+        setModalError('Şifre hatalı.');
+      } else if (code === 'auth/invalid-email') {
+        setModalError('Geçersiz e-posta adresi.');
+      } else if (code === 'auth/too-many-requests') {
+        setModalError('Çok fazla başarısız deneme. Lütfen bekleyin.');
+      } else {
+        setModalError('Giriş başarısız. Lütfen tekrar deneyin.');
+      }
+    } finally {
+      setModalLoading(false);
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -220,24 +259,264 @@ export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
         .lnd-nav-btn:active { transform: scale(0.93); }
         .lnd-nav-btn:focus-visible { outline: 2px solid #a78bfa; outline-offset: 3px; }
 
-        .lnd-badge-pill {
+        .lnd-login-jam {
           position: absolute;
-          bottom: 28px;
+          top: 16px;
+          left: 16px;
+          z-index: 40;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 7px 14px;
+          border-radius: 4px;
+          background: rgba(8,4,18,0.82);
+          border: 1.5px solid #9b59b688;
+          color: #ce93f8;
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 10px;
+          letter-spacing: 0.18em;
+          text-decoration: none;
+          text-transform: uppercase;
+          transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+          box-shadow: 0 0 10px rgba(155,89,182,0.2), inset 0 0 6px rgba(155,89,182,0.08);
+          white-space: nowrap;
+        }
+        .lnd-login-jam::before { content: '▶ '; font-size: 8px; opacity: 0.7; }
+        .lnd-login-jam:hover { background: rgba(124,58,237,0.22); border-color: #ce93f8; box-shadow: 0 0 18px rgba(155,89,182,0.45), inset 0 0 8px rgba(155,89,182,0.15); }
+        .lnd-login-jam:active { transform: scale(0.96); }
+
+        .lnd-login-hack {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          z-index: 40;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 7px 14px;
+          border-radius: 8px;
+          background: rgba(8,6,2,0.82);
+          backdrop-filter: blur(12px);
+          border: 1px solid #d4a84355;
+          color: #f5c842cc;
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 10px;
+          letter-spacing: 0.15em;
+          text-decoration: none;
+          text-transform: uppercase;
+          transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+          white-space: nowrap;
+        }
+        .lnd-login-hack:hover { background: rgba(212,168,67,0.15); border-color: #d4a843aa; box-shadow: 0 0 14px rgba(212,168,67,0.25); }
+        .lnd-login-hack:active { transform: scale(0.96); }
+
+        .lnd-pill-nav {
+          position: fixed;
+          bottom: 24px;
           left: 50%;
           transform: translateX(-50%);
-          z-index: 30;
+          z-index: 9999;
           display: flex;
-          flex-direction: column;
           align-items: center;
-          gap: 4px;
-          background: rgba(10,8,20,0.72);
-          backdrop-filter: blur(20px) saturate(1.4);
-          border: 1px solid rgba(255,255,255,0.10);
-          border-radius: 100px;
-          padding: 10px 28px 10px 20px;
+          justify-content: space-between;
+          width: auto;
+          max-width: 720px;
+          background: rgba(10,10,20,0.65);
+          backdrop-filter: blur(16px) saturate(1.5);
+          -webkit-backdrop-filter: blur(16px) saturate(1.5);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 999px;
+          padding: 12px 20px;
+          gap: 20px;
+          box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
           white-space: nowrap;
-          box-shadow: 0 4px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.06) inset;
         }
+
+        .lnd-pill-icon-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          min-width: 36px;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.06);
+          border: 1px solid rgba(255,255,255,0.13);
+          color: rgba(255,255,255,0.85);
+          font-family: 'Syne', sans-serif;
+          font-weight: 800;
+          font-size: 14px;
+          cursor: pointer;
+          transition: background 0.2s, border-color 0.2s, transform 0.18s;
+        }
+        .lnd-pill-icon-btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.28); transform: scale(1.08); }
+        .lnd-pill-icon-btn:active { transform: scale(0.94); }
+
+        .lnd-pill-title {
+          flex: 1;
+          text-align: center;
+          font-family: 'Syne', sans-serif;
+          font-weight: 700;
+          font-size: 16px;
+          letter-spacing: 0.14em;
+          color: rgba(240,238,255,0.88);
+          pointer-events: none;
+          user-select: none;
+        }
+
+        .lnd-pill-login-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 8px 18px;
+          border-radius: 999px;
+          border: 1px solid #D4A843;
+          color: #D4A843;
+          background: transparent;
+          font-family: 'Syne', sans-serif;
+          font-weight: 700;
+          font-size: 11px;
+          letter-spacing: 0.12em;
+          text-decoration: none;
+          text-transform: uppercase;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          white-space: nowrap;
+        }
+        .lnd-pill-login-btn:hover { background: #D4A843; color: #000; box-shadow: 0 0 18px rgba(212,168,67,0.45); }
+        .lnd-pill-login-btn:active { transform: scale(0.96); }
+
+        /* ── Login Modal ── */
+        .lnd-modal-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 99999;
+          background: rgba(0,0,0,0.72);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+        }
+        .lnd-modal-card {
+          position: relative;
+          width: 100%;
+          max-width: 400px;
+          background: rgba(12,10,24,0.97);
+          border: 1px solid rgba(255,255,255,0.10);
+          border-radius: 24px;
+          padding: 40px 36px 36px;
+          box-shadow: 0 24px 80px rgba(0,0,0,0.65), 0 1px 0 rgba(255,255,255,0.06) inset;
+        }
+        .lnd-modal-close {
+          position: absolute;
+          top: 14px; right: 16px;
+          background: none;
+          border: none;
+          color: rgba(255,255,255,0.4);
+          font-size: 26px;
+          line-height: 1;
+          cursor: pointer;
+          padding: 2px 8px;
+          border-radius: 8px;
+          transition: color 0.2s, background 0.2s;
+        }
+        .lnd-modal-close:hover { color: #fff; background: rgba(255,255,255,0.08); }
+        .lnd-modal-eyebrow {
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 9px;
+          letter-spacing: 0.25em;
+          color: rgba(212,168,67,0.7);
+          margin: 0 0 10px;
+          text-transform: uppercase;
+        }
+        .lnd-modal-title {
+          font-family: 'Syne', sans-serif;
+          font-weight: 800;
+          font-size: 26px;
+          color: #f0eeff;
+          margin: 0 0 6px;
+        }
+        .lnd-modal-sub {
+          font-size: 13px;
+          color: rgba(200,195,230,0.55);
+          margin: 0 0 28px;
+        }
+        .lnd-modal-error {
+          background: rgba(239,68,68,0.12);
+          border: 1px solid rgba(239,68,68,0.35);
+          color: #fca5a5;
+          border-radius: 10px;
+          padding: 10px 14px;
+          font-size: 13px;
+          margin-bottom: 18px;
+        }
+        .lnd-modal-group { margin-bottom: 18px; }
+        .lnd-modal-label {
+          display: block;
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 9px;
+          letter-spacing: 0.2em;
+          color: rgba(180,175,210,0.65);
+          margin-bottom: 7px;
+          text-transform: uppercase;
+        }
+        .lnd-modal-input {
+          width: 100%;
+          padding: 11px 14px;
+          background: rgba(255,255,255,0.05);
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 12px;
+          color: #f0eeff;
+          font-size: 14px;
+          font-family: inherit;
+          outline: none;
+          transition: border-color 0.2s, box-shadow 0.2s;
+          box-sizing: border-box;
+        }
+        .lnd-modal-input:focus { border-color: rgba(155,89,182,0.6); box-shadow: 0 0 0 3px rgba(124,58,237,0.12); }
+        .lnd-modal-pw-wrap { position: relative; }
+        .lnd-modal-eye {
+          position: absolute;
+          right: 12px; top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 16px;
+          padding: 4px;
+          opacity: 0.55;
+          transition: opacity 0.2s;
+        }
+        .lnd-modal-eye:hover { opacity: 1; }
+        .lnd-modal-submit {
+          width: 100%;
+          padding: 13px;
+          background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+          border: none;
+          border-radius: 12px;
+          color: #fff;
+          font-family: 'Syne', sans-serif;
+          font-weight: 700;
+          font-size: 14px;
+          letter-spacing: 0.06em;
+          cursor: pointer;
+          transition: filter 0.2s, transform 0.18s;
+          margin-top: 8px;
+        }
+        .lnd-modal-submit:hover { filter: brightness(1.15); }
+        .lnd-modal-submit:active { transform: scale(0.98); }
+        .lnd-modal-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+        .lnd-modal-register {
+          text-align: center;
+          margin-top: 22px;
+          font-size: 13px;
+          color: rgba(200,195,230,0.5);
+        }
+        .lnd-modal-register a { color: rgba(155,89,182,0.9); text-decoration: none; font-weight: 600; }
+        .lnd-modal-register a:hover { color: #ce93f8; text-decoration: underline; }
 
         /* Mobile: stack panels */
         @media (max-width: 767px) {
@@ -246,7 +525,8 @@ export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
           .lnd-divider { top: 50%; bottom: auto; left: 0; right: 0; width: auto; height: 2px;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1) 30%, rgba(255,255,255,0.14) 50%, rgba(255,255,255,0.1) 70%, transparent);
           }
-          .lnd-badge-pill { bottom: 16px; padding: 8px 18px 8px 14px; }
+          .lnd-pill-nav { width: 90%; padding: 10px 14px; gap: 12px; }
+          .lnd-pill-title { font-size: 10px; letter-spacing: 0.1em; }
         }
       `}</style>
 
@@ -433,66 +713,82 @@ export function LandingView({ onJamClick, onHackClick }: LandingViewProps) {
                 >
                   Başvur
                 </Link>
-                <button
-                  onClick={onHackClick}
-                  className="lnd-nav-btn"
-                  aria-label="Hackathon tam görünümüne git"
-                  style={{ borderColor: `${T.hack.accent}55` }}
-                >
-                  →
-                </button>
               </div>
             </div>
           </div>
 
         </div>
 
-        {/* ── Floating AGZ badge ────────────────────────────────── */}
-        <div ref={badgeRef} className="lnd-badge-pill">
-          {/* AGZ logo mark */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8, paddingRight: 8}}>
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-            </svg>
-            <span style={{
-              fontFamily: "'Syne', sans-serif",
-              fontWeight: 800,
-              fontSize: 13,
-              letterSpacing: "0.12em",
-              color: T.text,
-            }}>
-              AYDIN GENÇLİK ZİRVESİ
-            </span>
-            <span style={{
-              fontFamily: "'Share Tech Mono', monospace",
-              fontSize: 15,
-              color: T.muted,
-              letterSpacing: "0.08em",
-              marginLeft: 2,
-            }}>
-              2026
-            </span>
-          </div>
-          {/* Slim accent line */}
-          <div style={{
-            width: "80%",
-            height: 1.5,
-            borderRadius: 2,
-            background: "linear-gradient(90deg, #7c3aed 0%, #d4a843 100%)",
-            opacity: 0.7,
-            marginTop: 2,
-          }} />
+      </div>
 
-          {/* ── Scroll hint chevron ── */}
-          <div className={`lnd-scroll-hint${scrolled ? " hidden" : ""}`}>
-            <div className="lnd-chevron-wrap">
-              <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-                <path d="M2 2l6 6 6-6" stroke="rgba(167,139,250,0.7)" strokeWidth="2" strokeLinecap="round"/>
-                <path d="M2 6l6 6 6-6" stroke="rgba(167,139,250,0.4)" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
-            </div>
+      {/* ── Bottom Pill Navigation ────────────────────────────────── */}
+      <div ref={badgeRef} className="lnd-pill-nav" onClick={e => e.stopPropagation()}>
+
+
+        {/* CENTER: Title */}
+        <span className="lnd-pill-title">AYDIN GENÇLİK ZİRVESİ 2026</span>
+
+        {/* RIGHT: Login / Panel */}
+        {user ? (
+          <Link href="/panel" className="lnd-pill-login-btn">PANELİM</Link>
+        ) : (
+          <button className="lnd-pill-login-btn" onClick={() => setShowLoginModal(true)}>
+            GİRİŞ YAP
+          </button>
+        )}
+      </div>
+
+      {/* ── Login Modal ──────────────────────────────────────── */}
+      {showLoginModal && (
+        <div className="lnd-modal-overlay" onClick={() => setShowLoginModal(false)}>
+          <div className="lnd-modal-card" onClick={e => e.stopPropagation()}>
+            <button className="lnd-modal-close" onClick={() => setShowLoginModal(false)} aria-label="Kapat">×</button>
+            <p className="lnd-modal-eyebrow">◈ Aydın Gençlik Zirvesi — GİRİŞ SİSTEMİ ◈</p>
+            <h2 className="lnd-modal-title">Giriş Yap</h2>
+            <p className="lnd-modal-sub">Hesabınıza erişmek için giriş yapın.</p>
+
+            {modalError && <div className="lnd-modal-error">{modalError}</div>}
+
+            <form onSubmit={handleModalLogin} autoComplete="on">
+              <div className="lnd-modal-group">
+                <label className="lnd-modal-label" htmlFor="modal-email">E-POSTA</label>
+                <input
+                  id="modal-email" type="email" className="lnd-modal-input"
+                  placeholder="ornek@eposta.com"
+                  value={modalEmail} onChange={e => setModalEmail(e.target.value)}
+                  autoComplete="email" required
+                />
+              </div>
+              <div className="lnd-modal-group">
+                <label className="lnd-modal-label" htmlFor="modal-pw">ŞİFRE</label>
+                <div className="lnd-modal-pw-wrap">
+                  <input
+                    id="modal-pw" type={modalShowPw ? 'text' : 'password'} className="lnd-modal-input"
+                    placeholder="············"
+                    value={modalPassword} onChange={e => setModalPassword(e.target.value)}
+                    autoComplete="current-password" required
+                    style={{ paddingRight: 42 }}
+                  />
+                  <button type="button" className="lnd-modal-eye"
+                    onClick={() => setModalShowPw(v => !v)}
+                    aria-label={modalShowPw ? 'Şifreyi gizle' : 'Şifreyi göster'}
+                  >
+                    {modalShowPw ? '🙈' : '👁'}
+                  </button>
+                </div>
+              </div>
+              <button type="submit" className="lnd-modal-submit" disabled={modalLoading}>
+                {modalLoading ? 'Giriş yapılıyor…' : 'Giriş Yap'}
+              </button>
+            </form>
+
+            <p className="lnd-modal-register">
+              Hesabın yok mu?{' '}
+              <Link href="/auth/register" onClick={() => setShowLoginModal(false)}>Kayıt Ol</Link>
+            </p>
           </div>
         </div>
-      </div>
+      )}
 
       {/* ── Egg 5: Pokémon battle ─────────────────────────── */}
       {showPoke && (
