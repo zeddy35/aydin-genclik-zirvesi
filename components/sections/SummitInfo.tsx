@@ -140,15 +140,15 @@ function OTTMonogram() {
 // ─────────────────────────────────────────────────────────────
 // SPONSOR DATA
 // ─────────────────────────────────────────────────────────────
-const SPONSORS = [
-  { id: "SP-01", name: "Sponsor Adı", url: "#", accent: T.gold },
-  { id: "SP-02", name: "Sponsor Adı", url: "#", accent: T.violetLight },
-  { id: "SP-03", name: "Sponsor Adı", url: "#", accent: T.gold },
-  { id: "SP-04", name: "Sponsor Adı", url: "#", accent: T.violetLight },
-  { id: "SP-05", name: "Sponsor Adı", url: "#", accent: T.gold },
-  { id: "SP-06", name: "Sponsor Adı", url: "#", accent: T.violetLight },
-  { id: "SP-07", name: "Sponsor Adı", url: "#", accent: T.gold },
-  { id: "SP-08", name: "Sponsor Adı", url: "#", accent: T.violetLight },
+const SPONSORS: { id: string; name: string; url: string; accent: string; image?: string }[] = [
+  { id: "SP-01", name: "Pasaport Pizza Efeler", url: "https://www.pasaportpizza.com/", accent: T.gold, image: "/sponsors/pasaport_logo.png" },
+  { id: "SP-02", name: "Romesta Coffee Co.", url: "#", accent: T.violetLight, image: "/sponsors/romesta_logo.jpg" },
+  { id: "SP-03", name: "Mónet Coffee • Bakery", url: "https://www.instagram.com/monet.coffeebakery/", accent: T.gold, image: "/sponsors/monet_logo.jpg" }, 
+  { id: "SP-04", name: "Pablo Artisan Coffee", url: "https://www.instagram.com/pabloartisancoffee/", accent: T.violetLight, image: "/sponsors/pablo_logo.jpg" },
+  { id: "SP-05", name: "Zeybek pilav", url: "https://www.instagram.com/zeybek_pilav/", accent: T.gold, image: "/sponsors/zeybek_logo.jpeg" },
+  { id: "SP-06", name: "Aydın Vardar Pastanesi", url: "#", accent: T.violetLight, image: "/sponsors/vardar_logo.jpg" },
+  { id: "SP-07", name: "Lades Pilav", url: "https://www.instagram.com/ladespilav/", accent: T.gold, image: "/sponsors/lades_pilav_logo.jpg" },
+  { id: "SP-08", name: "Komagene Mimar Sinan", url: "https://www.instagram.com/komagene.m.sinan/", accent: T.violetLight, image: "/sponsors/komagene_logo.jpg" },
   { id: "SP-09", name: "Sponsor Adı", url: "#", accent: T.gold },
   { id: "SP-10", name: "Sponsor Adı", url: "#", accent: T.violetLight },
   { id: "SP-11", name: "Sponsor Adı", url: "#", accent: T.gold },
@@ -337,7 +337,7 @@ export function SummitInfo() {
           </div>
         </section>
 
-        {/* ── SPONSOR CAROUSEL ── */}
+        {/* ── SPONSORS ── */}
         <section className="sum-reveal sum-section--carousel">
           <div className="sum-sponsors-hdr-wrap">
             <div onClick={handleSponsorHeadingClick} className="sum-sponsors-click">
@@ -357,10 +357,26 @@ export function SummitInfo() {
                   style={{ "--sp-accent": sp.accent } as React.CSSProperties}
                 >
                   <div
-                    className="sum-sponsor-logo sum-sponsor-logo-box"
-                    style={{ background: `${sp.accent}18`, border: `1.5px solid ${sp.accent}55`, color: sp.accent }}
+                    className="sum-sponsor-image-area"
                   >
-                    {sp.id.split("-")[1]}
+                    {sp.image ? (
+                      <img
+                        src={sp.image}
+                        alt={sp.name}
+                        className="sum-sponsor-img"
+                      />
+                    ) : (
+                      <div className="sum-sponsor-placeholder" style={{ color: sp.accent }}>
+                        <div className="sum-sponsor-placeholder-icon" style={{ border: `2px solid ${sp.accent}66` }}>
+                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="3"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <path d="M21 15l-5-5L5 21"/>
+                          </svg>
+                        </div>
+                        <span className="sum-sponsor-placeholder-text">Logo</span>
+                      </div>
+                    )}
                   </div>
                   <div className="sum-sponsor-name">{sp.name}</div>
                 </a>

@@ -6,13 +6,8 @@ import {
   addDoc,
   serverTimestamp,
 } from 'firebase/firestore';
-import {
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from 'firebase/storage';
-import { db, storage } from './config';
-import type { Belge, BelgeTuru, AdminBelgeTuru } from './types';
+import { db } from './config';
+import type { Belge, AdminBelgeTuru } from './types';
 
 export async function getKullaniciBelgeler(uid: string): Promise<Belge[]> {
   try {
@@ -25,74 +20,62 @@ export async function getKullaniciBelgeler(uid: string): Promise<Belge[]> {
   }
 }
 
-export async function uploadKullaniciBelge(
-  uid: string,
-  file: File,
-  belgeTuru: BelgeTuru,
-  onProgress?: (progress: number) => void
-): Promise<void> {
-  const filePath = `belgeler/${uid}/${belgeTuru}/${Date.now()}_${file.name}`;
-  const storageRef = ref(storage, filePath);
-  const uploadTask = uploadBytesResumable(storageRef, file);
-
-  await new Promise<void>((resolve, reject) => {
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        onProgress?.(Math.round(progress));
-      },
-      reject,
-      async () => {
-        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-        await addDoc(collection(db, 'belgeler'), {
-          kullaniciId: uid,
-          belgeTuru,
-          dosyaUrl: downloadUrl,
-          dosyaAdi: file.name,
-          dosyaBoyutu: file.size,
-          yukleyenTip: 'kullanici',
-          yuklenmeTarihi: serverTimestamp(),
-          durum: 'yuklendi',
-        });
-        resolve();
-      }
+export async function getAdminBelgeler(uid: string): Promise<Belge[]> {
+  try {
+    const snap = await getDocs(
+      query(
+        collection(db, 'belgeler'),
+        where('kullaniciId', '==', uid),
+        where('yukleyenTip', '==', 'admin')
+      )
     );
-  });
+    return snap.docs.map(d => ({ id: d.id, ...d.data() } as Belge));
+  } catch {
+    return [];
+  }
 }
 
 export async function uploadAdminBelge(
   uid: string,
   file: File,
   belgeTuru: AdminBelgeTuru,
-  onProgress?: (progress: number) => void
+  idToken: string,
 ): Promise<void> {
-  const filePath = `admin_belgeler/${uid}/${belgeTuru}/${Date.now()}_${file.name}`;
-  const storageRef = ref(storage, filePath);
-  const uploadTask = uploadBytesResumable(storageRef, file);
+  // 1. Get presigned upload URL from server
+  const presignRes = await fetch('/api/admin/belgeler/presign', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
+    },
+    body: JSON.stringify({
+      kullaniciId: uid,
+      belgeTuru,
+      dosyaAdi: file.name,
+      contentType: file.type,
+    }),
+  });
+  if (!presignRes.ok) throw new Error('Presigned URL alınamadı.');
+  const { uploadUrl, r2Key } = await presignRes.json();
 
-  await new Promise<void>((resolve, reject) => {
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        onProgress?.(Math.round(progress));
-      },
-      reject,
-      async () => {
-        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-        await addDoc(collection(db, 'belgeler'), {
-          kullaniciId: uid,
-          belgeTuru,
-          dosyaUrl: downloadUrl,
-          dosyaAdi: file.name,
-          dosyaBoyutu: file.size,
-          yukleyenTip: 'admin',
-          yuklenmeTarihi: serverTimestamp(),
-          durum: 'onaylandi',
-        });
-        resolve();
-      }
-    );
+  // 2. Upload directly to Cloudflare R2
+  const uploadRes = await fetch(uploadUrl, {
+    method: 'PUT',
+    body: file,
+    headers: { 'Content-Type': file.type },
+  });
+  if (!uploadRes.ok) throw new Error('R2 yüklemesi başarısız.');
+
+  // 3. Save metadata to Firestore
+  await addDoc(collection(db, 'belgeler'), {
+    kullaniciId: uid,
+    belgeTuru,
+    r2Key,
+    dosyaUrl: '',
+    dosyaAdi: file.name,
+    dosyaBoyutu: file.size,
+    yukleyenTip: 'admin',
+    yuklenmeTarihi: serverTimestamp(),
+    durum: 'onaylandi',
   });
 }

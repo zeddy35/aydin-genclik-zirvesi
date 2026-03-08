@@ -4,7 +4,7 @@ export type EtkinlikTuru = 'hackathon' | 'gamejam';
 export type KatilimTuru = 'bireysel' | 'takim';
 export type BasvuruDurumu = 'beklemede' | 'inceleniyor' | 'onaylandi' | 'reddedildi' | 'bekleme_listesi';
 export type BelgeTuru = 'ogrenci_belgesi' | 'nufus_fotokopisi' | 'cv' | 'katilim_sertifikasi' | 'diger';
-export type AdminBelgeTuru = 'katilim_sertifikasi' | 'odul_belgesi' | 'diger';
+export type AdminBelgeTuru = 'katilim_sertifikasi' | 'finalist_belgesi' | 'odul_belgesi' | 'diger';
 
 export interface TakimUyesi {
   isim: string;
@@ -54,6 +54,7 @@ export interface Belge {
   dosyaUrl: string;
   dosyaAdi: string;
   dosyaBoyutu: number;
+  r2Key?: string;
   yukleyenTip: 'kullanici' | 'admin';
   yuklenmeTarihi: Timestamp;
   durum: 'yuklendi' | 'inceleniyor' | 'onaylandi' | 'reddedildi';

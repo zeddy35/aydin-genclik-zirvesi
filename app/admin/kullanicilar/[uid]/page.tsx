@@ -72,7 +72,8 @@ export default function KullaniciDetailPage() {
     if (!user) return;
     setUploading(true); setUploadMsg('');
     try {
-      await uploadAdminBelge(uid, file, uploadTur as Parameters<typeof uploadAdminBelge>[2]);
+      const idToken = await user.getIdToken();
+      await uploadAdminBelge(uid, file, uploadTur as Parameters<typeof uploadAdminBelge>[2], idToken);
       setUploadMsg('✓ Belge yüklendi.');
       const updated = await getKullaniciBelgeler(uid);
       setBelgeler(updated);
@@ -199,6 +200,7 @@ export default function KullaniciDetailPage() {
               <label className="kd-label">BELGE TÜRÜ</label>
               <select className="kd-sel" value={uploadTur} onChange={e => setUploadTur(e.target.value)}>
                 <option value="katilim_sertifikasi">Katılım Sertifikası</option>
+                <option value="finalist_belgesi">Finalist Belgesi</option>
                 <option value="odul_belgesi">Ödül Belgesi</option>
                 <option value="diger">Diğer</option>
               </select>

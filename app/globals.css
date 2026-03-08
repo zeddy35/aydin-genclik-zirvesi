@@ -222,14 +222,133 @@
 .sum-sponsor-logo-box { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: var(--fn-mono); font-size: 16px; font-weight: 700; }
 .sum-sponsors-hdr-wrap { max-width: 1040px; margin: 0 auto; padding-left: clamp(16px,4vw,32px); padding-right: clamp(16px,4vw,32px); margin-bottom: 20px; }
 .sum-sponsors-sub { font-family: var(--fn-mono); font-size: 15px; letter-spacing: 0.2em; color: var(--c-muted); text-transform: uppercase; margin-top: -16px; margin-bottom: 20px; }
-.sum-sponsor-card { transition: transform .2s ease,border-color .2s ease,box-shadow .2s ease; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: var(--c-surf); border: 1px solid var(--c-border); border-radius: 12px; width: 200px; height: 110px; flex-shrink: 0; }
-.sum-sponsor-logo { transition: transform .25s ease; }
-.sum-sponsor-card:hover .sum-sponsor-logo { transform: scale(1.18); }
-.sum-sponsor-name { font-family: var(--fn-body); font-size: 11px; color: var(--c-faint); letter-spacing: 0.02em; }
+
 @keyframes sum-scroll-left { from { transform:translateX(0) } to { transform:translateX(-50%) } }
 .sum-track-left { animation: sum-scroll-left 40s linear infinite; display: flex; width: max-content; gap: 16px; padding-left: 16px; }
-.sum-carousel { overflow: hidden; padding-bottom: 8px; padding-top: 8px; }
+.sum-carousel { overflow: visible; padding-bottom: 32px; padding-top: 12px; clip-path: inset(-100px -9999px -50px -9999px); }
 .sum-carousel:hover .sum-track-left { animation-play-state: paused; }
+/* Sponsor kartı — büyütülmüş */
+.sum-sponsor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 19px 18px 20px;
+  width: 220px;          /* eskiden ~120px civarıydı */
+  min-width: 220px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.sum-sponsor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(125, 10, 201, 0.4);
+  border: #6d28d9 1.5px solid;
+}
+
+/* Büyük görsel alanı */
+.sum-sponsor-image-area {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+
+.sum-sponsor-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Placeholder (görsel yokken) */
+.sum-sponsor-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.7;
+}
+
+.sum-sponsor-placeholder-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sum-sponsor-placeholder-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Numara badge (eski logo kutusunun yerine küçük badge) */
+.sum-sponsor-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 8px;
+  letter-spacing: 0.05em;
+}
+
+.sum-sponsor-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #444;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .sum-sponsor-card {
+    width: 440px;
+    min-width: 440px;
+    padding: 40px 32px 36px;
+    border-radius: 32px;
+    gap: 24px;
+  }
+  .sum-sponsor-image-area {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+  }
+  .sum-sponsor-placeholder-icon {
+    width: 104px;
+    height: 104px;
+    border-radius: 20px;
+  }
+  .sum-sponsor-placeholder-icon svg {
+    width: 56px;
+    height: 56px;
+  }
+  .sum-sponsor-placeholder-text {
+    font-size: 13px;
+  }
+  .sum-sponsor-badge {
+    font-size: 14px;
+    padding: 5px 18px;
+    border-radius: 12px;
+  }
+  .sum-sponsor-name {
+    font-size: 20px;
+  }
+  .sum-track-left {
+    gap: 28px;
+    padding-left: 28px;
+  }
+}
 
 /* ── FAQ ── */
 .sum-faq-list { border-top: 1px solid var(--c-border); }
