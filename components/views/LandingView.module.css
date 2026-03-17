@@ -1,0 +1,466 @@
+/* LandingView — lnd- prefix styles extracted from inline <style> */
+
+@media (prefers-reduced-motion: reduce) {
+  .panel  { transition: none !important; }
+  .shine  { display: none !important; }
+  .scrollArrowInline { animation: none !important; }
+}
+
+.panel {
+  transition: flex 0.38s cubic-bezier(.4,0,.2,1),
+              transform 0.38s cubic-bezier(.4,0,.2,1);
+}
+
+.divider {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255,255,255,0.08) 20%,
+    rgba(255,255,255,0.14) 50%,
+    rgba(255,255,255,0.08) 80%,
+    transparent 100%
+  );
+  z-index: 20;
+  pointer-events: none;
+}
+
+.shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+/* ── Apply button ─────────────────────────────────────────── */
+.applyBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 28px;
+  border-radius: 12px;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.18s ease;
+  text-decoration: none;
+}
+.applyBtn:hover  { filter: brightness(1.18); transform: translateY(-1px) scale(1.04); }
+.applyBtn:active { transform: scale(0.96); }
+
+/* ── Pokémon battle box ───────────────────────────────────── */
+@keyframes pokeBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.pokeBox {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #f0f0f0;
+  border-top: 4px solid #1a1a1a;
+  padding: 16px 28px 28px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: #1a1a1a;
+  line-height: 2;
+  z-index: 9500;
+  min-height: 80px;
+  box-shadow: 0 -4px 0 #888;
+  white-space: pre-line;
+}
+.pokeBox::after {
+  content: '▶';
+  position: absolute;
+  right: 24px; bottom: 18px;
+  animation: pokeBlink 0.8s step-end infinite;
+}
+
+/* ── Nav round button ─────────────────────────────────────── */
+.navBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  cursor: pointer;
+  font-size: 22px;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  z-index: 30;
+}
+.navBtn:hover        { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.32); transform: scale(1.1); }
+.navBtn:active       { transform: scale(0.93); }
+.navBtn:focus-visible { outline: 2px solid #a78bfa; outline-offset: 3px; }
+
+/* ── Panel login badges ───────────────────────────────────── */
+.loginJam {
+  position: absolute;
+  top: 16px; left: 16px;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 4px;
+  background: rgba(8,4,18,0.82);
+  border: 1.5px solid #9b59b688;
+  color: #ce93f8;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 10px rgba(155,89,182,0.2), inset 0 0 6px rgba(155,89,182,0.08);
+  white-space: nowrap;
+}
+.loginJam::before { content: '▶ '; font-size: 8px; opacity: 0.7; }
+.loginJam:hover   { background: rgba(124,58,237,0.22); border-color: #ce93f8; box-shadow: 0 0 18px rgba(155,89,182,0.45), inset 0 0 8px rgba(155,89,182,0.15); }
+.loginJam:active  { transform: scale(0.96); }
+
+.loginHack {
+  position: absolute;
+  top: 16px; right: 16px;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: rgba(8,6,2,0.82);
+  backdrop-filter: blur(12px);
+  border: 1px solid #d4a84355;
+  color: #f5c842cc;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  white-space: nowrap;
+}
+.loginHack:hover  { background: rgba(212,168,67,0.15); border-color: #d4a843aa; box-shadow: 0 0 14px rgba(212,168,67,0.25); }
+.loginHack:active { transform: scale(0.96); }
+
+/* ── Bottom stack wrapper (pill + arrow) ──────────────────── */
+.pillWrapper {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Bottom pill nav ──────────────────────────────────────── */
+.pillNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: auto;
+  max-width: 720px;
+  background: rgba(10,10,20,0.65);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+  padding: 12px 20px;
+  gap: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
+  white-space: nowrap;
+}
+
+.pillIconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.13);
+  color: rgba(255,255,255,0.85);
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.18s;
+}
+.pillIconBtn:hover  { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.28); transform: scale(1.08); }
+.pillIconBtn:active { transform: scale(0.94); }
+
+.pillTitleLong  { display: inline; }
+.pillTitleShort { display: none; }
+
+.pillTitle {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  color: rgba(240,238,255,0.88);
+  pointer-events: none;
+  user-select: none;
+}
+
+.pillLoginBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid #D4A843;
+  color: #D4A843;
+  background: transparent;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.pillLoginBtn:hover  { background: #D4A843; color: #000; box-shadow: 0 0 18px rgba(212,168,67,0.45); }
+.pillLoginBtn:active { transform: scale(0.96); }
+
+/* ── Chevron inside pill ─────────────────────────────────────── */
+.pillChevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  padding: 0;
+  flex-shrink: 0;
+}
+.pillChevron:hover {
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.9);
+}
+
+/* ── Inline scroll arrow (mobile only, under hackathon CTA) ─── */
+.scrollArrowInline {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  transition: opacity 0.4s ease;
+  animation: lnd-arrow-bounce 2s ease-in-out infinite;
+}
+
+/* ── Login modal ──────────────────────────────────────────── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modalCard {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: rgba(12,10,24,0.97);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 24px;
+  padding: 40px 36px 36px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.65), 0 1px 0 rgba(255,255,255,0.06) inset;
+}
+
+.modalClose {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.4);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+}
+.modalClose:hover { color: #fff; background: rgba(255,255,255,0.08); }
+
+.modalEyebrow {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: rgba(212,168,67,0.7);
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.modalTitle {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  color: #f0eeff;
+  margin: 0 0 6px;
+}
+
+.modalSub {
+  font-size: 13px;
+  color: rgba(200,195,230,0.55);
+  margin: 0 0 28px;
+}
+
+.modalError {
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.35);
+  color: #fca5a5;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+.modalGroup { margin-bottom: 18px; }
+
+.modalLabel {
+  display: block;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(180,175,210,0.65);
+  margin-bottom: 7px;
+  text-transform: uppercase;
+}
+
+.modalInput {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  color: #f0eeff;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+.modalInput:focus { border-color: rgba(155,89,182,0.6); box-shadow: 0 0 0 3px rgba(124,58,237,0.12); }
+
+.modalPwWrap { position: relative; }
+
+.modalEye {
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+.modalEye:hover { opacity: 1; }
+
+.modalSubmit {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.18s;
+  margin-top: 8px;
+}
+.modalSubmit:hover    { filter: brightness(1.15); }
+.modalSubmit:active   { transform: scale(0.98); }
+.modalSubmit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.modalRegister {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 13px;
+  color: rgba(200,195,230,0.5);
+}
+.modalRegister a       { color: rgba(155,89,182,0.9); text-decoration: none; font-weight: 600; }
+.modalRegister a:hover { color: #ce93f8; text-decoration: underline; }
+
+/* ── Mobile: stack panels ─────────────────────────────────── */
+@media (max-width: 767px) {
+  .split  { flex-direction: column !important; }
+  .panel  { flex: 1 1 50% !important; transform: none !important; }
+
+  /* Mobile: move nav arrows to panel sides */
+  .navBtnJam,
+  .navBtnHack {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .navBtnJam { left: 16px; }
+  .navBtnHack { right: 16px; }
+
+  .divider {
+    top: 50%; bottom: auto; left: 0; right: 0;
+    width: auto; height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.1) 30%,
+      rgba(255,255,255,0.14) 50%,
+      rgba(255,255,255,0.1) 70%,
+      transparent
+    );
+  }
+  .pillWrapper    { bottom: 12px; }
+  .pillNav        { width: calc(100vw - 32px); max-width: calc(100vw - 32px); padding: 9px 14px; gap: 10px; }
+  .pillTitle      { font-size: 11px; letter-spacing: 0.08em; }
+  .pillLoginBtn   { font-size: 10px; padding: 7px 13px; letter-spacing: 0.08em; flex-shrink: 0; }
+  .scrollArrowInline { display: none; }
+}
+@media (max-width: 380px) {
+  .pillTitleLong  { display: none; }
+  .pillTitleShort { display: inline; }
+  .pillNav        { gap: 8px; padding: 8px 12px; }
+  .pillLoginBtn   { padding: 6px 11px; font-size: 9px; }
+}

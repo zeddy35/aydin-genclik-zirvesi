@@ -189,16 +189,19 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
       icon: "⏱️",
       title: "48 Saatlik Maraton",
       desc: "Hızlı düşün, hızlı geliştir, hızlı sun. Jam ruhu: 'ship it!'",
+      bullets: ["Takım kur, prototip geliştir", "48 saatte sıfırdan demo", "Her motor, her dil kabul"],
     },
     {
       icon: "🧩",
       title: "Takım & Roller",
       desc: "Coder, artist, designer, sound... Her rol bir 'party member'.",
+      bullets: ["1–5 kişilik takımlar", "Solo katılım + eşleşme akışı", "Mentor & atölye desteği"],
     },
     {
       icon: "🏆",
       title: "Ödüller & Eğlence",
       desc: "Sürpriz ödüller, mini-challenge'lar, sahnede demo keyfi.",
+      bullets: ["Nakit & teknik ödüller", "Anlık mini-challenge'lar", "Sahne demo sunumu"],
     },
   ];
 
@@ -268,7 +271,6 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
 
         <div className={styles.container}>
           {/* ── TOP NAV ── */}
-          <button onClick={onBack} className={styles.backBtn}>← Geri</button>
           <div className={styles.topNav}>
             <div className={styles.topNavInfo}>
               <div className={styles.topNavBadge}>
@@ -316,6 +318,11 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
                 <div className={styles.featureIcon}>{f.icon}</div>
                 <div className={styles.featureTitle}>{f.title}</div>
                 <div className={styles.featureDesc}>{f.desc}</div>
+                <ul className={styles.featureBullets}>
+                  {f.bullets.map((b) => (
+                    <li key={b} className={styles.featureBulletItem}>{b}</li>
+                  ))}
+                </ul>
               </div>
             ))}
           </section>
@@ -498,7 +505,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
                 <strong className={styles.ctaDescStrong}>üretmek</strong> burada kural.
               </p>
               <div className={styles.ctaButtons}>
-                <Link href="/apply/gamejam" className={styles.btnPrimaryWhite}>Hemen Başvur 🚀</Link>
+                <Link href="/auth/register" className={styles.btnPrimaryWhite}>Hemen Başvur 🚀</Link>
                 <button className={styles.btnOutlineDark}>Detaylar</button>
               </div>
             </div>

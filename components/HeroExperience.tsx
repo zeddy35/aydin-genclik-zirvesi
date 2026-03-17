@@ -55,12 +55,14 @@ export function HeroExperience() {
 
   // CSS transform offset – starts at MidPage (physicalIndex 1 → -100vw)
   const [offset, setOffset] = useState(`-${midPage.physicalIndex * 100}vw`);
+  const [currentId, setCurrentId] = useState<"mid" | "gamejam" | "hackathon">("mid");
 
   // ── Navigate to a linked-list node ──
   const navigateTo = useCallback((node: PanelNode) => {
     if (isAnimating.current || node.id === currentNodeRef.current.id) return;
     isAnimating.current = true;
     currentNodeRef.current = node;
+    setCurrentId(node.id);
     setOffset(`-${node.physicalIndex * 100}vw`);
 
     // Reset target panel scroll & unlock after CSS transition ends
@@ -170,7 +172,7 @@ export function HeroExperience() {
           className="w-screen h-screen shrink-0 overflow-y-auto overflow-x-hidden"
           style={{ WebkitOverflowScrolling: "touch" }}
         >
-          <LandingView onJamClick={goToJam} onHackClick={goToHack} />
+          <LandingView onJamClick={goToJam} onHackClick={goToHack} isActive={currentId === "mid"} />
           <SummitInfo />
           <Footer />
         </section>

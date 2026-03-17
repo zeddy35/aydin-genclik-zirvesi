@@ -21,11 +21,11 @@
   --glow-cyan: 0 0 15px rgba(0, 245, 255, 0.4);
   --glow-yellow: 0 0 15px rgba(255, 228, 77, 0.4);
 
-  /* Typography */
-  --font-display: 'Press Start 2P', monospace;
-  --font-heading: 'Outfit', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Typography (arcade-specific — prefixed to avoid conflict with Tailwind @theme) */
+  --arcade-font-display: 'Press Start 2P', monospace;
+  --arcade-font-heading: 'Outfit', sans-serif;
+  --arcade-font-body: 'DM Sans', sans-serif;
+  --arcade-font-mono: 'JetBrains Mono', monospace;
 }
 
 /* Keyframe Animations */
@@ -146,8 +146,6 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-body);
-  color: var(--text-primary);
 }
 
 /* Scroll behavior */
@@ -201,7 +199,7 @@ html {
 }
 
 .neon-button {
-  font-family: var(--font-heading);
+  font-family: var(--arcade-font-heading);
   font-weight: 700;
   letter-spacing: 0.02em;
   transition: all 0.2s ease;

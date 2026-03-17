@@ -82,7 +82,7 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
             <div className="flex flex-col gap-3 sm:gap-4 items-center">
               <div className="bg-white rounded-xl sm:rounded-2xl px-6 sm:px-10 py-3 sm:py-4 font-bold hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 motion-reduce:hover:scale-100">
                 <Link
-                  href="/gamejam/basvur"
+                  href="/auth/register"
                   className="px-4 sm:px-10 py-2 sm:py-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-bold rounded-xl sm:rounded-2xl text-base sm:text-lg hover:shadow-lg transition-all duration-200"
                 > 
                   Başvur
@@ -172,7 +172,7 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
             <div className="flex flex-col gap-3 sm:gap-4 items-center">
               <div className="bg-white rounded-xl sm:rounded-2xl px-6 sm:px-10 py-3 sm:py-4 font-bold hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 motion-reduce:hover:scale-100">
                 <Link
-                  href="/hackathon/basvur"
+                  href="/auth/register"
                   className="px-4 sm:px-6 py-2 sm:py-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-bold rounded-xl sm:rounded-2xl text-base sm:text-lg transition-all duration-200"
                 >
                   Başvur

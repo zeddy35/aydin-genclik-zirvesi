@@ -396,7 +396,7 @@ export default function RegisterPageContent() {
                     <input type="checkbox" {...register('dahaOnceKatildi')} />
                     <span className="reg-slider" />
                   </div>
-                  <span style={{ fontSize: 14, color: '#c8c4e0' }}>Daha önce AGZ/GDG/OTT etkinliğine katıldım</span>
+                  <span style={{ fontSize: 14, color: '#c8c4e0' }}>Daha önce GDG/OTT/HSD etkinliğine katıldım</span>
                 </label>
               </div>
               {watchedDahaOnce && (
@@ -459,16 +459,36 @@ export default function RegisterPageContent() {
               {errors.kuralOnay && <span className="reg-error" style={{ marginBottom: 8 }}>{errors.kuralOnay.message}</span>}
               <label className="reg-cb-wrap" style={{ marginTop: 4 }}>
                 <input type="checkbox" className="reg-cb" {...register('iletisimIzni')} />
-                <span className="reg-cb-label" style={{ color: '#6b6485' }}>GDG on Campus ve OTT&apos;den haberler almak istiyorum <span style={{ fontSize: 12 }}>(opsiyonel)</span></span>
+                <span className="reg-cb-label" style={{ color: '#6b6485' }}>GDG on Campus, HSD ve OTT&apos;den haberler almak istiyorum <span style={{ fontSize: 12 }}>(opsiyonel)</span></span>
               </label>
               <hr className="reg-divider" />
               {globalHata && <div className="reg-global-error">{globalHata}</div>}
-              {!watchedEtkinlik
-                ? <button type="button" className="reg-btn-off" disabled>Etkinlik Türü Seçin</button>
-                : watchedEtkinlik === 'hackathon'
-                  ? <button type="submit" className="reg-btn-hack" disabled={isSubmitting}>{isSubmitting ? '⟳ GÖNDERİLİYOR...' : 'DOSYAYI TESLİM ET →'}</button>
-                  : <button type="submit" className="reg-btn-jam" disabled={isSubmitting}>{isSubmitting ? '⟳ GÖNDERİLİYOR...' : 'BAŞVURUYU GÖNDER →'}</button>
-              }
+
+              {/* ── Başvurular henüz açılmadı ── */}
+              <div style={{
+                background: 'rgba(245, 158, 11, 0.08)',
+                border: '1px solid rgba(245, 158, 11, 0.3)',
+                borderRadius: 10,
+                padding: '14px 18px',
+                marginBottom: 12,
+                display: 'flex',
+                gap: 12,
+                alignItems: 'flex-start',
+              }}>
+                <span style={{ fontSize: 18, lineHeight: 1, flexShrink: 0 }}>🔒</span>
+                <div>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#f59e0b', letterSpacing: '0.05em' }}>
+                    BAŞVURULAR HENÜZ AÇILMADI
+                  </p>
+                  <p style={{ margin: '4px 0 0', fontSize: 12, color: '#92836a', lineHeight: 1.6 }}>
+                    Site hazırlık aşamasında. Başvurular açıldığında buradan kayıt olabilirsin. Takipte kal!
+                  </p>
+                </div>
+              </div>
+
+              <button type="button" className="reg-btn-off" disabled style={{ opacity: 0.45, cursor: 'not-allowed' }}>
+                BAŞVURULAR YAKINDA AÇILACAK
+              </button>
               <p style={{ textAlign: 'center', marginTop: 16, fontSize: 13, color: '#4a4568' }}>
                 Zaten hesabın var mı?{' '}
                 <a href="/auth/login" style={{ color: '#7c3aed', textDecoration: 'none' }}>Giriş Yap →</a>

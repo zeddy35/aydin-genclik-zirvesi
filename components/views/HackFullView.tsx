@@ -1,86 +1,546 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useEasterEggs } from "@/components/EasterEggContext";
 import { cn } from "@/lib/cn";
 
-interface HackFullViewProps {
-  onBack: () => void;
+/* ════════════════════════════════════════════════════════════════
+   TYPES
+════════════════════════════════════════════════════════════════ */
+interface HackFullViewProps { onBack: () => void; }
+
+interface Person {
+  id:           string;
+  dossierCode:  string;
+  codename:     string;
+  name:         string;
+  role:         string;
+  org?:         string;
+  status:       "active" | "suspect";
+  statusLabel:  string;
+  description:  string;
+  tags:         string[];
+  image:        string;
 }
 
-const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+/* ════════════════════════════════════════════════════════════════
+   INTELLIGENCE DATA
+════════════════════════════════════════════════════════════════ */
+const PEOPLE: Person[] = [
+  {
+    id:          "dino",
+    dossierCode: "HCK-AYD-01",
+    codename:    "AGT-DINO",
+    name:        "Dedektif Dino",
+    role:        "Baş Araştırmacı",
+    org:         "GDG on Campus ADÜ",
+    status:      "active",
+    statusLabel: "Aktif",
+    description:
+      "24 saatlik soruşturmanın lideri. Ekiplere rehberlik eder, mentor ağını koordine eder ve projelerin nihai değerlendirmesini yürütür. Her kritik anda sahadaki ilk ajan.",
+    tags: ["Mentörlük", "Yazılım", "Liderlik"],
+    image: "/dino/dino_bw.png",
+  },
+  {
+    id:          "early",
+    dossierCode: "HCK-AYD-00",
+    codename:    "ŞPH-EARLY",
+    name:        "Early Akses",
+    role:        "Şüpheli · Vaka Merkezi",
+    status:      "suspect",
+    statusLabel: "Şüpheli",
+    description:
+      "Bu vakayı açan tetikleyici figür. Tüm ekipler 24 saat boyunca bu şüphelinin bıraktığı kanıtları analiz edecek, prototip üretecek ve jüri karşısında çözümlerini kanıtlayacak.",
+    tags: ["Problem Alanı", "MVP Hedefi", "Bilinmez"],
+    image: "/early-akses/early_bw.png",
+  },
+  {
+    id:          "beta",
+    dossierCode: "HCK-AYD-02",
+    codename:    "AGT-BETA",
+    name:        "Beta",
+    role:        "Saha Ajanı",
+    org:         "OTT Kulübü",
+    status:      "active",
+    statusLabel: "Aktif",
+    description:
+      "Saha operasyonlarını yürüten, ekiplerin ihtiyaçlarını karşılayan ve lojistiği koordine eden destek ajanı. Her kriz anında ilk devreye giren, kesintisiz çalışan ajan.",
+    tags: ["Koordinasyon", "Lojistik", "Saha"],
+    image: "/beta/beta_bw.png",
+  },
+];
 
-function ScrollReveal() {
-  useEffect(() => {
-    const style = document.createElement("style");
-    style.textContent = `
-      .hck-reveal { opacity:0; transform:translateY(14px); transition: opacity .5s ease, transform .5s ease; }
-      .hck-reveal.in { opacity:1; transform:translateY(0); }
-      .hck-faq-body { max-height:0; overflow:hidden; transition: max-height .3s ease; padding:0 16px; }
-      .hck-faq-body.open { max-height:240px; padding:0 16px 14px; }
-      @keyframes hck-blink { 0%,100%{opacity:1} 50%{opacity:.2} }
-      .hck-blink { animation: hck-blink 1.4s ease-in-out infinite; }
-      @keyframes hck-stamp { 0%{opacity:0;transform:rotate(-12deg) scale(2)} 15%{opacity:.9;transform:rotate(-12deg) scale(1)} 80%{opacity:.9;transform:rotate(-12deg) scale(1)} 100%{opacity:0;transform:rotate(-12deg) scale(1)} }
-      .hck-stamp-anim { animation: hck-stamp 2.5s forwards; }
-      @keyframes mc-drop { 0%{transform:translateY(-28px);opacity:0} 40%{transform:translateY(0);opacity:1} 55%{transform:translateY(-6px)} 70%{transform:translateY(0)} 90%{transform:translateY(0);opacity:1} 100%{transform:translateY(0);opacity:0} }
-      .mc-block { animation: mc-drop 1.8s ease forwards; position:absolute; top:-32px; right:0; pointer-events:none; }
-      @keyframes mc-cell-flash { 0%,100%{opacity:1} 50%{opacity:0.4} }
-      .mc-cell-flash { animation: mc-cell-flash 0.25s ease 3; }
-    `;
-    document.head.appendChild(style);
+/* ════════════════════════════════════════════════════════════════
+   PAGE DATA
+════════════════════════════════════════════════════════════════ */
+const KONAMI = [
+  "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
+  "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a",
+];
 
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "https://fonts.googleapis.com/css2?family=Special+Elite&family=Share+Tech+Mono&family=Oswald:wght@700&display=swap";
-    document.head.appendChild(link);
+const INTEL_STATS = [
+  { label: "Bölge",  value: "Aydın"      },
+  { label: "Süre",   value: "24 Saat"    },
+  { label: "Tarih",  value: "5–6 Mayıs"  },
+  { label: "Giriş",  value: "Ücretsiz", mcEgg: true },
+] as const;
 
-    const els = document.querySelectorAll(".hck-reveal");
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => {
-        if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); }
-      }),
-      { threshold: 0.08 }
+const PHASES = [
+  { day: "GÜN 1 · 5 MAYIS", n: "01", label: "AÇILIŞ",      note: "Brifing · takım eşleşmesi · problem alanı açıklanıyor.", accent: false },
+  { day: "GÜN 1 · 5 MAYIS", n: "02", label: "İNŞA",        note: "Kod · tasarım · mentor checkpoint'leri.",                accent: false },
+  { day: "GÜN 2 · 6 MAYIS", n: "03", label: "SON SPRINT",  note: "Geliştirme tamamlanıyor · prototip hazırlanıyor.",       accent: false },
+  { day: "GÜN 2 · 6 MAYIS", n: "04", label: "KAPANIŞ",     note: "Demo · pitch · jüri değerlendirmesi · sonuçlar.",       accent: true  },
+];
+
+const FAQS = [
+  { q: "Takımım yok, ne yapacağım?",         a: "Sorun değil. Eşleşme akışı var — rolüne göre ekip bulmana yardım ediyoruz. Tek başına gelen çok kişi oluyor." },
+  { q: "Proje fikrim yok, gelebilir miyim?", a: "Evet. Problem alanları ve ipucu havuzu paylaşılacak. Mentorlar fikirleri netleştirmen için yanında." },
+  { q: "Ne teslim etmem gerekiyor?",         a: "Çalışan demo (MVP), kısa sunum ve kanıt niteliğinde ekranlar. Jüri tutarlılık, etki ve uygulanabilirliğe bakar." },
+  { q: "Hackathon ücretsiz mi?",             a: "Evet, tamamen ücretsiz. GDG on Campus ADÜ, OTT ve HSD iş birliğiyle düzenleniyor." },
+];
+
+/* ════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+════════════════════════════════════════════════════════════════ */
+const C = {
+  bg:          "#070709",
+  surf:        "#0c0c12",
+  surf2:       "#101018",
+  border:      "#1c1c28",
+  borderHi:    "#2a2a3a",
+  red:         "#c0392b",
+  redDim:      "#7a1a1a",
+  redText:     "#e05050",
+  amber:       "#d97706",
+  amberText:   "#fbbf24",
+  gold:        "#c8a84b",
+  txt:         "#ede9f8",
+  txtSec:      "#918da8",
+  txtMuted:    "#524e68",
+  txtCode:     "#3c3a52",
+  ui:          "'Syne', sans-serif",
+  mono:        "'Share Tech Mono', monospace",
+  display:     "'Oswald', sans-serif",
+} as const;
+
+/* ════════════════════════════════════════════════════════════════
+   SHARED MICRO-COMPONENTS
+════════════════════════════════════════════════════════════════ */
+function StatusBadge({ status, label }: { status: Person["status"]; label: string }) {
+  const isActive = status === "active";
+  const dot      = isActive ? C.redText  : C.amberText;
+  const bg       = isActive ? "#180b0b"  : "#170e00";
+  const bdr      = isActive ? "#3a1212"  : "#3a2800";
+  return (
+    <span
+      className="inline-flex items-center gap-1.5 rounded-sm"
+      style={{ background: bg, border: `1px solid ${bdr}`, padding: "3px 10px" }}
+    >
+      <span className="relative flex h-[5px] w-[5px] shrink-0">
+        {isActive && (
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-50"
+            style={{ background: dot }} />
+        )}
+        <span className="relative inline-flex rounded-full h-[5px] w-[5px]" style={{ background: dot }} />
+      </span>
+      <span style={{ fontFamily: C.ui, fontWeight: 600, fontSize: 11, letterSpacing: "0.1em",
+        textTransform: "uppercase", color: dot }}>
+        {label}
+      </span>
+    </span>
+  );
+}
+
+function Tag({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="rounded-sm"
+      style={{ fontFamily: C.ui, fontWeight: 500, fontSize: 12, color: C.txtMuted,
+        background: C.surf2, border: `1px solid ${C.border}`, padding: "4px 10px" }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function SectionHeader({ left, right }: { left: string; right?: string }) {
+  return (
+    <div className="flex items-center justify-between px-5 lg:px-6 py-3.5">
+      <span style={{ fontFamily: C.ui, fontWeight: 500, fontSize: 11,
+        letterSpacing: "0.16em", textTransform: "uppercase", color: C.txtCode }}>
+        {left}
+      </span>
+      {right && (
+        <span style={{ fontFamily: C.mono, fontSize: 10,
+          letterSpacing: "0.16em", textTransform: "uppercase", color: C.txtCode }}>
+          {right}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function Divider() {
+  return <div className="w-full h-px" style={{ background: C.border }} />;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MAIN CASE DISPLAY  (left panel — updates on card selection)
+════════════════════════════════════════════════════════════════ */
+function MainCaseDisplay({ person, visible }: { person: Person; visible: boolean }) {
+  const suspect = person.status === "suspect";
+
+  return (
+    <div
+      className="relative rounded-lg overflow-hidden"
+      style={{
+        background: C.surf,
+        border: `1px solid ${suspect ? C.redDim : C.border}`,
+        transition: "border-color 0.35s ease",
+      }}
+    >
+      {/* Accent bar */}
+      <div className="h-[2px] w-full" style={{
+        background: suspect
+          ? `linear-gradient(90deg, ${C.red} 0%, ${C.redDim} 60%, transparent 100%)`
+          : `linear-gradient(90deg, transparent 0%, ${C.gold}44 50%, transparent 100%)`,
+        transition: "background 0.35s ease",
+      }} />
+
+      {/* Animated content */}
+      <div
+        style={{
+          opacity:    visible ? 1 : 0,
+          transform:  visible ? "translateY(0)" : "translateY(10px)",
+          transition: "opacity 0.22s ease, transform 0.22s ease",
+          padding:    "clamp(20px, 3vw, 32px)",
+        }}
+      >
+        {/* Header row: dossier code + status */}
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <div style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: "0.18em",
+              textTransform: "uppercase", color: C.txtCode, marginBottom: 4 }}>
+              Dosya — {person.dossierCode}
+            </div>
+            <div style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.14em",
+              textTransform: "uppercase", color: C.border }}>
+              {person.codename}
+            </div>
+          </div>
+          <StatusBadge status={person.status} label={person.statusLabel} />
+        </div>
+
+        {/* Identity block: image + name/role */}
+        <div className="flex items-start gap-5 mb-6">
+          {/* Mugshot */}
+          <div
+            className="shrink-0 rounded-lg overflow-hidden"
+            style={{
+              width: "clamp(72px, 12vw, 108px)",
+              height: "clamp(72px, 12vw, 108px)",
+              background: C.surf2,
+              border: `1px solid ${suspect ? C.redDim : C.border}`,
+              transition: "border-color 0.35s ease",
+            }}
+          >
+            <Image
+              src={person.image}
+              alt={person.name}
+              width={108}
+              height={108}
+              className="w-full h-full object-contain"
+              style={{ opacity: suspect ? 0.8 : 0.75 }}
+            />
+          </div>
+
+          {/* Name stack */}
+          <div className="min-w-0 pt-1">
+            <h2
+              style={{
+                fontFamily: C.display,
+                fontSize:   "clamp(30px, 4.5vw, 58px)",
+                lineHeight: 0.95,
+                letterSpacing: "-0.01em",
+                color: suspect ? C.redText : C.txt,
+                marginBottom: 10,
+                transition: "color 0.35s ease",
+              }}
+            >
+              {person.name}
+            </h2>
+            <div style={{ fontFamily: C.ui, fontWeight: 500, fontSize: "clamp(13px, 1.6vw, 15px)",
+              color: C.txtSec, marginBottom: 4 }}>
+              {person.role}
+            </div>
+            {person.org && (
+              <div style={{ fontFamily: C.ui, fontSize: 13, color: C.txtMuted }}>
+                {person.org}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Separator */}
+        <div className="mb-5 h-px" style={{ background: C.border }} />
+
+        {/* Description */}
+        <p style={{
+          fontFamily: C.ui,
+          fontSize:   "clamp(14px, 1.5vw, 15px)",
+          lineHeight: 1.85,
+          color:      C.txtSec,
+          marginBottom: 20,
+        }}>
+          {person.description}
+        </p>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2">
+          {person.tags.map((t) => <Tag key={t}>{t}</Tag>)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CHARACTER CARD  (right sidebar + mobile strip)
+════════════════════════════════════════════════════════════════ */
+function CharacterCard({
+  person,
+  isActive,
+  onSelect,
+  compact = false,
+}: {
+  person:   Person;
+  isActive: boolean;
+  onSelect: () => void;
+  compact?: boolean;
+}) {
+  const suspect  = person.status === "suspect";
+  const dotColor = suspect ? C.amberText : C.redText;
+
+  /* ── Compact variant: mobile horizontal strip ── */
+  if (compact) {
+    return (
+      <button
+        onClick={onSelect}
+        aria-pressed={isActive}
+        className="shrink-0 text-left rounded-lg overflow-hidden transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        style={{
+          width:      192,
+          fontFamily: C.ui,
+          background: isActive ? (suspect ? "#130909" : "#0d0c16") : C.surf,
+          border:     `1px solid ${isActive ? (suspect ? C.red : C.gold + "80") : C.border}`,
+          ["--tw-ring-color" as string]: C.gold,
+          ["--tw-ring-offset-color" as string]: C.bg,
+        }}
+      >
+        {/* Active left bar */}
+        {isActive && (
+          <div className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-lg"
+            style={{ background: suspect ? C.red : C.gold }} />
+        )}
+        <div className={cn("flex items-center gap-3 p-3", isActive && "pl-4")}>
+          <div className="shrink-0 rounded-md overflow-hidden" style={{
+            width: 44, height: 44, background: C.surf2, border: `1px solid ${C.border}`,
+          }}>
+            <Image src={person.image} alt={person.name} width={44} height={44}
+              className="w-full h-full object-contain"
+              style={{ opacity: isActive ? 0.9 : 0.55 }} />
+          </div>
+          <div className="min-w-0">
+            <div className="truncate" style={{ fontWeight: 600, fontSize: 13,
+              color: isActive ? (suspect ? C.redText : C.txt) : C.txtSec }}>
+              {person.name}
+            </div>
+            <div className="truncate" style={{ fontSize: 11, color: C.txtMuted, marginTop: 2 }}>
+              {person.role}
+            </div>
+          </div>
+          <div className="shrink-0 rounded-full h-[5px] w-[5px] ml-auto"
+            style={{ background: dotColor, opacity: isActive ? 1 : 0.35 }} />
+        </div>
+      </button>
     );
-    els.forEach((el) => obs.observe(el));
-    return () => { obs.disconnect(); document.head.removeChild(style); };
-  }, []);
-  return null;
+  }
+
+  /* ── Full variant: desktop sidebar ── */
+  return (
+    <button
+      onClick={onSelect}
+      aria-pressed={isActive}
+      className="relative w-full text-left rounded-lg overflow-hidden transition-all duration-200 cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+      style={{
+        fontFamily:  C.ui,
+        background:  isActive ? (suspect ? "#130909" : "#0d0c16") : C.surf,
+        border:      `1px solid ${isActive ? (suspect ? C.red : C.gold + "80") : C.border}`,
+        boxShadow:   isActive
+          ? `0 4px 24px rgba(0,0,0,0.4), inset 0 0 0 0 transparent`
+          : "none",
+        ["--tw-ring-color" as string]: C.gold,
+        ["--tw-ring-offset-color" as string]: C.bg,
+      }}
+      onMouseEnter={(e) => {
+        if (!isActive) (e.currentTarget as HTMLElement).style.borderColor = C.borderHi;
+      }}
+      onMouseLeave={(e) => {
+        if (!isActive) (e.currentTarget as HTMLElement).style.borderColor = C.border;
+      }}
+    >
+      {/* Active: vertical left accent */}
+      <div
+        className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l-lg transition-opacity duration-200"
+        style={{
+          background: suspect ? C.red : C.gold,
+          opacity:    isActive ? 1 : 0,
+        }}
+      />
+
+      <div className={cn("flex items-center gap-4 p-4 lg:p-4", isActive && "pl-5")}>
+        {/* Mugshot */}
+        <div
+          className="shrink-0 rounded-md overflow-hidden transition-transform duration-200 group-hover:scale-[1.03]"
+          style={{
+            width:      64,
+            height:     64,
+            background: C.surf2,
+            border:     `1px solid ${C.border}`,
+          }}
+        >
+          <Image
+            src={person.image}
+            alt={person.name}
+            width={64}
+            height={64}
+            className="w-full h-full object-contain transition-opacity duration-200"
+            style={{ opacity: isActive ? 0.9 : 0.5 }}
+          />
+        </div>
+
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <div
+            className="truncate transition-colors duration-200"
+            style={{
+              fontWeight: 700,
+              fontSize:   15,
+              lineHeight: 1.2,
+              marginBottom: 4,
+              color: isActive ? (suspect ? C.redText : C.txt) : C.txtSec,
+            }}
+          >
+            {person.name}
+          </div>
+          <div className="truncate" style={{ fontSize: 13, color: C.txtMuted, marginBottom: 3 }}>
+            {person.role}
+          </div>
+          {person.org && (
+            <div className="truncate" style={{ fontSize: 12, color: C.txtCode }}>
+              {person.org}
+            </div>
+          )}
+        </div>
+
+        {/* Status dot */}
+        <div
+          className="shrink-0 rounded-full h-[6px] w-[6px] transition-opacity duration-200"
+          style={{ background: dotColor, opacity: isActive ? 1 : 0.3 }}
+        />
+      </div>
+    </button>
+  );
 }
 
-const FAQ_ITEMS = [
-  { q: "Takımım yok, ne yapacağım?", a: "Sorun değil. Eşleşme akışı var — rolüne göre ekip bulmana yardım ediyoruz. Tek başına gelen çok kişi oluyor.", hint: '// "İz tek başına da sürülür." — Dino' },
-  { q: "Proje fikrim yok. Yine de gelebilir miyim?", a: "Evet. Problem alanları ve ipucu havuzu paylaşılacak. Mentorlar fikirleri netleştirmen için yanında.", hint: "// Bazen cevap soruda saklıdır." },
-  { q: "Ne teslim etmem gerekiyor?", a: "Çalışan demo (MVP), kısa sunum ve kanıt niteliğinde ekranlar. Jüri tutarlılık, etki ve uygulanabilirliğe bakar.", hint: '// "Kanıt yoksa iddia yok." — Dino' },
-  { q: "Hackathon ücretsiz mi?", a: "Evet, tamamen ücretsiz. GDG on Campus ADÜ, OTT ve HSD iş birliğiyle düzenleniyor. Sadece isteğin ve fikrin yeter.", hint: "// Erişim seviyesi: Ücretsiz." },
-];
+/* ════════════════════════════════════════════════════════════════
+   FAQ ITEM
+════════════════════════════════════════════════════════════════ */
+function FAQItem({
+  item, open, onToggle,
+}: {
+  item: { q: string; a: string };
+  open: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div className="border-b last:border-b-0" style={{ borderColor: C.border }}>
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center justify-between gap-4 px-5 lg:px-6 py-4 text-left bg-transparent border-none cursor-pointer group"
+      >
+        <span
+          className="transition-colors duration-150 group-hover:text-[#ede9f8]"
+          style={{ fontFamily: C.ui, fontSize: "clamp(13px, 1.4vw, 15px)",
+            lineHeight: 1.5, color: C.txtSec }}
+        >
+          {item.q}
+        </span>
+        <span
+          className="shrink-0 text-[20px] leading-none transition-all duration-200"
+          style={{
+            fontFamily: C.ui,
+            color:    open ? C.gold    : C.txtMuted,
+            transform: open ? "rotate(45deg)" : "rotate(0deg)",
+          }}
+        >
+          +
+        </span>
+      </button>
+      <div
+        className="overflow-hidden"
+        style={{
+          maxHeight:  open ? "180px" : "0px",
+          opacity:    open ? 1 : 0,
+          transition: "max-height 0.3s ease, opacity 0.25s ease",
+        }}
+      >
+        <p
+          className="px-5 lg:px-6 pb-4"
+          style={{ fontFamily: C.ui, fontSize: "clamp(13px, 1.3vw, 14px)",
+            lineHeight: 1.8, color: C.txtMuted }}
+        >
+          {item.a}
+        </p>
+      </div>
+    </div>
+  );
+}
 
-const TIMELINE = [
-  { n: "01", lbl: "AÇILIŞ",  desc: "Brifing, takım eşleşmesi, hedef belirleme.",    red: false },
-  { n: "02", lbl: "İNŞA",    desc: "Kod, tasarım, mentor checkpoint'leri.",           red: false },
-  { n: "03", lbl: "KAPANIŞ", desc: "Pitch ve canlı demo. Jüri değerlendirmesi.",     red: true  },
-];
-
-const CHARS = [
-  { img: "/dino/dino_bw.png",          name: "DEDEKTİF DİNO", org: "GDG on Campus ADÜ", red: false },
-  { img: "/early-akses/early_bw.png",  name: "EARLY AKSES",   org: "Şüpheli",            red: true  },
-  { img: "/beta/beta_bw.png",          name: "BETA",           org: "OTT Kulübü",         red: false },
-];
-
+/* ════════════════════════════════════════════════════════════════
+   MAIN COMPONENT
+════════════════════════════════════════════════════════════════ */
 export function HackFullView({ onBack }: HackFullViewProps) {
-  const [openFaq,    setOpenFaq]    = useState<number | null>(null);
-  const [showKonami, setShowKonami] = useState(false);
-  const [showStamp,  setShowStamp]  = useState(false);
+
+  /* ── Character selection ─────────────────────────────────────── */
+  const [activePerson,   setActivePerson]   = useState<Person>(PEOPLE[0]);
+  const [contentVisible, setContentVisible] = useState(true);
+
+  const handleSelect = useCallback((person: Person) => {
+    if (person.id === activePerson.id) return;
+    setContentVisible(false);
+    setTimeout(() => {
+      setActivePerson(person);
+      setContentVisible(true);
+    }, 170);
+  }, [activePerson.id]);
+
+  /* ── FAQ ─────────────────────────────────────────────────────── */
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  /* ── Easter eggs ─────────────────────────────────────────────── */
+  const [konamiIdx,   setKonamiIdx]   = useState(0);
+  const [showKonami,  setShowKonami]  = useState(false);
+  const [showStamp,   setShowStamp]   = useState(false);
   const [stampClicks, setStampClicks] = useState(0);
-  const [konamiIdx,  setKonamiIdx]  = useState(0);
   const [showMcBlock, setShowMcBlock] = useState(false);
-  const [mcFlash,    setMcFlash]    = useState(false);
-  const mcFireRef   = useRef(false);
-  const mcTimerRef  = useRef<NodeJS.Timeout | null>(null);
+  const [mcFlash,     setMcFlash]     = useState(false);
+  const mcFireRef  = useRef(false);
+  const mcTimerRef = useRef<NodeJS.Timeout | null>(null);
   const { markEggSeen } = useEasterEggs();
 
-  // ── Konami ──
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       setKonamiIdx((idx) => {
@@ -96,7 +556,6 @@ export function HackFullView({ onBack }: HackFullViewProps) {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  // ── Stamp (hidden trigger on file number — 5 clicks) ──
   const handleStampClick = () => {
     const next = stampClicks + 1;
     setStampClicks(next);
@@ -107,16 +566,15 @@ export function HackFullView({ onBack }: HackFullViewProps) {
     }
   };
 
-  // ── Minecraft (hover 1.5s on "Ücretsiz") ──
   const handleMcEnter = useCallback(() => {
     if (mcFireRef.current) return;
     mcTimerRef.current = setTimeout(() => {
       mcFireRef.current = true;
       setMcFlash(true);
-      setTimeout(() => setMcFlash(false), 800);
+      setTimeout(() => setMcFlash(false), 700);
       setShowMcBlock(true);
       markEggSeen("egg-minecraft");
-      setTimeout(() => { setShowMcBlock(false); mcFireRef.current = false; }, 2400);
+      setTimeout(() => { setShowMcBlock(false); mcFireRef.current = false; }, 2200);
     }, 1500);
   }, [markEggSeen]);
 
@@ -124,268 +582,427 @@ export function HackFullView({ onBack }: HackFullViewProps) {
     if (mcTimerRef.current) { clearTimeout(mcTimerRef.current); mcTimerRef.current = null; }
   }, []);
 
+  /* ── Render ──────────────────────────────────────────────────── */
   return (
     <>
-      <ScrollReveal />
-
-      {/* ── KONAMI MODAL ── */}
+      {/* ─── KONAMI OVERLAY ───────────────────────────────────── */}
       {showKonami && (
         <div
           onClick={() => setShowKonami(false)}
           className="fixed inset-0 z-[9998] bg-black/95 flex flex-col items-center justify-center gap-5 p-6 cursor-pointer"
         >
-          <p className="font-mono-tech text-[11px] [letter-spacing:0.3em] uppercase text-[#664]">↑↑↓↓←→←→BA</p>
-          <p className="font-display text-[clamp(32px,8vw,64px)] [letter-spacing:0.1em] uppercase text-paper">Konami Kodu!</p>
-          <div className="flex gap-8">
-            <Image src="/dino/dino1.png" alt="Dino" width={200} height={48} className="object-contain" />
-            <Image src="/beta/beta_kaban.png" alt="Beta" width={200} height={48} className="object-contain" />
+          <p style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.3em",
+            textTransform: "uppercase", color: "#4a4828" }}>↑↑↓↓←→←→BA</p>
+          <p className="font-display text-[clamp(28px,7vw,56px)] tracking-[0.06em] uppercase"
+            style={{ color: C.txt }}>
+            Konami Kodu!
+          </p>
+          <div className="flex gap-8 mt-2">
+            <Image src="/dino/dino1.png" alt="Dino" width={180} height={48} className="object-contain opacity-90" />
+            <Image src="/beta/beta_kaban.png" alt="Beta" width={180} height={48} className="object-contain opacity-90" />
           </div>
-          <p className="font-special text-[15px] text-[#a09070]">Gerçek bir dedektifsin, ajan.</p>
-          <div className="font-mono-tech text-[10px] [letter-spacing:0.2em] text-[#553] border border-[#332] px-3 py-1 rounded-[2px]">
+          <p style={{ fontFamily: C.ui, fontSize: 14, color: "#7a7060" }}>
+            Gerçek bir dedektifsin, ajan.
+          </p>
+          <div style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.2em",
+            border: `1px solid #2a2818`, color: "#4a4828", padding: "6px 16px", borderRadius: 2 }}>
             EXTRA LIFE +1
           </div>
-          <p className="font-mono-tech text-[11px] text-[#443] [letter-spacing:0.2em] uppercase">[ tıkla / kapat ]</p>
+          <p style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.15em",
+            textTransform: "uppercase", color: "#28261e" }}>
+            [ tıkla / kapat ]
+          </p>
         </div>
       )}
 
-      {/* ── STAMP OVERLAY ── */}
+      {/* ─── STAMP OVERLAY ────────────────────────────────────── */}
       {showStamp && (
         <div className="fixed inset-0 z-[8000] pointer-events-none flex items-center justify-center">
-          <div className="hck-stamp-anim font-display text-[clamp(36px,10vw,72px)] text-hackred border-[5px] border-hackred px-6 py-[10px] rounded-[4px] [letter-spacing:0.12em] leading-none">
+          <div
+            className="font-display text-[clamp(32px,9vw,64px)] tracking-[0.1em] leading-none"
+            style={{
+              color: C.red, border: `4px solid ${C.red}`,
+              padding: "10px 24px", borderRadius: 3,
+              animation: "hck-stamp 2.5s forwards", opacity: 0,
+            }}
+          >
             GİZLİ DOSYA
           </div>
+          <style>{`
+            @keyframes hck-stamp {
+              0%   { opacity:0; transform:rotate(-12deg) scale(2.2); }
+              15%  { opacity:0.9; transform:rotate(-12deg) scale(1); }
+              80%  { opacity:0.9; transform:rotate(-12deg) scale(1); }
+              100% { opacity:0; transform:rotate(-12deg) scale(1); }
+            }
+          `}</style>
         </div>
       )}
 
-      {/* ── PAGE ── */}
-      <div className="font-special min-h-screen w-full bg-[#080808] overflow-x-hidden">
-        <div className="max-w-[1120px] mx-auto px-[clamp(16px,3vw,40px)] pt-[clamp(24px,4vw,48px)] pb-24">
+      {/* ─── PAGE ─────────────────────────────────────────────── */}
+      <div style={{ minHeight: "100vh", background: C.bg, color: C.txt,
+        fontFamily: C.ui, overflowX: "hidden" }}>
 
-          {/* TOP BAR */}
-          <div className="flex items-center justify-between gap-3 mb-[clamp(20px,3vw,32px)]">
-            <button
-              onClick={onBack}
-              className="font-mono-tech text-[11px] [letter-spacing:0.15em] uppercase text-aged bg-transparent border border-[#333] px-3 py-1.5 rounded-[4px] cursor-pointer hover:border-[#555] transition-colors"
-            >
-              ← Ana Ekran
-            </button>
-            <span className="font-mono-tech text-[10px] [letter-spacing:0.2em] text-[#444]">
-              HCK-AYD-48 // GİZLİ
-            </span>
-          </div>
+        {/* Sticky nav */}
+        <nav
+          className="sticky top-0 z-10 flex items-center justify-between border-b"
+          style={{
+            padding:         "12px clamp(16px, 3vw, 40px)",
+            borderColor:     "#12121a",
+            background:      "rgba(7,7,9,0.92)",
+            backdropFilter:  "blur(14px)",
+          }}
+        >
+          <button
+            onClick={onBack}
+            className="transition-colors duration-150 bg-transparent border-none cursor-pointer"
+            style={{ fontFamily: C.ui, fontWeight: 500, fontSize: 13,
+              letterSpacing: "0.04em", color: C.txtMuted }}
+            onMouseEnter={(e) => ((e.target as HTMLElement).style.color = C.txtSec)}
+            onMouseLeave={(e) => ((e.target as HTMLElement).style.color = C.txtMuted)}
+          >
+            ← Geri
+          </button>
+          {/* Invisible stamp easter egg trigger */}
+          <button
+            onClick={handleStampClick}
+            tabIndex={-1}
+            aria-hidden
+            className="bg-transparent border-none cursor-default select-none"
+            style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.2em", color: C.bg }}
+          >
+            HCK-AYD-48
+          </button>
+        </nav>
 
-          {/* ── PAPER ── */}
-          <div className="bg-paper rounded-[3px] shadow-[0_0_0_1px_#c4ab88,0_2px_4px_rgba(0,0,0,.4),0_20px_60px_rgba(0,0,0,.7)] overflow-hidden font-special">
+        {/* Content */}
+        <div
+          className="mx-auto"
+          style={{ maxWidth: "clamp(320px, 90vw, 1160px)", padding: "clamp(20px, 3vw, 40px) clamp(16px, 3vw, 40px)" }}
+        >
 
-            {/* HEADER BAND */}
-            <div className="bg-ink px-8 py-4 flex flex-col gap-2.5">
-              <div className="flex items-center justify-between flex-wrap gap-3">
-                {/* File number — invisible stamp easter egg trigger */}
-                <button
-                  onClick={handleStampClick}
-                  className="bg-transparent border-none p-0 text-left cursor-default select-none"
-                  tabIndex={-1}
-                  aria-hidden
-                >
-                  <div className="font-mono-tech text-[10px] [letter-spacing:0.3em] uppercase text-[#555] mb-[2px]">Dosya No</div>
-                  <div className="font-mono-tech text-[18px] [letter-spacing:0.1em] text-paper">HCK-AYD-48</div>
-                </button>
-                <div className="inline-flex items-center gap-[7px] bg-[rgba(155,28,28,.18)] border border-hackred px-3 py-[5px] rounded-[2px]">
-                  <span className="hck-blink w-[5px] h-[5px] rounded-full bg-[#f87171] inline-block" />
-                  <span className="font-mono-tech text-[11px] [letter-spacing:0.2em] uppercase text-[#f87171]">Aktif Soruşturma</span>
+          {/* ════ HERO: character dossier + selector ════════════ */}
+
+          {/* Mobile: horizontal card strip → main content */}
+          {/* Desktop: main content left | sidebar right        */}
+          <div className="flex flex-col lg:flex-row-reverse gap-4 lg:gap-5 mb-4 lg:mb-5">
+
+            {/* CHARACTER SELECTOR ─────────────────────────────── */}
+            <div className="lg:w-[268px] xl:w-[296px] shrink-0">
+
+              {/* Mobile: horizontal scroll */}
+              <div
+                className="lg:hidden"
+                style={{ overflowX: "auto", marginLeft: "clamp(-16px, -3vw, -40px)",
+                  marginRight: "clamp(-16px, -3vw, -40px)",
+                  paddingLeft: "clamp(16px, 3vw, 40px)",
+                  paddingRight: "clamp(16px, 3vw, 40px)",
+                  paddingBottom: 6,
+                  scrollbarWidth: "none",
+                }}
+              >
+                <div className="flex gap-2.5" style={{ width: "max-content" }}>
+                  {PEOPLE.map((p) => (
+                    <CharacterCard
+                      key={p.id}
+                      person={p}
+                      isActive={activePerson.id === p.id}
+                      onSelect={() => handleSelect(p)}
+                      compact
+                    />
+                  ))}
                 </div>
               </div>
 
-              {/* Meta facts */}
-              <div className="flex items-center flex-wrap gap-x-1 gap-y-1">
-                {(["Aydın", "48 Saat", "Son Başvuru: Yakında"] as string[]).map((fact, i) => (
-                  <React.Fragment key={fact}>
-                    {i > 0 && <span className="font-mono-tech text-[#3a3a3a] text-[11px] mx-1">·</span>}
-                    <span className="font-mono-tech text-[10px] [letter-spacing:0.14em] text-[#555]">{fact}</span>
-                  </React.Fragment>
+              {/* Desktop: vertical list */}
+              <div className="hidden lg:flex flex-col gap-2.5">
+                <div className="flex items-center justify-between mb-1">
+                  <span style={{ fontFamily: C.ui, fontWeight: 500, fontSize: 11,
+                    letterSpacing: "0.16em", textTransform: "uppercase", color: C.txtCode }}>
+                    İstihbarat Dosyası
+                  </span>
+                  <span style={{ fontFamily: C.mono, fontSize: 10,
+                    letterSpacing: "0.14em", color: C.border }}>
+                    3 AJAN
+                  </span>
+                </div>
+                {PEOPLE.map((p) => (
+                  <CharacterCard
+                    key={p.id}
+                    person={p}
+                    isActive={activePerson.id === p.id}
+                    onSelect={() => handleSelect(p)}
+                  />
                 ))}
-                <span className="font-mono-tech text-[#3a3a3a] text-[11px] mx-1">·</span>
-                {/* Minecraft egg on "Ücretsiz" */}
-                <span
-                  className={cn("font-mono-tech text-[10px] [letter-spacing:0.14em] text-[#555] relative cursor-default", mcFlash && "mc-cell-flash")}
-                  onMouseEnter={handleMcEnter}
-                  onMouseLeave={handleMcLeave}
-                >
-                  Ücretsiz
-                  {showMcBlock && (
-                    <span className="mc-block flex flex-col items-center">
-                      <svg width="20" height="20" viewBox="0 0 8 8">
-                        <rect x="0" y="0" width="8" height="4" fill="#5d9e44" />
-                        <rect x="0" y="4" width="8" height="4" fill="#8b6340" />
-                        <rect x="0" y="0" width="2" height="2" fill="#4a8535" opacity="0.5" />
-                        <rect x="4" y="1" width="2" height="1" fill="#4a8535" opacity="0.5" />
-                        <rect x="2" y="5" width="2" height="2" fill="#7a5530" opacity="0.5" />
-                        <rect x="5" y="6" width="2" height="1" fill="#7a5530" opacity="0.5" />
-                      </svg>
-                      <span className="font-special text-[9px] text-paper whitespace-nowrap mt-[2px]">Bir blok düştü! ⛏️</span>
-                    </span>
-                  )}
-                </span>
+                <div className="mt-1">
+                  <span style={{ fontFamily: C.mono, fontSize: 10,
+                    letterSpacing: "0.12em", color: C.txtCode }}>
+                    GDG × OTT × HSD
+                  </span>
+                </div>
               </div>
+
             </div>
 
-            {/* ── HERO ── */}
-            <div className="hck-reveal px-8 py-8 border-b border-dashed border-aged">
-              <div className="font-mono-tech text-[10px] [letter-spacing:0.35em] uppercase text-[#999] mb-3">
-                // Vaka Dosyası
-              </div>
-
-              <h1 className="font-display text-[clamp(40px,8vw,72px)] leading-[0.95] [letter-spacing:-0.02em] text-ink mb-1">
-                Hackathon<br /><span className="text-hackred">Aydın</span>
-              </h1>
-
-              <div className="font-mono-tech text-[10px] [letter-spacing:0.2em] uppercase text-[#aaa] pt-3 mb-6">
-                GDG on Campus ADÜ × Oyun ve Tasarım Topluluğu × Huawei Student Developers
-              </div>
-
-              {/* Character strip */}
-              <div className="grid grid-cols-3 border border-aged rounded-[2px] overflow-hidden mb-6">
-                {CHARS.map((c, i) => (
-                  <div
-                    key={c.name}
-                    className={cn(
-                      "flex flex-col items-center gap-2 px-3 py-4",
-                      i > 0 && "border-l border-aged",
-                      c.red ? "bg-[#f9edec]" : "bg-paper2"
-                    )}
-                  >
-                    <div className="h-[72px] flex items-end justify-center">
-                      <Image
-                        src={c.img}
-                        alt={c.name}
-                        width={120}
-                        height={72}
-                        className="object-contain max-h-[72px] w-auto"
-                      />
-                    </div>
-                    <div className="text-center">
-                      <div className={cn("font-mono-tech text-[9px] [letter-spacing:0.16em] uppercase", c.red ? "text-hackred" : "text-ink")}>
-                        {c.name}
-                      </div>
-                      <div className={cn("font-mono-tech text-[9px] mt-0.5", c.red ? "text-hackred opacity-60" : "text-[#aaa]")}>
-                        {c.org}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <p className="font-special text-[15px] leading-[1.8] text-[#3d2f1f] max-w-[520px] mb-6">
-                48 saatlik kesintisiz geliştirme. Fikrinden çalışan demo&apos;ya —
-                jüri karşısında kanıtla.
-              </p>
-
-              <div className="flex gap-3 flex-wrap">
-                <Link
-                  href="/hackathon/basvur"
-                  className="font-display text-[14px] [letter-spacing:0.1em] px-6 py-2.5 bg-ink text-paper rounded-[2px] no-underline inline-block hover:bg-hackred transition-colors duration-200"
-                >
-                  Vakaya Katıl →
-                </Link>
-                <Link
-                  href="/hackathon/dosya"
-                  className="font-display text-[14px] [letter-spacing:0.1em] px-6 py-2.5 border border-aged text-ink rounded-[2px] no-underline inline-block bg-transparent hover:border-ink transition-colors duration-200"
-                >
-                  Vaka Dosyası
-                </Link>
-              </div>
-            </div>
-
-            {/* ── SORUŞTURMA AKIŞI ── */}
-            <div className="hck-reveal px-8 py-6 border-b border-dashed border-aged">
-              <div className="flex items-baseline justify-between mb-5 flex-wrap gap-2">
-                <h2 className="font-display text-[21px] [letter-spacing:0.06em] uppercase text-ink border-b-2 border-ink pb-[2px]">
-                  Soruşturma Akışı
-                </h2>
-                <span className="font-mono-tech text-[11px] [letter-spacing:0.28em] uppercase text-[#aaa]">48 Saat</span>
-              </div>
-
-              {/* Desktop: 3-column grid */}
-              <div className="hidden sm:grid grid-cols-3 gap-[1px] bg-aged border border-aged rounded-[2px] overflow-hidden">
-                {TIMELINE.map((step) => (
-                  <div key={step.n} className={cn("flex flex-col px-5 py-5", step.red ? "bg-[#fdf5f4]" : "bg-paper2")}>
-                    <span className={cn(
-                      "font-display text-[40px] leading-none mb-2 select-none",
-                      step.red ? "text-hackred opacity-30" : "text-aged"
-                    )}>
-                      {step.n}
-                    </span>
-                    <span className={cn(
-                      "font-display text-[13px] [letter-spacing:0.08em] uppercase mb-2",
-                      step.red ? "text-hackred" : "text-ink"
-                    )}>
-                      {step.lbl}
-                    </span>
-                    <span className="font-special text-[13px] leading-[1.65] text-[#666]">
-                      {step.desc}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Mobile: vertical with left border */}
-              <div className="sm:hidden flex flex-col border-l-2 border-aged pl-5 gap-5">
-                {TIMELINE.map((step) => (
-                  <div key={step.n}>
-                    <span className={cn(
-                      "font-mono-tech text-[10px] [letter-spacing:0.18em] uppercase",
-                      step.red ? "text-hackred" : "text-[#aaa]"
-                    )}>
-                      {step.n} · {step.lbl}
-                    </span>
-                    <p className="font-special text-[13px] leading-[1.65] text-[#555] mt-1">{step.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* ── SORU ODASI ── */}
-            <div className="hck-reveal px-8 py-6 border-b border-dashed border-aged">
-              <div className="flex items-baseline justify-between mb-5 flex-wrap gap-2">
-                <h2 className="font-display text-[21px] [letter-spacing:0.06em] uppercase text-ink border-b-2 border-ink pb-[2px]">
-                  Soru Odası
-                </h2>
-                <span className="font-mono-tech text-[11px] [letter-spacing:0.28em] uppercase text-[#aaa]">S.S.S.</span>
-              </div>
-              <div className="border border-aged rounded-[2px] overflow-hidden">
-                {FAQ_ITEMS.map((f, i) => (
-                  <div key={f.q} className={cn("bg-paper2", i > 0 && "border-t border-aged")}>
-                    <button
-                      onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                      className="w-full text-left flex items-center justify-between gap-3 px-4 py-3.5 bg-transparent border-none cursor-pointer"
-                    >
-                      <span className="font-special text-[15px] text-ink">{f.q}</span>
-                      <span className={cn(
-                        "font-mono-tech text-[18px] inline-block transition-transform duration-200 shrink-0",
-                        openFaq === i ? "text-ink rotate-45" : "text-aged"
-                      )}>
-                        +
-                      </span>
-                    </button>
-                    <div className={`hck-faq-body${openFaq === i ? " open" : ""}`}>
-                      <div className="font-special text-[14px] leading-[1.75] text-[#3d2f1f]">{f.a}</div>
-                      <div className="font-mono-tech text-[10px] text-[#bbb] mt-1.5">{f.hint}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* ── FOOTER BAR ── */}
-            <div className="bg-ink px-8 py-3.5 flex items-center justify-between flex-wrap gap-2">
-              <span className="font-mono-tech text-[11px] [letter-spacing:0.15em] uppercase text-[#333]">
-                Dosya, kanıtla kapatılır.{" "}
-                <span className="text-[#444]">Erken Erişim ile değil.</span>
-              </span>
-              <span className="font-mono-tech text-[11px] text-[#222]">GDG × OTT × HSD // v1.0.0 // BUILD 2026</span>
+            {/* MAIN CASE DISPLAY ──────────────────────────────── */}
+            <div className="flex-1 min-w-0">
+              <MainCaseDisplay person={activePerson} visible={contentVisible} />
             </div>
 
           </div>
+
+          {/* ════ INTEL STRIP ════════════════════════════════════ */}
+          <section
+            className="rounded-lg border grid grid-cols-4 overflow-hidden mb-4"
+            style={{ background: C.surf, borderColor: C.border }}
+          >
+            {INTEL_STATS.map((item, i) => (
+              <div
+                key={item.label}
+                className={cn(
+                  "flex flex-col gap-2 relative transition-colors duration-150",
+                  i > 0 && "border-l",
+                  "mcEgg" in item && item.mcEgg && mcFlash && "bg-[#141008]"
+                )}
+                style={{
+                  padding: "clamp(12px, 2vw, 20px) clamp(12px, 2vw, 24px)",
+                  borderColor: C.border,
+                  cursor: "default",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = C.surf2;
+                  if ("mcEgg" in item && item.mcEgg) handleMcEnter();
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "transparent";
+                  if ("mcEgg" in item && item.mcEgg) handleMcLeave();
+                }}
+              >
+                <span style={{ fontFamily: C.ui, fontWeight: 500, fontSize: 11,
+                  letterSpacing: "0.12em", textTransform: "uppercase", color: C.txtCode }}>
+                  {item.label}
+                </span>
+                <span style={{ fontFamily: C.display, fontSize: "clamp(15px, 2.2vw, 22px)",
+                  letterSpacing: "0.02em", color: C.txtSec }}>
+                  {item.value}
+                </span>
+                {"mcEgg" in item && item.mcEgg && showMcBlock && (
+                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-10">
+                    <svg width="20" height="20" viewBox="0 0 8 8">
+                      <rect x="0" y="0" width="8" height="4" fill="#5d9e44" />
+                      <rect x="0" y="4" width="8" height="4" fill="#8b6340" />
+                    </svg>
+                    <span style={{ fontFamily: C.mono, fontSize: 9, color: C.gold,
+                      whiteSpace: "nowrap", marginTop: 2 }}>
+                      ⛏️ blok düştü
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </section>
+
+          {/* ════ PHASE TIMELINE ═════════════════════════════════ */}
+          <section
+            className="rounded-lg border overflow-hidden mb-4"
+            style={{ background: C.surf, borderColor: C.border }}
+          >
+            <SectionHeader left="Soruşturma Akışı" right="5–6 Mayıs · 2 Gün" />
+            <Divider />
+
+            {/* sm+: 4-col grid with day divider row */}
+            <div className="hidden sm:block">
+              {/* Day labels row */}
+              <div className="grid grid-cols-4 border-b" style={{ borderColor: C.border }}>
+                {(["GÜN 1 · 5 MAYIS", "", "GÜN 2 · 6 MAYIS", ""] as const).map((label, i) => (
+                  <div
+                    key={i}
+                    className={i > 0 ? "border-l" : ""}
+                    style={{
+                      padding: "8px clamp(16px, 2.5vw, 24px)",
+                      borderColor: C.border,
+                      background: i >= 2 ? "#0a0a10" : "transparent",
+                    }}
+                  >
+                    {label && (
+                      <span style={{ fontFamily: C.mono, fontSize: 9, letterSpacing: "0.18em",
+                        textTransform: "uppercase", color: C.txtCode }}>
+                        {label}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {/* Phase cards */}
+              <div className="grid grid-cols-4">
+                {PHASES.map((p, i) => (
+                  <div
+                    key={p.n}
+                    className={cn(i > 0 ? "border-l" : "", "transition-colors duration-150")}
+                    style={{
+                      padding: "clamp(14px, 2vw, 22px) clamp(16px, 2.5vw, 24px)",
+                      borderColor: C.border,
+                      background: p.accent ? "#0d0a0a" : i >= 2 ? "#0a0a10" : "transparent",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = p.accent ? "#120c0c" : C.surf2;
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = p.accent ? "#0d0a0a" : i >= 2 ? "#0a0a10" : "transparent";
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 10 }}>
+                      <span style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.14em",
+                        color: p.accent ? C.red : C.gold }}>
+                        {p.n}
+                      </span>
+                      <span style={{ fontFamily: C.ui, fontWeight: 600, fontSize: 12,
+                        letterSpacing: "0.1em", textTransform: "uppercase",
+                        color: p.accent ? C.redText : C.txtSec }}>
+                        {p.label}
+                      </span>
+                    </div>
+                    <p style={{ fontFamily: C.ui, fontSize: 13, lineHeight: 1.7, color: C.txtMuted }}>
+                      {p.note}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile: vertical with day separator */}
+            <div className="sm:hidden">
+              {PHASES.map((p, i) => (
+                <div key={p.n}>
+                  {/* Day header on first phase of each day */}
+                  {(i === 0 || PHASES[i].day !== PHASES[i - 1].day) && (
+                    <div className="px-5 py-2 border-b" style={{ borderColor: C.border, background: "#0a0a10" }}>
+                      <span style={{ fontFamily: C.mono, fontSize: 9, letterSpacing: "0.18em",
+                        textTransform: "uppercase", color: C.txtCode }}>
+                        {p.day}
+                      </span>
+                    </div>
+                  )}
+                  <div
+                    className="flex items-start gap-4 border-b last:border-b-0 transition-colors duration-150"
+                    style={{ padding: "14px 20px", borderColor: C.border,
+                      background: p.accent ? "#0d0a0a" : "transparent" }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = p.accent ? "#120c0c" : C.surf2;
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = p.accent ? "#0d0a0a" : "transparent";
+                    }}
+                  >
+                    <div>
+                      <span style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.12em",
+                        color: p.accent ? C.red : C.gold, display: "block", marginBottom: 4 }}>
+                        {p.n} · {p.label}
+                      </span>
+                      <p style={{ fontFamily: C.ui, fontSize: 13, lineHeight: 1.7, color: C.txtMuted }}>
+                        {p.note}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ════ FAQ ════════════════════════════════════════════ */}
+          <section
+            className="rounded-lg border overflow-hidden mb-4"
+            style={{ background: C.surf, borderColor: C.border }}
+          >
+            <SectionHeader left="Soru Odası" />
+            <Divider />
+
+            {/* Desktop: 2-col */}
+            <div className="hidden lg:grid grid-cols-2">
+              <div className="border-r" style={{ borderColor: C.border }}>
+                {FAQS.slice(0, 2).map((f, i) => (
+                  <FAQItem key={f.q} item={f} open={openFaq === i} onToggle={() => setOpenFaq(openFaq === i ? null : i)} />
+                ))}
+              </div>
+              <div>
+                {FAQS.slice(2).map((f, i) => (
+                  <FAQItem key={f.q} item={f} open={openFaq === i + 2} onToggle={() => setOpenFaq(openFaq === i + 2 ? null : i + 2)} />
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile/tablet: single col */}
+            <div className="lg:hidden">
+              {FAQS.map((f, i) => (
+                <FAQItem key={f.q} item={f} open={openFaq === i} onToggle={() => setOpenFaq(openFaq === i ? null : i)} />
+              ))}
+            </div>
+          </section>
+
+          {/* ════ CTA ════════════════════════════════════════════ */}
+          <section className="flex flex-col sm:flex-row sm:justify-end gap-3 mb-4">
+            <Link
+              href="/auth/register"
+              className="flex-1 flex items-center justify-center gap-2 no-underline rounded-lg transition-all duration-200"
+              style={{
+                fontFamily: C.display,
+                fontSize:   "clamp(14px, 1.5vw, 16px)",
+                letterSpacing: "0.08em",
+                padding:    "clamp(13px, 1.5vw, 16px) 24px",
+                color:      C.txt,
+                background: "linear-gradient(135deg, #1c0e0e 0%, #2c1212 100%)",
+                border:     `1px solid ${C.redDim}`,
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = C.red;
+                el.style.boxShadow   = "0 0 24px rgba(192,57,43,0.2)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = C.redDim;
+                el.style.boxShadow   = "none";
+              }}
+            >
+              Vakaya Katıl
+              <span style={{ color: C.red }}>→</span>
+            </Link>
+            <Link
+              href="/hackathon/dosya"
+              className="flex-1 flex items-center justify-center no-underline rounded-lg transition-all duration-200"
+              style={{
+                fontFamily:    C.ui,
+                fontWeight:    500,
+                fontSize:      13,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                padding:       "clamp(13px, 1.5vw, 16px) 24px",
+                color:         C.txtMuted,
+                background:    "transparent",
+                border:        `1px solid ${C.border}`,
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = C.borderHi;
+                el.style.color       = C.txtSec;
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = C.border;
+                el.style.color       = C.txtMuted;
+              }}
+            >
+              Vaka Dosyası
+            </Link>
+          </section>
+
+          {/* Footer note */}
+          <p className="text-center select-none"
+            style={{ fontFamily: C.mono, fontSize: 9, letterSpacing: "0.2em",
+              textTransform: "uppercase", color: C.bg, paddingBottom: 16 }}>
+            Dosya kanıtla kapatılır · Erken erişim ile değil
+          </p>
+
         </div>
       </div>
     </>

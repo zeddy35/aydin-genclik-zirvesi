@@ -198,12 +198,17 @@ export function JamFullView({ onBack }: GameJamFullViewProps) {
 
           {/* ── TOP NAV ── */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 0 0", gap: 12 }}>
-            <button onClick={onBack} style={{ fontFamily: C.pixel, fontSize: 8, color: C.muted, background: "none", border: "none", cursor: "pointer", letterSpacing: "0.1em", padding: "8px 12px", borderRadius: 6, transition: "background .15s" }} onMouseOver={e => e.currentTarget.style.background = "#ede9fe"} onMouseOut={e => e.currentTarget.style.background = "none"}>
-              ← GERİ
+            <button onClick={onBack} style={{ fontFamily: C.pixel, fontSize: 10, color: C.purple, background: C.white, border: "2px solid #c4b5fd", cursor: "pointer", letterSpacing: "0.1em", padding: "10px 16px", borderRadius: 8, transition: "all .15s", boxShadow: "0 2px 8px rgba(124,58,237,0.1)" }} onMouseOver={e => { e.currentTarget.style.background = "#ede9fe"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(124,58,237,0.2)"; }} onMouseOut={e => { e.currentTarget.style.background = C.white; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(124,58,237,0.1)"; }}>
+              ← GERİ DÖN
             </button>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#ede9fe", border: "2px solid #c4b5fd", borderRadius: 20, padding: "5px 14px" }}>
-              <ControllerIcon size={16} />
-              <span style={{ fontFamily: C.pixel, fontSize: 7, color: C.purple, letterSpacing: "0.1em" }}>JAM MODE · 48 SAAT</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <button className="gj-btn-outline" style={{ fontFamily: C.pixel, fontSize: 8, color: C.muted, background: "transparent", border: "2px solid #c4b5fd", cursor: "pointer", letterSpacing: "0.1em", padding: "8px 12px", borderRadius: 6, transition: "all .15s" }} onMouseOver={e => e.currentTarget.style.background = "#ede9fe"} onMouseOut={e => e.currentTarget.style.background = "transparent"}>
+                DETAYLAR
+              </button>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#ede9fe", border: "2px solid #c4b5fd", borderRadius: 20, padding: "5px 14px" }}>
+                <ControllerIcon size={16} />
+                <span style={{ fontFamily: C.pixel, fontSize: 7, color: C.purple, letterSpacing: "0.1em" }}>JAM MODE · 48 SAAT</span>
+              </div>
             </div>
           </div>
 
@@ -231,15 +236,6 @@ export function JamFullView({ onBack }: GameJamFullViewProps) {
             {/* Countdown */}
             <div style={{ background: C.white, border: "2px solid #e9d5ff", borderRadius: 16, padding: "4px 0 8px", maxWidth: 420, margin: "0 auto 28px", boxShadow: "0 4px 24px rgba(124,58,237,0.08)" }}>
               <GameCountdown />
-            </div>
-
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-              <Link href="/gamejam/basvur" className="gj-btn-primary" style={{ fontFamily: C.display, fontSize: 16, background: "linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)", color: "#fff", padding: "12px 28px", borderRadius: 12, textDecoration: "none", display: "inline-block", boxShadow: "0 4px 14px rgba(124,58,237,0.3), 0 0 0 3px #ddd6fe", border: "none" }}>
-                Başvur 🚀
-              </Link>
-              <button className="gj-btn-outline" style={{ fontFamily: C.display, fontSize: 16, background: C.white, color: C.purple, padding: "12px 28px", borderRadius: 12, border: "2px solid #c4b5fd", cursor: "pointer" }}>
-                Detayları Gör
-              </button>
             </div>
           </section>
 
@@ -407,7 +403,7 @@ export function JamFullView({ onBack }: GameJamFullViewProps) {
                 Takımını kur, temayı bekle, oyununu yap. Kazanmak değil, <strong style={{ color: "#fff" }}>üretmek</strong> burada kural.
               </p>
               <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-                <Link href="/gamejam/basvur" className="gj-btn-primary" style={{ fontFamily: C.display, fontSize: 16, background: "#fff", color: C.purple, padding: "12px 28px", borderRadius: 12, textDecoration: "none", display: "inline-block", boxShadow: "0 4px 14px rgba(0,0,0,0.2)", border: "none" }}>
+                <Link href="/auth/register" className="gj-btn-primary" style={{ fontFamily: C.display, fontSize: 16, background: "#fff", color: C.purple, padding: "12px 28px", borderRadius: 12, textDecoration: "none", display: "inline-block", boxShadow: "0 4px 14px rgba(0,0,0,0.2)", border: "none" }}>
                   Hemen Başvur 🚀
                 </Link>
                 <Link href="/gamejam/detay" className="gj-btn-outline" style={{ fontFamily: C.display, fontSize: 16, background: "rgba(255,255,255,0.1)", color: "#ddd6fe", padding: "12px 28px", borderRadius: 12, textDecoration: "none", display: "inline-block", border: "2px solid rgba(255,255,255,0.2)" }}>

@@ -66,6 +66,9 @@ export default function Loading() {
       if (runner) {
         try { runner.stopListening(); } catch (_) {}
         try { runner.stop(); } catch (_) {}
+        // Milestone seslerini sustur — audioContext'i askıya al
+        try { runner.audioContext?.suspend(); } catch (_) {}
+        try { runner.soundFx = {}; } catch (_) {}
       }
     };
   }, []);
