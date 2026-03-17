@@ -186,11 +186,33 @@ export function SummitInfo() {
     { v: "5+", l: "Konuşmacı", sub: "Konuşmacı", accent: T.violet },
   ];
 
-  const TIMELINE = [
-    { num: "01", day: "Gün 1", mark: "T+0",  title: "Açılış & Ekip Kurma",    desc: "Katılımcılar bir araya geliyor, takımlar oluşturuluyor, tema açıklanıyor.", accent: T.gold },
-    { num: "02", day: "Gün 2", mark: "T+24", title: "Geliştirme & Mentorluk", desc: "Tam kapasitede geliştirme, mentor desteği ve ara aktiviteler.", accent: T.violet },
-    { num: "03", day: "Gün 3", mark: "T+32", title: "Kapanış & Ödüller",      desc: "Ödül töreni, networking ve kapanış. Aydın Gençlik Zirvesi resmen kapanıyor.", accent: T.violet },
-  ];
+  type SchedType = "info" | "talk" | "food" | "competition" | "milestone" | "presentation";
+  type SchedItem = { time: string; title: string; desc?: string; type: SchedType };
+
+  const SCHEDULE: { day1: SchedItem[]; day2: SchedItem[] } = {
+    day1: [
+      { time: "10:00", title: "Kayıt",                                                    type: "info" },
+      { time: "10:45", title: "Sunucu ile Başlangıç",                                     type: "info" },
+      { time: "11:00", title: "1. Konuşmacı",                                             type: "talk" },
+      { time: "11:45", title: "Tema Açıklanışı & Başlama",                                type: "milestone" },
+      { time: "12:00", title: "Hackathon & Game Jam Başlıyor", desc: "Öğle Yemeği · Network Session", type: "competition" },
+      { time: "13:30", title: "2. Konuşmacı",                                             type: "talk" },
+      { time: "15:00", title: "3. Konuşmacı",                                             type: "talk" },
+      { time: "20:00", title: "Yarışmacı Akşam Yemeği",                                   type: "food" },
+    ],
+    day2: [
+      { time: "02:00", title: "Gece Kırıntısı", desc: "Çorba · Soğuk Sandviç · Kumru",   type: "food" },
+      { time: "08:00", title: "Kahvaltı",        desc: "Soğuk Sandviç · Kuru Pasta",      type: "food" },
+      { time: "11:00", title: "4. Konuşmacı",                                             type: "talk" },
+      { time: "11:45", title: "Konuşma Bitiş",                                            type: "info" },
+      { time: "12:00", title: "Hackathon & Game Jam Bitiyor", desc: "Öğle Yemeği · Network Session", type: "competition" },
+      { time: "13:00", title: "5. Konuşmacı & Kapanış",                                   type: "talk" },
+      { time: "14:00", title: "Sunum Zamanı",                                             type: "presentation" },
+      { time: "15:00", title: "Sunum Zamanı (devam)",                                     type: "presentation" },
+      { time: "16:00", title: "Sunum Zamanı (devam)",                                     type: "presentation" },
+      { time: "17:00", title: "Etkinlik Sonu",                                            type: "milestone" },
+    ],
+  };
 
   const FAQS = [
     { q: "Katılım ücretsiz mi?", a: "Evet, tamamen ücretsiz. GDG on Campus Aydın, Oyun & Tasarım Topluluğu ve Huawei Student Developers desteğiyle düzenleniyor." },
@@ -210,11 +232,11 @@ export function SummitInfo() {
           <div className="sum-inner">
             <div className="sum-hero-eyebrow">AYDIN GENÇLİK ZİRVESİ · 2026</div>
             <h1 className="sum-hero-h1">
-              İki Dünya.<br />
+              Üç Dünya.<br />
               <span className="sum-hero-grad">Bir Sahne.</span>
             </h1>
             <p className="sum-hero-desc">
-              Gençlerin teknoloji, yaratıcılık ve yenilikçiliğini sergileyebilecekleri bir platform. GDG on Campus Aydın, Oyun ve Tasarım Topluluğu ve Huawei Student Developers iş birliğiyle, iki etkinlik — bir çatı altında.
+              Gençlerin teknoloji, yaratıcılık ve yenilikçiliğini sergileyebilecekleri bir platform. GDG on Campus Aydın, Oyun ve Tasarım Topluluğu ve Huawei Student Developers iş birliğiyle, üç etkinlik — bir çatı altında.
             </p>
             <div className="sum-hero-cd">
               <EventCountdown />
@@ -271,7 +293,7 @@ export function SummitInfo() {
               <div className="sum-org-card" style={{ "--org-accent": T.gold } as React.CSSProperties}>
                 <div className="sum-org-top-bar" />
                 <div className="sum-org-inner-hdr">
-                  <Image src="/logos/gdg-logo.svg" alt="GDG Logo" width={200} height={200} />
+                  <Image src="/logos/gdg-logo.svg" alt="GDG Logo" width={40} height={40} />
                   <div>
                     <div className="sum-org-name">GDG on Campus Aydın</div>
                     <div className="sum-org-role sum-org-role--gold">Google Developer Group</div>
@@ -286,7 +308,7 @@ export function SummitInfo() {
               <div className="sum-org-card" style={{ "--org-accent": T.violet } as React.CSSProperties}>
                 <div className="sum-org-top-bar" />
                 <div className="sum-org-inner-hdr">
-                  <Image src="/logos/ott-logo.png" alt="OTT Logo" width={200} height={200} />
+                  <Image src="/logos/ott-logo.png" alt="OTT Logo" width={40} height={40} />
                   <div>
                     <div className="sum-org-name">OTT</div>
                     <div className="sum-org-role sum-org-role--violet">Oyun ve Tasarım Topluluğu</div>
@@ -301,7 +323,7 @@ export function SummitInfo() {
               <div className="sum-org-card" style={{ "--org-accent": T.violetLight } as React.CSSProperties}>
                 <div className="sum-org-top-bar" />
                 <div className="sum-org-inner-hdr">
-                  <Image src="/logos/hsd-logo.svg" alt="HSD Logo" width={200} height={200} />
+                  <Image src="/logos/hsd-logo.svg" alt="HSD Logo" width={40} height={40} />
                   <div>
                     <div className="sum-org-name">HSD</div>
                     <div className="sum-org-role sum-org-role--violet">HUAWEI Student Developers</div>
@@ -315,22 +337,27 @@ export function SummitInfo() {
           </div>
         </section>
 
-        {/* ── TIMELINE ── */}
+        {/* ── SCHEDULE ── */}
         <section className="sum-reveal sum-section">
           <div className="sum-inner">
             <SumSecHeader title="Program Akışı" label="◈ Zaman Çizelgesi" />
-            <div className="sum-tl">
-              {TIMELINE.map((step) => (
-                <div key={step.num} className="sum-tl-item" style={{ "--tl-accent": step.accent, "--tl-bg": T.bg } as React.CSSProperties}>
-                  <div className="sum-tl-connector" />
-                  <div className="sum-tl-dot"><div className="sum-tl-dot-inner" /></div>
-                  <div>
-                    <div className="sum-tl-day-row">
-                      <span className="sum-tl-day-lbl">{step.day}</span>
+            <p className="sum-sched-note">Etkinlik 2 gün sürmektedir · Hackathon ve Game Jam eş zamanlı ilerler</p>
+            <div className="sum-sched-grid">
+              {([
+                { label: "1. Gün", key: "day1" as const },
+                { label: "2. Gün", key: "day2" as const },
+              ]).map(({ label, key }) => (
+                <div key={key} className="sum-sched-col">
+                  <div className="sum-sched-col-label">{label}</div>
+                  {SCHEDULE[key].map((item, i) => (
+                    <div key={i} className={`sum-sched-row sum-sched-row--${item.type}`}>
+                      <div className="sum-sched-time">{item.time}</div>
+                      <div className="sum-sched-content">
+                        <div className="sum-sched-title">{item.title}</div>
+                        {item.desc && <div className="sum-sched-desc">{item.desc}</div>}
+                      </div>
                     </div>
-                    <div className="sum-tl-title">{step.title}</div>
-                    <div className="sum-tl-body">{step.desc}</div>
-                  </div>
+                  ))}
                 </div>
               ))}
             </div>
