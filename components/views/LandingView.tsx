@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useEasterEggs } from "@/components/EasterEggContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -104,55 +103,6 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
     scrollParentRef.current?.scrollBy({ top: window.innerHeight, behavior: "smooth" });
   }, []);
 
-  // ── Egg 5: Pokémon battle ─────────────────────────────────────
-  const { markEggSeen } = useEasterEggs();
-  const jamClickedRef  = useRef(false);
-  const hackClickedRef = useRef(false);
-  const pokeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pokeShownRef   = useRef(false);
-  const [showPoke, setShowPoke] = useState(false);
-  const [pokeText, setPokeText] = useState("");
-  const POKE_FULL = "AGZ, İKİLİ ET KİNLİK kullandı!\nSüper etkili!\n\nVahşi ERKEN ERİŞİM kaçtı!";
-
-  const firePoke = useCallback(() => {
-    if (pokeShownRef.current) return;
-    pokeShownRef.current = true;
-    markEggSeen("egg-pokemon");
-    setShowPoke(true);
-    setPokeText("");
-    let i = 0;
-    const full = POKE_FULL;
-    const iv = setInterval(() => {
-      i++;
-      setPokeText(full.slice(0, i));
-      if (i >= full.length) {
-        clearInterval(iv);
-        setTimeout(() => {
-          setShowPoke(false);
-          pokeShownRef.current = false;
-          jamClickedRef.current = false;
-          hackClickedRef.current = false;
-        }, 3000);
-      }
-    }, 40);
-  }, [markEggSeen, POKE_FULL]);
-
-  const handleJamBgClick = useCallback(() => {
-    if (pokeShownRef.current) return;
-    jamClickedRef.current = true;
-    if (hackClickedRef.current) { firePoke(); return; }
-    if (pokeTimeoutRef.current) clearTimeout(pokeTimeoutRef.current);
-    pokeTimeoutRef.current = setTimeout(() => { jamClickedRef.current = false; }, 5000);
-  }, [firePoke]);
-
-  const handleHackBgClick = useCallback(() => {
-    if (pokeShownRef.current) return;
-    hackClickedRef.current = true;
-    if (jamClickedRef.current) { firePoke(); return; }
-    if (pokeTimeoutRef.current) clearTimeout(pokeTimeoutRef.current);
-    pokeTimeoutRef.current = setTimeout(() => { hackClickedRef.current = false; }, 5000);
-  }, [firePoke]);
-
   const active = hovered ?? tapped;
 
   const jamFlex  = active === "jam"  ? 1.22 : active === "hack" ? 0.78 : 1;
@@ -218,7 +168,6 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
             onMouseLeave={() => setHovered(null)}
             onTouchStart={() => setTapped("jam")}
             onTouchEnd={() => setTapped(null)}
-            onClick={handleJamBgClick}
           >
             {/* Background texture — jambg */}
             <div
@@ -312,7 +261,6 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
             onMouseLeave={() => setHovered(null)}
             onTouchStart={() => setTapped("hack")}
             onTouchEnd={() => setTapped(null)}
-            onClick={handleHackBgClick}
           >
             {/* Background texture — hackbg */}
             <div
@@ -487,12 +435,6 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
         </div>
       )}
 
-      {/* ── Egg 5: Pokémon battle ─────────────────────────── */}
-      {showPoke && (
-        <div className={s.pokeBox}>
-          {pokeText}
-        </div>
-      )}
 
     </>
   );

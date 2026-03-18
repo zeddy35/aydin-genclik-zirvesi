@@ -56,31 +56,6 @@
 .applyBtn:hover  { filter: brightness(1.18); transform: translateY(-1px) scale(1.04); }
 .applyBtn:active { transform: scale(0.96); }
 
-/* ── Pokémon battle box ───────────────────────────────────── */
-@keyframes pokeBlink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-.pokeBox {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: #f0f0f0;
-  border-top: 4px solid #1a1a1a;
-  padding: 16px 28px 28px;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 10px;
-  color: #1a1a1a;
-  line-height: 2;
-  z-index: 9500;
-  min-height: 80px;
-  box-shadow: 0 -4px 0 #888;
-  white-space: pre-line;
-}
-.pokeBox::after {
-  content: '▶';
-  position: absolute;
-  right: 24px; bottom: 18px;
-  animation: pokeBlink 0.8s step-end infinite;
-}
-
 /* ── Nav round button ─────────────────────────────────────── */
 .navBtn {
   display: inline-flex;
@@ -101,6 +76,11 @@
 .navBtn:hover        { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.32); transform: scale(1.1); }
 .navBtn:active       { transform: scale(0.93); }
 .navBtn:focus-visible { outline: 2px solid #a78bfa; outline-offset: 3px; }
+
+/* Desktop: add breathing room above arrows (below Başvur buttons) */
+@media (min-width: 768px) {
+  .navBtn { margin-top: 28px; }
+}
 
 /* ── Panel login badges ───────────────────────────────────── */
 .loginJam {

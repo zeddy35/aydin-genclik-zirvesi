@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { useEasterEggs } from "@/components/EasterEggContext";
 import styles from "./GameJamFullView.module.css";
 
 interface GameJamFullViewProps {
@@ -121,33 +120,10 @@ function GJReveal() {
 // ── MAIN ──
 export function GameJamFullView({ onBack }: GameJamFullViewProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const { markEggSeen } = useEasterEggs();
-
-  // ── Egg 4: Among Us crewmate ────────────────────────────
-  const susToggleRef = useRef<{ idx: number; count: number }>({ idx: -1, count: 0 });
-  const [showSus, setShowSus] = useState(false);
-  const susFireRef = useRef(false);
 
   const handleFaqToggle = useCallback((i: number) => {
     setOpenFaq((prev) => (prev === i ? null : i));
-    const cur = susToggleRef.current;
-    if (cur.idx !== i) {
-      susToggleRef.current = { idx: i, count: 1 };
-    } else {
-      const next = cur.count + 1;
-      susToggleRef.current = { idx: i, count: next };
-      if (next >= 6 && !susFireRef.current) {
-        susFireRef.current = true;
-        setShowSus(true);
-        markEggSeen("egg-amogus");
-        setTimeout(() => {
-          setShowSus(false);
-          susFireRef.current = false;
-          susToggleRef.current = { idx: -1, count: 0 };
-        }, 4500);
-      }
-    }
-  }, [markEggSeen]);
+  }, []);
 
   const ROLES = [
     {
@@ -279,6 +255,9 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
               </div>
               <span className={styles.topNavSubtext}>INSERT COIN TO CONTINUE</span>
             </div>
+            <button onClick={onBack} className={styles.backBtn} aria-label="Geri dön">
+              Geri →
+            </button>
           </div>
 
           {/* ── HERO ── */}
@@ -516,85 +495,6 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
         </div>
       </div>
 
-      {/* ── Egg 4: Among Us crewmate ── */}
-      {showSus && (
-        <div 
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: '#000000',
-            zIndex: 9998,
-            pointerEvents: 'none'
-          }}
-        >
-          {/* Yazı - sol panel'in ortasında */}
-          <div 
-            style={{
-              position: 'fixed',
-              top: '10vh',
-              left: '0',
-              width: '50vw',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 9999,
-              pointerEvents: 'none'
-            }}
-          >
-            <h1 
-              style={{
-                fontFamily: "'Press Start 2P', monospace",
-                fontSize: 'clamp(20px, 4vw, 36px)',
-                color: '#ff0000',
-                textShadow: '0 0 60px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 1), 4px 4px 0 #000, -4px -4px 0 #000, 4px -4px 0 #000, -4px 4px 0 #000',
-                letterSpacing: '0.15em',
-                margin: '0',
-                padding: '0 20px',
-                lineHeight: 1.4,
-                display: 'block',
-                textAlign: 'center'
-              }}
-            >
-              IMPOSTER IS SUS
-            </h1>
-          </div>
-
-          {/* Among us - sol panel'in sağından soluna yürüyecek */}
-          <div 
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50vw',
-              marginTop: '-100px',
-              zIndex: 9999,
-              pointerEvents: 'none',
-              animation: 'sus-walk-left-panel 4s linear forwards'
-            }}
-          >
-            <img 
-              src="/amongus/red-walk.gif" 
-              alt="sus" 
-              style={{ 
-                display: 'block',
-                height: '200px',
-                width: 'auto',
-                imageRendering: 'pixelated',
-                transform: 'scaleX(-1)'
-              }}
-            />
-          </div>
-
-          <style>{`
-            @keyframes sus-walk-left-panel {
-              from { transform: translateX(0) scaleX(-1); }
-              to { transform: translateX(-50vw) scaleX(-1); }
-            }
-          `}</style>
-        </div>
-      )}
     </>
   );
 }

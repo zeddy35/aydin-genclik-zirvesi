@@ -161,8 +161,30 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Right — socials + star */}
+        {/* Right — terminal + star */}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+
+          {/* Terminal button */}
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("agz-open-terminal"))}
+            style={{
+              fontFamily: F.mono,
+              fontSize: 10,
+              letterSpacing: "0.12em",
+              color: F.muted,
+              background: "none",
+              border: `1px solid ${F.border}`,
+              borderRadius: 4,
+              padding: "4px 10px",
+              cursor: "pointer",
+              transition: "color 0.2s, border-color 0.2s",
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = F.violetLight; (e.currentTarget as HTMLButtonElement).style.borderColor = F.violetLight; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = F.muted; (e.currentTarget as HTMLButtonElement).style.borderColor = F.border; }}
+            aria-label="Terminal'i aç"
+          >
+            &gt;_
+          </button>
 
           {/* Star — long-press for credits */}
           <div

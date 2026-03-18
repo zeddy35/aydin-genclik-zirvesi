@@ -39,29 +39,17 @@ export function EasterEggProvider({ children }: { children: React.ReactNode }) {
   const [terminalInput,  setTerminalInput]  = useState("");
   const [terminalOutput, setTerminalOutput] = useState<OutputEntry[]>([]);
   const [attempts,       setAttempts]       = useState(0);
-  const clickTimesRef  = useRef<number[]>([]);
   const inputRef       = useRef<HTMLInputElement>(null);
   const { markEggSeen } = useEasterEggs();
 
-  // ── 5-rapid-click detector (background areas only) ─────────
+  // ── Footer terminal button trigger ──────────────────────────
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      // Skip clicks that land on or inside any interactive element
-      const target = e.target as HTMLElement;
-      if (target.closest('button, a, input, select, textarea, label, [role="button"]')) return;
-
-      const now = Date.now();
-      clickTimesRef.current = [...clickTimesRef.current, now].filter(
-        (t) => now - t < 3000
-      );
-      if (clickTimesRef.current.length >= 5) {
-        clickTimesRef.current = [];
-        setTerminalOpen(true);
-        markEggSeen("egg-terminal");
-      }
+    const handleOpen = () => {
+      setTerminalOpen(true);
+      markEggSeen("egg-terminal");
     };
-    window.addEventListener("click", handleClick);
-    return () => window.removeEventListener("click", handleClick);
+    window.addEventListener("agz-open-terminal", handleOpen);
+    return () => window.removeEventListener("agz-open-terminal", handleOpen);
   }, [markEggSeen]);
 
   // ── Escape / focus when terminal opens ──────────────────────

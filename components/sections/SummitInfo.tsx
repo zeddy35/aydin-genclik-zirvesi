@@ -162,6 +162,32 @@ export function SummitInfo() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { markEggSeen } = useEasterEggs();
 
+  // ── Egg 4: Among Us (moved from Game Jam SSS) ─────────────
+  const susToggleRef = useRef<{ idx: number; count: number }>({ idx: -1, count: 0 });
+  const [showSus, setShowSus] = useState(false);
+  const susFireRef = useRef(false);
+
+  const handleFaqToggle = useCallback((i: number) => {
+    setOpenFaq((prev) => (prev === i ? null : i));
+    const cur = susToggleRef.current;
+    if (cur.idx !== i) {
+      susToggleRef.current = { idx: i, count: 1 };
+    } else {
+      const next = cur.count + 1;
+      susToggleRef.current = { idx: i, count: next };
+      if (next >= 6 && !susFireRef.current) {
+        susFireRef.current = true;
+        setShowSus(true);
+        markEggSeen("egg-amogus");
+        setTimeout(() => {
+          setShowSus(false);
+          susFireRef.current = false;
+          susToggleRef.current = { idx: -1, count: 0 };
+        }, 4500);
+      }
+    }
+  }, [markEggSeen]);
+
   // ── Egg 1: Portal cake ────────────────────────────────────
   const [cakeShowing, setCakeShowing] = useState(false);
   const [cakeHeadingBadge, setCakeHeadingBadge] = useState(false);
@@ -419,7 +445,7 @@ export function SummitInfo() {
             <div className="sum-faq-list">
               {FAQS.map((f, i) => (
                 <div key={f.q} className="sum-faq-item">
-                  <button className="sum-faq-btn" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                  <button className="sum-faq-btn" onClick={() => handleFaqToggle(i)}>
                     <span className="sum-faq-q">{f.q}</span>
                     <span className={`sum-faq-icon${openFaq === i ? " sum-faq-icon--open" : " sum-faq-icon--closed"}`}>+</span>
                   </button>
@@ -433,6 +459,22 @@ export function SummitInfo() {
         </section>
 
       </div>
+
+      {/* ── Egg 4: Among Us ── */}
+      {showSus && (
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: '#000', zIndex: 9998, pointerEvents: 'none' }}>
+          <div style={{ position: 'fixed', top: '10vh', left: 0, width: '50vw', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999, pointerEvents: 'none' }}>
+            <h1 style={{ fontFamily: "'Press Start 2P', monospace", fontSize: 'clamp(20px, 4vw, 36px)', color: '#ff0000', textShadow: '0 0 60px rgba(255,0,0,1), 4px 4px 0 #000, -4px -4px 0 #000', letterSpacing: '0.15em', margin: 0, padding: '0 20px', lineHeight: 1.4, textAlign: 'center' }}>
+              IMPOSTER IS SUS
+            </h1>
+          </div>
+          <div style={{ position: 'fixed', top: '50%', left: '50vw', marginTop: '-100px', zIndex: 9999, pointerEvents: 'none', animation: 'sus-walk-left-panel 4s linear forwards' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/amongus/red-walk.gif" alt="sus" style={{ display: 'block', height: '200px', width: 'auto', imageRendering: 'pixelated', transform: 'scaleX(-1)' }} />
+          </div>
+          <style>{`@keyframes sus-walk-left-panel { from { transform: translateX(0) scaleX(-1); } to { transform: translateX(-50vw) scaleX(-1); } }`}</style>
+        </div>
+      )}
 
       {/* ── Egg 1: Portal cake toast ── */}
       {cakeShowing && (
