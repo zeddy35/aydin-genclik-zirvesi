@@ -201,7 +201,7 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
             {/* Content */}
             <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8">
               {/* Logo */}
-              <div className="h-28 sm:h-32 w-32 sm:w-40 flex items-center justify-center">
+              <div className="h-40 sm:h-52 w-40 sm:w-52 flex items-center justify-center">
                 <Image
                   src="/logos/gamejam-logo.svg"
                   alt="AGZ Game Jam Logo"
