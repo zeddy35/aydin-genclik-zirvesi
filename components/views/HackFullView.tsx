@@ -767,77 +767,6 @@ export function HackFullView({ onBack }: HackFullViewProps) {
           style={{ maxWidth: "clamp(320px, 90vw, 1160px)", padding: "clamp(20px, 3vw, 40px) clamp(16px, 3vw, 40px)" }}
         >
 
-          {/* ════ HERO: character dossier + selector ════════════ */}
-
-          {/* Mobile: horizontal card strip → main content */}
-          {/* Desktop: main content left | sidebar right        */}
-          <div className="flex flex-col lg:flex-row-reverse gap-4 lg:gap-5 mb-4 lg:mb-5 lg:items-stretch">
-
-            {/* CHARACTER SELECTOR ─────────────────────────────── */}
-            <div className="lg:w-[268px] xl:w-[296px] shrink-0 flex flex-col">
-
-              {/* Mobile: horizontal scroll */}
-              <div
-                className="lg:hidden"
-                style={{ overflowX: "auto", marginLeft: "clamp(-16px, -3vw, -40px)",
-                  marginRight: "clamp(-16px, -3vw, -40px)",
-                  paddingLeft: "clamp(16px, 3vw, 40px)",
-                  paddingRight: "clamp(16px, 3vw, 40px)",
-                  paddingBottom: 6,
-                  scrollbarWidth: "none",
-                }}
-              >
-                <div className="flex gap-2.5" style={{ width: "max-content" }}>
-                  {PEOPLE.map((p) => (
-                    <CharacterCard
-                      key={p.id}
-                      person={p}
-                      isActive={activePerson.id === p.id}
-                      onSelect={() => handleSelect(p)}
-                      compact
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Desktop: vertical list */}
-              <div className="hidden lg:flex flex-col flex-1 gap-2.5">
-                <div className="flex items-center justify-between mb-1">
-                  <span style={{ fontFamily: C.ui, fontWeight: 500, fontSize: 11,
-                    letterSpacing: "0.16em", textTransform: "uppercase", color: C.txtCode }}>
-                    İstihbarat Dosyası
-                  </span>
-                  <span style={{ fontFamily: C.mono, fontSize: 10,
-                    letterSpacing: "0.14em", color: C.border }}>
-                    {PEOPLE.length} AJAN
-                  </span>
-                </div>
-                {PEOPLE.map((p) => (
-                  <CharacterCard
-                    key={p.id}
-                    person={p}
-                    isActive={activePerson.id === p.id}
-                    onSelect={() => handleSelect(p)}
-                    grow
-                  />
-                ))}
-                <div className="mt-1">
-                  <span style={{ fontFamily: C.mono, fontSize: 10,
-                    letterSpacing: "0.12em", color: C.txtCode }}>
-                    GDG × OTT × HSD
-                  </span>
-                </div>
-              </div>
-
-            </div>
-
-            {/* MAIN CASE DISPLAY ──────────────────────────────── */}
-            <div className="flex-1 min-w-0 flex flex-col min-h-0">
-              <MainCaseDisplay person={activePerson} visible={contentVisible} />
-            </div>
-
-          </div>
-
           {/* ════ INTEL STRIP ════════════════════════════════════ */}
           <section
             className="rounded-lg border grid grid-cols-4 overflow-hidden mb-4"
@@ -995,6 +924,77 @@ export function HackFullView({ onBack }: HackFullViewProps) {
               ))}
             </div>
           </section>
+
+          {/* ════ HERO: character dossier + selector ════════════ */}
+
+          {/* Mobile: horizontal card strip → main content */}
+          {/* Desktop: main content left | sidebar right        */}
+          <div className="flex flex-col lg:flex-row-reverse gap-4 lg:gap-5 mb-4 lg:mb-5 lg:items-stretch">
+
+            {/* CHARACTER SELECTOR ─────────────────────────────── */}
+            <div className="lg:w-[268px] xl:w-[296px] shrink-0 flex flex-col">
+
+              {/* Mobile: horizontal scroll */}
+              <div
+                className="lg:hidden"
+                style={{ overflowX: "auto", marginLeft: "clamp(-16px, -3vw, -40px)",
+                  marginRight: "clamp(-16px, -3vw, -40px)",
+                  paddingLeft: "clamp(16px, 3vw, 40px)",
+                  paddingRight: "clamp(16px, 3vw, 40px)",
+                  paddingBottom: 6,
+                  scrollbarWidth: "none",
+                }}
+              >
+                <div className="flex gap-2.5" style={{ width: "max-content" }}>
+                  {PEOPLE.map((p) => (
+                    <CharacterCard
+                      key={p.id}
+                      person={p}
+                      isActive={activePerson.id === p.id}
+                      onSelect={() => handleSelect(p)}
+                      compact
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Desktop: vertical list */}
+              <div className="hidden lg:flex flex-col flex-1 gap-2.5">
+                <div className="flex items-center justify-between mb-1">
+                  <span style={{ fontFamily: C.ui, fontWeight: 500, fontSize: 11,
+                    letterSpacing: "0.16em", textTransform: "uppercase", color: C.txtCode }}>
+                    İstihbarat Dosyası
+                  </span>
+                  <span style={{ fontFamily: C.mono, fontSize: 10,
+                    letterSpacing: "0.14em", color: C.border }}>
+                    {PEOPLE.length} AJAN
+                  </span>
+                </div>
+                {PEOPLE.map((p) => (
+                  <CharacterCard
+                    key={p.id}
+                    person={p}
+                    isActive={activePerson.id === p.id}
+                    onSelect={() => handleSelect(p)}
+                    grow
+                  />
+                ))}
+                <div className="mt-1">
+                  <span style={{ fontFamily: C.mono, fontSize: 10,
+                    letterSpacing: "0.12em", color: C.txtCode }}>
+                    GDG × OTT × HSD
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            {/* MAIN CASE DISPLAY ──────────────────────────────── */}
+            <div className="flex-1 min-w-0 flex flex-col min-h-0">
+              <MainCaseDisplay person={activePerson} visible={contentVisible} />
+            </div>
+
+          </div>
 
           {/* ════ FAQ ════════════════════════════════════════════ */}
           <section
