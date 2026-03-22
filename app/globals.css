@@ -233,7 +233,7 @@
 .sum-sponsors-sub { font-family: var(--fn-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--c-muted); text-transform: uppercase; margin-top: -10px; margin-bottom: 14px; }
 
 @keyframes sum-scroll-left { from { transform:translateX(0) } to { transform:translateX(-50%) } }
-.sum-track-left { animation: sum-scroll-left 32s linear infinite; display: flex; width: max-content; gap: 10px; padding-left: 12px; }
+.sum-track-left { animation: sum-scroll-left 20s linear infinite; display: flex; width: max-content; gap: 10px; padding-left: 0; }
 .sum-carousel { overflow: visible; padding-bottom: 12px; padding-top: 8px; clip-path: inset(-100px -9999px -20px -9999px); }
 .sum-carousel:hover .sum-track-left { animation-play-state: paused; }
 /* Sponsor kartı */

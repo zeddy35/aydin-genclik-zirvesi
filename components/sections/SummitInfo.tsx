@@ -141,18 +141,10 @@ function OTTMonogram() {
 // SPONSOR DATA
 // ─────────────────────────────────────────────────────────────
 const SPONSORS: { id: string; name: string; url: string; accent: string; image?: string }[] = [
-  { id: "SP-01", name: "Pasaport Pizza Efeler", url: "https://www.pasaportpizza.com/", accent: T.gold, image: "/sponsors/pasaport_logo.png" },
-  { id: "SP-02", name: "Romesta Coffee Co.", url: "#", accent: T.violetLight, image: "/sponsors/romesta_logo.jpg" },
-  { id: "SP-03", name: "Mónet Coffee • Bakery", url: "https://www.instagram.com/monet.coffeebakery/", accent: T.gold, image: "/sponsors/monet_logo.jpg" }, 
-  { id: "SP-04", name: "Pablo Artisan Coffee", url: "https://www.instagram.com/pabloartisancoffee/", accent: T.violetLight, image: "/sponsors/pablo_logo.jpg" },
-  { id: "SP-05", name: "Zeybek pilav", url: "https://www.instagram.com/zeybek_pilav/", accent: T.gold, image: "/sponsors/zeybek_logo.jpeg" },
-  { id: "SP-06", name: "Aydın Vardar Pastanesi", url: "#", accent: T.violetLight, image: "/sponsors/vardar_logo.jpg" },
-  { id: "SP-07", name: "Lades Pilav", url: "https://www.instagram.com/ladespilav/", accent: T.gold, image: "/sponsors/lades_pilav_logo.jpg" },
-  { id: "SP-08", name: "Komagene Mimar Sinan", url: "https://www.instagram.com/komagene.m.sinan/", accent: T.violetLight, image: "/sponsors/komagene_logo.jpg" },
-  { id: "SP-09", name: "Sponsor Adı", url: "#", accent: T.gold },
-  { id: "SP-10", name: "Sponsor Adı", url: "#", accent: T.violetLight },
-  { id: "SP-11", name: "Sponsor Adı", url: "#", accent: T.gold },
-  { id: "SP-12", name: "Sponsor Adı", url: "#", accent: T.violetLight },
+  { id: "SP-01", name: "Yakında", url: "#", accent: T.gold },
+  { id: "SP-02", name: "Yakında", url: "#", accent: T.violetLight },
+  { id: "SP-03", name: "Yakında", url: "#", accent: T.gold },
+  { id: "SP-04", name: "Yakında", url: "#", accent: T.violetLight },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -217,26 +209,20 @@ export function SummitInfo() {
 
   const SCHEDULE: { day1: SchedItem[]; day2: SchedItem[] } = {
     day1: [
-      { time: "10:00", title: "Kayıt",                                                    type: "info" },
-      { time: "10:45", title: "Sunucu ile Başlangıç",                                     type: "info" },
-      { time: "11:00", title: "1. Konuşmacı",                                             type: "talk" },
-      { time: "11:45", title: "Tema Açıklanışı & Başlama",                                type: "milestone" },
-      { time: "12:00", title: "Hackathon & Game Jam Başlıyor", desc: "Öğle Yemeği · Network Session", type: "competition" },
-      { time: "13:30", title: "2. Konuşmacı",                                             type: "talk" },
-      { time: "15:00", title: "3. Konuşmacı",                                             type: "talk" },
-      { time: "20:00", title: "Yarışmacı Akşam Yemeği",                                   type: "food" },
+      { time: "10:00", title: "Check-in / Takım Eşleşmesi",                              type: "info" },
+      { time: "11:00", title: "Konuşma Başlıyor", desc: "1. Konuşmacı",                  type: "talk" },
+      { time: "11:45", title: "Game Jam & Hackathon Tema Açıklanışı",                     type: "milestone" },
+      { time: "12:00", title: "Hackathon & Game Jam Başlangıç",                           type: "competition" },
+      { time: "15:00", title: "2. Konuşmacı",                                             type: "talk" },
     ],
     day2: [
-      { time: "02:00", title: "Gece Kırıntısı", desc: "Çorba · Soğuk Sandviç · Kumru",   type: "food" },
-      { time: "08:00", title: "Kahvaltı",        desc: "Soğuk Sandviç · Kuru Pasta",      type: "food" },
-      { time: "11:00", title: "4. Konuşmacı",                                             type: "talk" },
-      { time: "11:45", title: "Konuşma Bitiş",                                            type: "info" },
-      { time: "12:00", title: "Hackathon & Game Jam Bitiyor", desc: "Öğle Yemeği · Network Session", type: "competition" },
-      { time: "13:00", title: "5. Konuşmacı & Kapanış",                                   type: "talk" },
-      { time: "14:00", title: "Sunum Zamanı",                                             type: "presentation" },
-      { time: "15:00", title: "Sunum Zamanı (devam)",                                     type: "presentation" },
-      { time: "16:00", title: "Sunum Zamanı (devam)",                                     type: "presentation" },
-      { time: "17:00", title: "Etkinlik Sonu",                                            type: "milestone" },
+      { time: "11:00", title: "Konuşma Başlıyor", desc: "3. Konuşmacı",                  type: "talk" },
+      { time: "12:00", title: "Hackathon Bitiş",                                          type: "competition" },
+      { time: "13:00", title: "4. Konuşmacı",                                             type: "talk" },
+      { time: "14:00", title: "Hackathon Sunum Başlangıcı",                               type: "presentation" },
+      { time: "15:00", title: "Game Jam Bitiş",                                           type: "competition" },
+      { time: "16:00", title: "Game Jam Sunum Başlangıcı",                                type: "presentation" },
+      { time: "18:00", title: "Etkinlik Sonu",                                            type: "milestone" },
     ],
   };
 
@@ -367,7 +353,7 @@ export function SummitInfo() {
         <section className="sum-reveal sum-section">
           <div className="sum-inner">
             <SumSecHeader title="Program Akışı" label="◈ Zaman Çizelgesi" />
-            <p className="sum-sched-note">Etkinlik 2 gün sürmektedir · Hackathon ve Game Jam eş zamanlı ilerler</p>
+            <p className="sum-sched-note">Etkinlik 2 gün sürmektedir · Hackathon ve Game Jam eş zamanlı başlar</p>
             <div className="sum-sched-grid">
               {([
                 { label: "1. Gün", key: "day1" as const },
@@ -400,7 +386,7 @@ export function SummitInfo() {
           </div>
           <div className="sum-carousel">
             <div className="sum-track-left">
-              {[...SPONSORS, ...SPONSORS].map((sp, i) => (
+              {[...SPONSORS, ...SPONSORS, ...SPONSORS, ...SPONSORS].map((sp, i) => (
                 <a
                   key={`sp-${i}`}
                   href={sp.url}
