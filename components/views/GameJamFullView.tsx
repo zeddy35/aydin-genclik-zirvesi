@@ -163,15 +163,15 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
   const FEATURES = [
     {
       icon: "⏱️",
-      title: "48 Saatlik Maraton",
+      title: "30 Saatlik Maraton",
       desc: "Hızlı düşün, hızlı geliştir, hızlı sun. Jam ruhu: 'ship it!'",
-      bullets: ["Takım kur, prototip geliştir", "48 saatte sıfırdan demo", "Her motor, her dil kabul"],
+      bullets: ["Takım kur, prototip geliştir", "30 saatte sıfırdan demo", "Her motor, her dil kabul"],
     },
     {
       icon: "🧩",
       title: "Takım & Roller",
       desc: "Coder, artist, designer, sound... Her rol bir 'party member'.",
-      bullets: ["1–5 kişilik takımlar", "Solo katılım + eşleşme akışı", "Mentor & atölye desteği"],
+      bullets: ["1–4 kişilik takımlar", "Solo katılım + eşleşme akışı", "Mentor & atölye desteği"],
     },
     {
       icon: "🏆",
@@ -188,7 +188,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
     },
     {
       q: "Takım kaç kişi olabilir?",
-      a: "1-5 kişi arası. Tek başına da katılabilirsin, eşleşme akışı var.",
+      a: "1-4 kişi arası. Tek başına da katılabilirsin, eşleşme akışı var.",
     },
     {
       q: "Tema ne zaman açıklanıyor?",
@@ -248,13 +248,6 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
         <div className={styles.container}>
           {/* ── TOP NAV ── */}
           <div className={styles.topNav}>
-            <div className={styles.topNavInfo}>
-              <div className={styles.topNavBadge}>
-                <ControllerIcon size={16} />
-                <span className={styles.topNavBadgeText}>JAM MODE · 48 SAAT</span>
-              </div>
-              <span className={styles.topNavSubtext}>INSERT COIN TO CONTINUE</span>
-            </div>
             <button onClick={onBack} className={styles.backBtn} aria-label="Geri dön">
               Geri →
             </button>
@@ -262,22 +255,14 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
 
           {/* ── HERO ── */}
           <section className={`gj-reveal ${styles.heroSection}`}>
-            <div className={styles.heroIcon}>🎮</div>
             <div className={styles.heroTitleWrapper}>
               <div className={styles.heroStarTL}><PixelStar size={10} color="#f472b6" /></div>
               <div className={styles.heroStarTR}><PixelStar size={8} color="#34d399" /></div>
               <div className={styles.heroStarBL}><PixelStar size={7} color="#fbbf24" /></div>
-              <h1 className={styles.heroTitle}>
-                Aydın{" "}
-                <span className={styles.heroTitleGradient}>Game Jam</span>
+              <h1 className={styles.heroTitlePixel}>
+                Game Jam Aydın 
               </h1>
             </div>
-            <p className={styles.heroDesc}>
-              48 saat boyunca harika oyunlar geliştir, yetenekli takımlar kur ve fikirlerini
-              dünyaya sun. Tam bir{" "}
-              <em className={styles.heroDescEm}>"cartoonish chaos"</em>{" "}
-              — ama üretken.
-            </p>
             <div className={styles.heroTagline}>★ PLAYER 1 READY? ★</div>
 
             <div className={styles.countdownBox}>
@@ -286,7 +271,6 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
 
             <div className={styles.heroCta}>
               <Link href="/auth/register" className={styles.btnPrimary}>Başvur 🚀</Link>
-              <button className={styles.btnOutline}>Detayları Gör</button>
             </div>
           </section>
 
@@ -320,7 +304,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
               {[
                 { label: "BAŞLAMA TARİHİ", value: "Yakında", color: "#ede9fe", border: "#c4b5fd" },
                 { label: "YER",            value: "Aydın",   color: "#fce7f3", border: "#f9a8d4" },
-                { label: "SÜRE",           value: "48 Saat", color: "#d1fae5", border: "#6ee7b7" },
+                { label: "SÜRE",           value: "30 Saat", color: "#d1fae5", border: "#6ee7b7" },
                 { label: "KATILIM",        value: "Ücretsiz",color: "#fef3c7", border: "#fde68a" },
               ].map((item) => (
                 <div
@@ -330,6 +314,96 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
                 >
                   <div className={styles.infoCardLabel}>{item.label}</div>
                   <div className={styles.infoCardValue}>{item.value}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ── NEDİR? ── */}
+          <section className={`gj-reveal ${styles.whatIsSection}`}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Game Jam Nedir?</h2>
+              <div className={styles.infoEmojis}>
+                {["🎮", "⚡", "🕹️"].map((e) => (
+                  <span key={e} style={{ fontSize: 16 }}>{e}</span>
+                ))}
+              </div>
+            </div>
+            <p className={styles.whatIsText}>
+              {/* Placeholder — içerik yakında eklenecek */}
+              Aydın Game Jam, belirlenen bir tema etrafında 30 saat içinde sıfırdan oyun geliştirdiğin yaratıcı bir etkinliktir. Tek başına ya da 5 kişilik bir ekiple katılabilirsin. Önemli olan bitmemiş ama çalışan bir prototip ortaya çıkarmak; mükemmel değil, gerçek.
+            </p>
+            <p className={styles.whatIsText}>
+              {/* Placeholder — içerik yakında eklenecek */}
+              Tema başlangıçta açıklanır; o andan itibaren fikirler, kodlar ve pikseller birbirini kovalamaya başlar. Mentor desteği, atölyeler ve birlikte üretmenin enerjisiyle dolu bir hafta sonu seni bekliyor.
+            </p>
+          </section>
+
+          {/* ── KURALLAR ── */}
+          <section className={`gj-reveal ${styles.rulesSection}`}>
+            <div className={styles.sectionHeaderRow}>
+              <h2 className={styles.sectionTitleLg}>📋 Kurallar</h2>
+              <PixelStar size={10} color="#a78bfa" />
+            </div>
+            <div className={styles.rulesList}>
+              {[
+                { n: "01", text: "Oyun, tema açıklandıktan sonra sıfırdan geliştirilmelidir. Önceden yapılmış oyunlar kabul edilmez." },
+                { n: "02", text: "Takımlar 1–4 kişiden oluşabilir. Solo katılım tamamen serbesttir." },
+                { n: "03", text: "Her oyun motoru, programlama dili ve araç seti kabul edilir. Kısıt yok." },
+                { n: "04", text: "Daha önce hazırlanmış asset'ler (ses, grafik, font vb.) kullanılabilir; ancak hazır oyun tabanları kullanılamaz." },
+                { n: "05", text: "Jama katılan herkes diğer takımların oyunlarına saygı göstermeli; yapıcı geri bildirim kültürü esastır." },
+                { n: "06", text: "Süre dolduğunda yapılan son build geçerli sayılır. Teslim linki zamanında paylaşılmalıdır." },
+              ].map((r) => (
+                <div key={r.n} className={styles.rulesItem}>
+                  <span className={styles.rulesNum}>{r.n}</span>
+                  <span className={styles.rulesText}>{r.text}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ── JÜRİLER ── */}
+          <section className={`gj-reveal ${styles.jurySection}`}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>Jüriler</h2>
+              <div className={styles.infoEmojis}>
+                {["⭐", "🔎", "🏆"].map((e) => (
+                  <span key={e} style={{ fontSize: 16 }}>{e}</span>
+                ))}
+              </div>
+            </div>
+            <div className={styles.juryGrid}>
+              {[0, 1, 2].map((i) => (
+                <div key={i} className={styles.juryCard}>
+                  <div className={styles.juryAvatar}>?</div>
+                  <div className={styles.juryName}>— Yakında —</div>
+                  <div className={styles.juryRole}>Açıklanacak</div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ── DEĞERLENDİRME KRİTERLERİ ── */}
+          <section className={`gj-reveal ${styles.criteriaSection}`}>
+            <div className={styles.sectionHeaderRow}>
+              <h2 className={styles.sectionTitleLg}>🏅 Değerlendirme Kriterleri</h2>
+              <PixelStar size={10} color="#fbbf24" />
+            </div>
+            <div className={styles.criteriaGrid}>
+              {[
+                { icon: "🎨", title: "Yaratıcılık & Özgünlük", desc: "Tema nasıl yorumlandı? Fikir ne kadar özgün ve cesur?", score: "25 PT" },
+                { icon: "⚙️", title: "Teknik Uygulama",         desc: "Oyun çalışıyor mu? Mekanikler tutarlı mı? Bug oranı?",  score: "25 PT" },
+                { icon: "🎮", title: "Oynanabilirlik & Eğlence", desc: "Demo keyifli mi? Oynamaya devam ettiriyor mu?",           score: "25 PT" },
+                { icon: "🎯", title: "Temaya Uyum",              desc: "Tema ne kadar iyi ve özgün biçimde işlendi?",             score: "15 PT" },
+                { icon: "🖼️", title: "Sunum & Görsel",           desc: "Görsel bütünlük, ses tasarımı ve genel atmosfer.",        score: "10 PT" },
+              ].map((c) => (
+                <div key={c.title} className={styles.criteriaCard}>
+                  <div className={styles.criteriaIcon}>{c.icon}</div>
+                  <div className={styles.criteriaTitleRow}>
+                    <span className={styles.criteriaTitle}>{c.title}</span>
+                    <span className={styles.criteriaScore}>{c.score}</span>
+                  </div>
+                  <p className={styles.criteriaDesc}>{c.desc}</p>
                 </div>
               ))}
             </div>
@@ -359,78 +433,6 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
                 </div>
               ))}
             </div>
-          </section>
-
-          {/* ── GAME GENRES ── */}
-          <section className={`gj-reveal ${styles.genresSection}`}>
-            <div className={styles.sectionHeaderRow}>
-              <h2 className={styles.sectionTitleLg}>Ne Yapabilirsin?</h2>
-              <PixelStar size={10} color="#34d399" />
-            </div>
-            <div className={styles.genresLabel}>SELECT GENRE:</div>
-            <div className={styles.genresList}>
-              {[
-                { label: "Platformer",    color: "#ede9fe", border: "#a78bfa", icon: "🏃" },
-                { label: "Puzzle",        color: "#fce7f3", border: "#f9a8d4", icon: "🧩" },
-                { label: "RPG",           color: "#d1fae5", border: "#6ee7b7", icon: "⚔️" },
-                { label: "Arcade",        color: "#fef3c7", border: "#fde68a", icon: "👾" },
-                { label: "Horror",        color: "#fee2e2", border: "#fca5a5", icon: "👻" },
-                { label: "Endless Runner",color: "#e0f2fe", border: "#7dd3fc", icon: "🏁" },
-                { label: "Visual Novel",  color: "#f3e8ff", border: "#d8b4fe", icon: "📖" },
-                { label: "... Her şey!", color: "#f0fdf4", border: "#86efac", icon: "✨" },
-              ].map((t) => (
-                <div
-                  key={t.label}
-                  className={styles.genreTag}
-                  style={{ "--tag-bg": t.color, "--tag-border": t.border } as React.CSSProperties}
-                >
-                  <span className={styles.genreTagIcon}>{t.icon}</span>
-                  <span className={styles.genreTagLabel}>{t.label}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ── TIMELINE ── */}
-          <section className={`gj-reveal ${styles.timelineSection}`}>
-            <div className={styles.timelineHeaderRow}>
-              <h2 className={styles.sectionTitle}>Nasıl İlerler?</h2>
-              <PixelStar size={10} color="#fbbf24" />
-            </div>
-            {[
-              {
-                stage: "STAGE 01", icon: "🚀", title: "Tema Açıklanır",
-                desc: "Tüm takımlar aynı anda öğreniyor. Beyin fırtınası başlasın!",
-                time: "T+0", color: "#ede9fe", border: "#a78bfa",
-              },
-              {
-                stage: "STAGE 02", icon: "🛠️", title: "İnşa Et",
-                desc: "Tasarım, kod, ses, sanat. 48 saat boyunca tam gaz.",
-                time: "T+1 — T+46", color: "#d1fae5", border: "#6ee7b7",
-              },
-              {
-                stage: "STAGE 03", icon: "🎮", title: "Sun & Oyna",
-                desc: "Demo sunumu, jüri oylaması, ve birbirinin oyunlarını oynama zamanı!",
-                time: "T+48", color: "#fce7f3", border: "#f9a8d4",
-              },
-            ].map((step) => (
-              <div key={step.stage} className={styles.timelineStep}>
-                <div
-                  className={styles.timelineStepIcon}
-                  style={{ "--step-bg": step.color, "--step-border": step.border } as React.CSSProperties}
-                >
-                  <span className={styles.timelineStepEmoji}>{step.icon}</span>
-                  <span className={styles.timelineStepStage}>{step.stage}</span>
-                </div>
-                <div className={styles.timelineStepBody}>
-                  <div className={styles.timelineStepTitleRow}>
-                    <span className={styles.timelineStepTitle}>{step.title}</span>
-                    <span className={styles.timelineStepTime}>{step.time}</span>
-                  </div>
-                  <p className={styles.timelineStepDesc}>{step.desc}</p>
-                </div>
-              </div>
-            ))}
           </section>
 
           {/* ── FAQ ── */}
@@ -478,14 +480,13 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
             </div>
             <div className={styles.ctaContent}>
               <div className={styles.ctaIcon}>🎮</div>
-              <h3 className={styles.ctaTitle}>48 saatin var. Ne inşa edeceksin?</h3>
+              <h3 className={styles.ctaTitle}>30 saatin var. Ne inşa edeceksin?</h3>
               <p className={styles.ctaDesc}>
                 Takımını kur, temayı bekle, oyununu yap. Kazanmak değil,{" "}
                 <strong className={styles.ctaDescStrong}>üretmek</strong> burada kural.
               </p>
               <div className={styles.ctaButtons}>
                 <Link href="/auth/register" className={styles.btnPrimaryWhite}>Hemen Başvur 🚀</Link>
-                <button className={styles.btnOutlineDark}>Detaylar</button>
               </div>
             </div>
           </section>

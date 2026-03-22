@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Press+Start+2P&display=swap');
 /* ── Keyframes ── */
 @keyframes sus-walk {
   from { transform: translateX(calc(100vw - 200px)); }
@@ -159,6 +158,15 @@
   margin: 0 0 8px;
   line-height: 1.05;
   letter-spacing: -0.01em;
+}
+.heroTitlePixel {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(18px, 4vw, 32px);
+  color: #1e0050;
+  margin: 0 0 8px;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-align: center;
 }
 .heroTitleGradient {
   background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
@@ -949,6 +957,225 @@
     text-decoration: none;
     box-shadow: 0 4px 0 #4c1d95;
     letter-spacing: 0.02em;
+  }
+}
+
+/* ── NEDİR? ── */
+.whatIsSection {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 24px;
+  border: 2px solid rgba(196, 181, 253, 0.6);
+  box-shadow: 0 4px 0 rgba(109, 40, 217, 0.18), 0 8px 24px rgba(124, 58, 237, 0.1);
+  margin-bottom: 40px;
+}
+.whatIsText {
+  font-family: 'Lexend', sans-serif;
+  font-size: 15px;
+  line-height: 1.85;
+  color: #4c3d7a;
+  margin-bottom: 12px;
+}
+.whatIsText:last-child {
+  margin-bottom: 0;
+}
+
+/* ── KURALLAR ── */
+.rulesSection {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 24px;
+  border: 2px solid rgba(196, 181, 253, 0.6);
+  box-shadow: 0 4px 0 rgba(109, 40, 217, 0.18), 0 8px 24px rgba(124, 58, 237, 0.1);
+  margin-bottom: 40px;
+}
+.rulesList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+.rulesItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: rgba(237, 233, 254, 0.5);
+  border: 1px solid rgba(196, 181, 253, 0.5);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+.rulesNum {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  color: #7c3aed;
+  min-width: 26px;
+  padding-top: 3px;
+  flex-shrink: 0;
+}
+.rulesText {
+  font-family: 'Lexend', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #4c3d7a;
+}
+
+/* ── JÜRİLER ── */
+.jurySection {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 24px;
+  border: 2px solid rgba(196, 181, 253, 0.6);
+  box-shadow: 0 4px 0 rgba(109, 40, 217, 0.18), 0 8px 24px rgba(124, 58, 237, 0.1);
+  margin-bottom: 40px;
+}
+.juryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 18px;
+}
+.juryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 16px;
+  background: rgba(237, 233, 254, 0.5);
+  border: 2px dashed rgba(167, 139, 250, 0.5);
+  border-radius: 16px;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+.juryCard:hover {
+  background: rgba(237, 233, 254, 0.8);
+  border-color: rgba(124, 58, 237, 0.5);
+}
+.juryAvatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(196, 181, 253, 0.3);
+  border: 2px dashed rgba(167, 139, 250, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 22px;
+  color: #a78bfa;
+}
+.juryName {
+  font-family: 'Lexend', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #6d28d9;
+  letter-spacing: 0.02em;
+}
+.juryRole {
+  font-family: 'Lexend', sans-serif;
+  font-size: 11px;
+  color: #9d8ec9;
+  letter-spacing: 0.04em;
+}
+
+/* ── DEĞERLENDİRME KRİTERLERİ ── */
+.criteriaSection {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 24px;
+  border: 2px solid rgba(196, 181, 253, 0.6);
+  box-shadow: 0 4px 0 rgba(109, 40, 217, 0.18), 0 8px 24px rgba(124, 58, 237, 0.1);
+  margin-bottom: 40px;
+}
+.criteriaGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+.criteriaCard {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 14px;
+  row-gap: 4px;
+  background: rgba(237, 233, 254, 0.5);
+  border: 1px solid rgba(196, 181, 253, 0.5);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.criteriaIcon {
+  grid-row: 1 / 3;
+  grid-column: 1;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.criteriaTitleRow {
+  grid-row: 1;
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.criteriaTitle {
+  font-family: 'Lexend', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #4c1d95;
+}
+.criteriaScore {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #7c3aed;
+  background: rgba(196, 181, 253, 0.35);
+  border: 1px solid rgba(167, 139, 250, 0.5);
+  border-radius: 6px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+.criteriaDesc {
+  grid-row: 2;
+  grid-column: 2;
+  font-family: 'Lexend', sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #6d5a9e;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  .juryGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .juryCard {
+    padding: 16px 8px;
+  }
+  .juryAvatar {
+    width: 52px;
+    height: 52px;
+    font-size: 16px;
+  }
+  .juryName {
+    font-size: 11px;
+  }
+  .criteriaCard {
+    grid-template-columns: 30px 1fr;
+  }
+  .criteriaTitleRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 }
 

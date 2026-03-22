@@ -23,6 +23,7 @@ interface Person {
   description:  string;
   tags:         string[];
   image:        string;
+  intel:        string[];
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -42,6 +43,12 @@ const PEOPLE: Person[] = [
       "24 saatlik soruşturmanın lideri. Ekiplere rehberlik eder, mentor ağını koordine eder ve projelerin nihai değerlendirmesini yürütür. Her kritik anda sahadaki ilk ajan.",
     tags: ["Mentörlük", "Yazılım", "Liderlik"],
     image: "/dino/dino_bw.png",
+    intel: [
+      "GÖZLEM — 22:47 · Tüm mentor check-in'lerini tek başına koordine etti. Uyku ihtiyacı belirsiz.",
+      "TESPİT — 03:12 · Üç farklı ekipte aynı anda müdahale kaydı. Klonlama ihtimali araştırılıyor.",
+      "KAYIT — 07:55 · 'Sorun yok' dedi. Sorun çıkmadı. Nasıl biliyor?",
+      "UYARI — Sahadaki personelin %100'ü AGT-DİNO'ya güveniyor. Risk: sonsuz.",
+    ],
   },
   {
     id:          "early",
@@ -55,6 +62,13 @@ const PEOPLE: Person[] = [
       "Bu vakayı açan tetikleyici figür. Tüm ekipler 24 saat boyunca bu şüphelinin bıraktığı kanıtları analiz edecek, prototip üretecek ve jüri karşısında çözümlerini kanıtlayacak.",
     tags: ["Problem Alanı", "MVP Hedefi", "Bilinmez"],
     image: "/early-akses/early_bw.png",
+    intel: [
+      "UYARI — Şüpheli hiçbir zaman tam olarak görülemedi. Siluet tespiti mümkün değil.",
+      "KAYIT — 00:00 · Problem alanı açıklandı. Ekiplerin yüz ifadesi analiz edilemedi — çok karıştı.",
+      "ŞİFRELİ — ████████ ██████ tarafından bırakılan iz: 'Çözüm zaten burada, sadece bakın.'",
+      "DİKKAT — Early Akses'in motivasyonu bilinmiyor. Takip edilmeli. Takip mümkün değil.",
+      "SON MESAJ — 'Bir dahaki sürümde daha mantıklı olacak.' — kaynak doğrulanamadı.",
+    ],
   },
   {
     id:          "beta",
@@ -69,6 +83,12 @@ const PEOPLE: Person[] = [
       "Saha operasyonlarını yürüten, ekiplerin ihtiyaçlarını karşılayan ve lojistiği koordine eden destek ajanı. Her kriz anında ilk devreye giren, kesintisiz çalışan ajan.",
     tags: ["Koordinasyon", "Lojistik", "Saha"],
     image: "/beta/beta_bw.png",
+    intel: [
+      "GÖZLEM — 01:30 · Kriz masasında 4 farklı sorunu eş zamanlı çözdü. Yetersiz kafe tüketimi şüphe uyandırıyor.",
+      "TESPİT — 04:48 · 'Kablo yok' şikayeti gelmeden önce zaten kablo taşıyordu. Öngörü mu? Tertip mi?",
+      "KAYIT — 09:00 · Kapanış sunumlarına 20 dakika kala projeksiyon çöktü. AGT-BETA 18 dakikada çözdü.",
+      "ONAY — Saha koordinasyonu nominal. Şüpheli sapma tespit edilmedi — bu da şüphe uyandırıyor.",
+    ],
   },
   {
     id:          "panda",
@@ -83,6 +103,12 @@ const PEOPLE: Person[] = [
       "Yanlış kapıdan girdi, bir daha çıkamadı. Her klavye sesi, her ani hareket onu irkiltiyor. Burada olmayı planlamıyordu — ama bir şekilde ekibin en kritik üyesi hâline geldi. Kendisi de nasıl olduğunu bilmiyor. Gitmek istiyor ama ayakları tutmuyor.",
     tags: ["Kaza Eseri", "Yüksek Irkilme", "HSD"],
     image: "/panda/panda_bw.png",
+    intel: [
+      "İLK TEMAS — 14:22 · Yanlış salona girdi. 'HSD toplantısı bu mu?' diye sordu. Hayır, değildi.",
+      "ANOMALI — 16:05 · Otururken klavye sesinden zıpladı. Dizüstü bilgisayarı kapandı. Yeniden açtı. Devam etti.",
+      "KAYIT — 23:40 · Tüm ekip uyurken tek başına çalışıyordu. Neden? Bilmiyor. Nasıl? Bilmiyor.",
+      "SON DURUM — Proje teslim edildi. KSK-PANDA hâlâ burada. Gitmek istiyor. Ayakları tutmuyor.",
+    ],
   },
 ];
 
@@ -208,7 +234,7 @@ function MainCaseDisplay({ person, visible }: { person: Person; visible: boolean
 
   return (
     <div
-      className="relative rounded-lg overflow-hidden flex flex-col flex-1 h-full"
+      className="relative rounded-lg overflow-hidden flex flex-col flex-1 h-full min-h-0"
       style={{
         background: C.surf,
         border: `1px solid ${suspect ? C.redDim : C.border}`,
@@ -216,7 +242,7 @@ function MainCaseDisplay({ person, visible }: { person: Person; visible: boolean
       }}
     >
       {/* Accent bar */}
-      <div className="h-[2px] w-full" style={{
+      <div className="h-[2px] w-full shrink-0" style={{
         background: suspect
           ? `linear-gradient(90deg, ${C.red} 0%, ${C.redDim} 60%, transparent 100%)`
           : `linear-gradient(90deg, transparent 0%, ${C.gold}44 50%, transparent 100%)`,
@@ -225,11 +251,14 @@ function MainCaseDisplay({ person, visible }: { person: Person; visible: boolean
 
       {/* Animated content */}
       <div
+        className="flex-1 overflow-y-auto min-h-0"
         style={{
           opacity:    visible ? 1 : 0,
           transform:  visible ? "translateY(0)" : "translateY(10px)",
           transition: "opacity 0.22s ease, transform 0.22s ease",
           padding:    "clamp(20px, 3vw, 32px)",
+          scrollbarWidth: "thin",
+          scrollbarColor: `${C.border} transparent`,
         }}
       >
         {/* Header row: dossier code + status */}
@@ -312,8 +341,46 @@ function MainCaseDisplay({ person, visible }: { person: Person; visible: boolean
         </p>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mb-6">
           {person.tags.map((t) => <Tag key={t}>{t}</Tag>)}
+        </div>
+
+        {/* Intel / Field Notes */}
+        <div
+          className="rounded-lg overflow-hidden"
+          style={{ border: `1px solid ${C.border}`, background: C.bg }}
+        >
+          {/* Header */}
+          <div
+            className="flex items-center justify-between px-4 py-2.5"
+            style={{ borderBottom: `1px solid ${C.border}`, background: C.surf2 }}
+          >
+            <span style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.18em",
+              textTransform: "uppercase", color: C.txtCode }}>
+              ◆ SAHA NOTU — GİZLİ
+            </span>
+            <span style={{ fontFamily: C.mono, fontSize: 10, color: C.txtCode }}>
+              {person.dossierCode}
+            </span>
+          </div>
+
+          {/* Notes list */}
+          <div className="flex flex-col divide-y" style={{ borderColor: C.border }}>
+            {person.intel.map((note, i) => {
+              const [prefix, ...rest] = note.split(" — ");
+              return (
+                <div key={i} className="flex gap-3 px-4 py-3">
+                  <span style={{ fontFamily: C.mono, fontSize: 10, color: suspect ? C.redDim : C.txtCode,
+                    letterSpacing: "0.1em", textTransform: "uppercase", flexShrink: 0, paddingTop: 1 }}>
+                    {prefix}
+                  </span>
+                  <span style={{ fontFamily: C.mono, fontSize: 11, color: C.txtMuted, lineHeight: 1.7 }}>
+                    {rest.join(" — ")}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
@@ -704,7 +771,7 @@ export function HackFullView({ onBack }: HackFullViewProps) {
 
           {/* Mobile: horizontal card strip → main content */}
           {/* Desktop: main content left | sidebar right        */}
-          <div className="flex flex-col lg:flex-row-reverse gap-4 lg:gap-5 mb-4 lg:mb-5">
+          <div className="flex flex-col lg:flex-row-reverse gap-4 lg:gap-5 mb-4 lg:mb-5 lg:items-stretch">
 
             {/* CHARACTER SELECTOR ─────────────────────────────── */}
             <div className="lg:w-[268px] xl:w-[296px] shrink-0 flex flex-col">
@@ -765,7 +832,7 @@ export function HackFullView({ onBack }: HackFullViewProps) {
             </div>
 
             {/* MAIN CASE DISPLAY ──────────────────────────────── */}
-            <div className="flex-1 min-w-0 flex flex-col">
+            <div className="flex-1 min-w-0 flex flex-col min-h-0">
               <MainCaseDisplay person={activePerson} visible={contentVisible} />
             </div>
 

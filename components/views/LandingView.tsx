@@ -199,15 +199,14 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
             />
 
             {/* Content */}
-            <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8">
+            <div className="relative z-10 flex flex-col items-center gap-5 sm:gap-6">
               {/* Logo */}
-              <div className="h-40 sm:h-52 w-40 sm:w-52 flex items-center justify-center">
+              <div className="h-52 sm:h-72 w-52 sm:w-72 flex items-center justify-center">
                 <Image
-                  src="/logos/gamejam-logo.svg"
+                  src="/logos/gamejamlogo.png"
                   alt="AGZ Game Jam Logo"
-                  width={240}
-                  height={340}
-                  unoptimized
+                  width={1246}
+                  height={786}
                   priority
                   className="w-full h-full object-contain hover:scale-150 transition-transform duration-300"
                   draggable={false}
@@ -294,16 +293,15 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
             />
 
             {/* Content */}
-            <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8">
+            <div className="relative z-10 flex flex-col items-center gap-5 sm:gap-6">
               {/* Logo */}
-              <div className="h-28 sm:h-32 w-32 sm:w-40 flex items-center justify-center">
+              <div className="h-52 sm:h-72 w-52 sm:w-72 flex items-center justify-center">
                 <Image
-                  src="/logos/hackathonlogo.svg"
+                  src="/logos/hackathonlogo.png"
                   alt="AGZ Hackathon Logo"
-                  width={635}
-                  height={446}
+                  width={2648}
+                  height={1859}
                   className="w-full h-full object-contain hover:scale-150 transition-transform duration-300"
-                  unoptimized
                   priority
                   draggable={false}
                 />
