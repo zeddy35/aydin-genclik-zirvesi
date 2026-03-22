@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Syne, Lexend, Share_Tech_Mono, Press_Start_2P } from "next/font/google";
-import { AuthProvider } from "@/components/auth/AuthProvider";
 import { AuthProvider as AGZAuthProvider } from "@/contexts/AuthContext";
 import { EasterEggProvider } from "@/components/EasterEggProvider";
 import { EasterEggContext } from "@/components/EasterEggContext";
@@ -63,7 +62,7 @@ export default function RootLayout({
         <EasterEggContext>
           <EasterEggProvider>
             <AGZAuthProvider>
-              <AuthProvider>{children}</AuthProvider>
+              {children}
             </AGZAuthProvider>
           </EasterEggProvider>
         </EasterEggContext>

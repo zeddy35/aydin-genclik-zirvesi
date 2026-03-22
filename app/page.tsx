@@ -1,8 +1,13 @@
 "use client";
 
-import { HeroExperience } from "@/components/HeroExperience";
+import dynamic from "next/dynamic";
 import { useState, useEffect } from 'react';
 import Loading from "./loading";
+
+const HeroExperience = dynamic(
+  () => import("@/components/HeroExperience").then(m => ({ default: m.HeroExperience })),
+  { ssr: false }
+);
 
 export default function Home() {
   const [ready, setReady] = useState(false);
