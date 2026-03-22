@@ -70,6 +70,20 @@ const PEOPLE: Person[] = [
     tags: ["Koordinasyon", "Lojistik", "Saha"],
     image: "/beta/beta_bw.png",
   },
+  {
+    id:          "panda",
+    dossierCode: "HCK-AYD-03",
+    codename:    "KSK-PANDA",
+    name:        "Panda",
+    role:        "Kazara Katılımcı",
+    org:         "HSD",
+    status:      "suspect",
+    statusLabel: "Kazara",
+    description:
+      "Yanlış kapıdan girdi, bir daha çıkamadı. Her klavye sesi, her ani hareket onu irkiltiyor. Burada olmayı planlamıyordu — ama bir şekilde ekibin en kritik üyesi hâline geldi. Kendisi de nasıl olduğunu bilmiyor. Gitmek istiyor ama ayakları tutmuyor.",
+    tags: ["Kaza Eseri", "Yüksek Irkilme", "HSD"],
+    image: "/panda/panda_bw.png",
+  },
 ];
 
 /* ════════════════════════════════════════════════════════════════
