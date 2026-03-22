@@ -54,7 +54,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr" suppressHydrationWarning className={`${syne.variable} ${lexend.variable} ${shareTechMono.variable} ${pressStart2P.variable}`}>
-      <head />
+      <head>
+        {/* Preload LCP background images so browser discovers them before React renders */}
+        <link rel="preload" href="/backgrounds/jambg.png" as="image" />
+        <link rel="preload" href="/backgrounds/hackbg.png" as="image" />
+      </head>
       <body className="antialiased">
         <EasterEggContext>
           <EasterEggProvider>
