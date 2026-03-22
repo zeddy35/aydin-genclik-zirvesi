@@ -68,13 +68,13 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
 
           <div className="relative z-10 text-center max-w-sm w-full">
             {/* Logo Area */}
-            <div className="mb-6 sm:mb-10 h-28 sm:h-36 md:h-40 flex items-center justify-center">
+            <div className="mb-6 sm:mb-10 h-28 sm:h-32 md:h-36 w-32 sm:w-40 md:w-48 flex items-center justify-center">
               <Image
                 src="/logos/gamejam-logo.svg"
                 alt="Game Jam Logo"
                 width={240}
                 height={340}
-                className="h-full w-auto object-contain"
+                className="w-full h-full object-contain"
                 unoptimized
               />
             </div>
@@ -145,13 +145,13 @@ export function PanelSplit({ onJamClick, onHackClick }: PanelSplitProps) {
 
           <div className="relative z-10 text-center max-w-sm w-full">
             {/* Logo Area */}
-            <div className="mb-6 sm:mb-10 md:mb-15 h-28 sm:h-36 md:h-40 flex items-center justify-center">
+            <div className="mb-6 sm:mb-10 md:mb-15 h-28 sm:h-32 md:h-36 w-32 sm:w-40 md:w-48 flex items-center justify-center">
               <Image
                 src="/logos/hackathonlogo.svg"
                 alt="Hackathon Logo"
                 width={635}
                 height={446}
-                className="h-full w-auto object-contain"
+                className="w-full h-full object-contain"
                 unoptimized
               />
             </div>

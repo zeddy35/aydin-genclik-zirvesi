@@ -201,7 +201,7 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
             {/* Content */}
             <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8">
               {/* Logo */}
-              <div className="h-28 sm:h-36 flex items-center justify-center">
+              <div className="h-28 sm:h-32 w-32 sm:w-40 flex items-center justify-center">
                 <Image
                   src="/logos/gamejam-logo.svg"
                   alt="AGZ Game Jam Logo"
@@ -209,7 +209,7 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
                   height={340}
                   unoptimized
                   priority
-                  className="h-full w-auto object-contain hover:scale-150 transition-transform duration-300"
+                  className="w-full h-full object-contain hover:scale-150 transition-transform duration-300"
                   draggable={false}
                 />
               </div>
@@ -296,13 +296,13 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
             {/* Content */}
             <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8">
               {/* Logo */}
-              <div className="h-28 sm:h-36 flex items-center justify-center">
+              <div className="h-28 sm:h-32 w-32 sm:w-40 flex items-center justify-center">
                 <Image
                   src="/logos/hackathonlogo.svg"
                   alt="AGZ Hackathon Logo"
                   width={635}
                   height={446}
-                  className="h-full w-auto object-contain hover:scale-150 transition-transform duration-300"
+                  className="w-full h-full object-contain hover:scale-150 transition-transform duration-300"
                   unoptimized
                   priority
                   draggable={false}
