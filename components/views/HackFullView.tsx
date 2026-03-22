@@ -737,7 +737,7 @@ export function HackFullView({ onBack }: HackFullViewProps) {
                   </span>
                   <span style={{ fontFamily: C.mono, fontSize: 10,
                     letterSpacing: "0.14em", color: C.border }}>
-                    3 AJAN
+                    {PEOPLE.length} AJAN
                   </span>
                 </div>
                 {PEOPLE.map((p) => (
