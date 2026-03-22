@@ -328,11 +328,13 @@ function CharacterCard({
   isActive,
   onSelect,
   compact = false,
+  grow = false,
 }: {
   person:   Person;
   isActive: boolean;
   onSelect: () => void;
   compact?: boolean;
+  grow?: boolean;
 }) {
   const suspect  = person.status === "suspect";
   const dotColor = suspect ? C.amberText : C.redText;
@@ -387,7 +389,10 @@ function CharacterCard({
     <button
       onClick={onSelect}
       aria-pressed={isActive}
-      className="relative w-full text-left rounded-lg overflow-hidden transition-all duration-200 cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+      className={cn(
+        "relative w-full text-left rounded-lg overflow-hidden transition-all duration-200 cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+        grow && "flex-1 flex flex-col justify-center"
+      )}
       style={{
         fontFamily:  C.ui,
         background:  isActive ? (suspect ? "#130909" : "#0d0c16") : C.surf,
@@ -702,7 +707,7 @@ export function HackFullView({ onBack }: HackFullViewProps) {
           <div className="flex flex-col lg:flex-row-reverse gap-4 lg:gap-5 mb-4 lg:mb-5">
 
             {/* CHARACTER SELECTOR ─────────────────────────────── */}
-            <div className="lg:w-[268px] xl:w-[296px] shrink-0">
+            <div className="lg:w-[268px] xl:w-[296px] shrink-0 flex flex-col">
 
               {/* Mobile: horizontal scroll */}
               <div
@@ -729,7 +734,7 @@ export function HackFullView({ onBack }: HackFullViewProps) {
               </div>
 
               {/* Desktop: vertical list */}
-              <div className="hidden lg:flex flex-col gap-2.5">
+              <div className="hidden lg:flex flex-col flex-1 gap-2.5">
                 <div className="flex items-center justify-between mb-1">
                   <span style={{ fontFamily: C.ui, fontWeight: 500, fontSize: 11,
                     letterSpacing: "0.16em", textTransform: "uppercase", color: C.txtCode }}>
@@ -746,6 +751,7 @@ export function HackFullView({ onBack }: HackFullViewProps) {
                     person={p}
                     isActive={activePerson.id === p.id}
                     onSelect={() => handleSelect(p)}
+                    grow
                   />
                 ))}
                 <div className="mt-1">
