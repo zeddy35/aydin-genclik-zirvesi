@@ -55,10 +55,6 @@
 
 /* ── Back button ── */
 .backBtn {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 100;
   font-family: 'Lexend', sans-serif;
   font-size: 13px;
   font-weight: 700;
@@ -72,6 +68,7 @@
   transition: background 0.15s;
   min-height: 44px;
   backdrop-filter: blur(8px);
+  flex-shrink: 0;
 }
 .backBtn:hover {
   background: rgba(124, 58, 237, 0.16);
@@ -79,11 +76,16 @@
 
 /* ── Top nav ── */
 .topNav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 20px 0 0;
+  padding: 12px 0;
   gap: 12px;
+  background: linear-gradient(to bottom, rgba(245,243,255,0.95) 80%, transparent);
+  backdrop-filter: blur(4px);
 }
 .topNavInfo {
   display: flex;
