@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Lexend:wght@100..900&family=Share+Tech+Mono&display=swap');
 
 @theme {
   /* Hackathon design-system tokens */
@@ -17,10 +16,19 @@
 @layer base {
   html {
     @apply scroll-smooth;
+    font-family: var(--font-syne), sans-serif;
   }
 
   body {
     @apply bg-black text-white;
+  }
+
+  /* Map next/font CSS variables to the font-family names used throughout the app */
+  :root {
+    --font-family-syne: var(--font-syne), sans-serif;
+    --font-family-lexend: var(--font-lexend), sans-serif;
+    --font-family-share-tech-mono: var(--font-share-tech-mono), monospace;
+    --font-family-press-start: var(--font-press-start), monospace;
   }
 }
 

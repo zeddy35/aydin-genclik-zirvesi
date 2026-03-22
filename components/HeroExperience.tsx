@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useRef, useEffect, useState, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { LandingView } from "./views/LandingView";
-import { GameJamFullView } from "./views/GameJamFullView";
-import { HackFullView } from "./views/HackFullView";
-import { SummitInfo } from "./sections/SummitInfo";
-import { Footer } from "./footer/Footer";
-import { EventCountdown } from "./sections/EventCountdown";
+
+const GameJamFullView = dynamic(() => import("./views/GameJamFullView").then(m => ({ default: m.GameJamFullView })), { ssr: false });
+const HackFullView    = dynamic(() => import("./views/HackFullView").then(m => ({ default: m.HackFullView })), { ssr: false });
+const SummitInfo      = dynamic(() => import("./sections/SummitInfo").then(m => ({ default: m.SummitInfo })), { ssr: false });
+const Footer          = dynamic(() => import("./footer/Footer").then(m => ({ default: m.Footer })), { ssr: false });
+const EventCountdown  = dynamic(() => import("./sections/EventCountdown").then(m => ({ default: m.EventCountdown })), { ssr: false });
 
 /* ═══════════════════════════════════════════════════════════
    Doubly Linked List – Panel Navigation System

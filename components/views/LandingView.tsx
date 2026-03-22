@@ -64,9 +64,9 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
 
   useEffect(() => { setMounted(true); }, []);
 
-  // Badge micro-float
+  // Badge micro-float — stop loop when panel is inactive
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !isActive) return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mq.matches) return;
     let frame: number;
@@ -80,11 +80,11 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [mounted]);
+  }, [isActive]);
 
   const [panelScrolled, setPanelScrolled] = useState(false);
   useEffect(() => {
-    if (!mounted || !heroRef.current) return;
+    if (!heroRef.current) return;
     let el: HTMLElement | null = heroRef.current.parentElement;
     while (el) {
       const { overflowY } = window.getComputedStyle(el);
@@ -97,7 +97,7 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
     const onScroll = () => setPanelScrolled(container.scrollTop > 80);
     container.addEventListener("scroll", onScroll, { passive: true });
     return () => container.removeEventListener("scroll", onScroll);
-  }, [mounted]);
+  }, []);
 
   const handleScrollDown = useCallback(() => {
     scrollParentRef.current?.scrollBy({ top: window.innerHeight, behavior: "smooth" });
@@ -201,13 +201,15 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
             {/* Content */}
             <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8">
               {/* Logo */}
-              <div className="h-24 sm:h-32 flex items-center justify-center">
+              <div className="h-28 sm:h-36 flex items-center justify-center">
                 <Image
-                  src="/logos/gamejam.png"
+                  src="/logos/gamejam-logo.svg"
                   alt="AGZ Game Jam Logo"
                   width={240}
-                  height={240}
-                  className="object-contain w-36 sm:w-52 h-auto hover:scale-150 transition-transform duration-300"
+                  height={340}
+                  unoptimized
+                  priority
+                  className="h-full w-auto object-contain hover:scale-150 transition-transform duration-300"
                   draggable={false}
                 />
               </div>
@@ -293,15 +295,16 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
 
             {/* Content */}
             <div className="relative z-10 flex flex-col items-center gap-6 sm:gap-8">
-              {/* Logo / GIF */}
-              <div className="h-24 sm:h-32 flex items-center justify-center">
+              {/* Logo */}
+              <div className="h-28 sm:h-36 flex items-center justify-center">
                 <Image
-                  src="/logos/hackathon.svg"
+                  src="/logos/hackathonlogo.svg"
                   alt="AGZ Hackathon Logo"
-                  width={240}
-                  height={144}
-                  className="object-contain w-36 sm:w-52 h-auto hover:scale-150 transition-transform duration-300"
+                  width={635}
+                  height={446}
+                  className="h-full w-auto object-contain hover:scale-150 transition-transform duration-300"
                   unoptimized
+                  priority
                   draggable={false}
                 />
               </div>
