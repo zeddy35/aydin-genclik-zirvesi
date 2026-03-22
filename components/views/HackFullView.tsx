@@ -208,7 +208,7 @@ function MainCaseDisplay({ person, visible }: { person: Person; visible: boolean
 
   return (
     <div
-      className="relative rounded-lg overflow-hidden"
+      className="relative rounded-lg overflow-hidden flex flex-col flex-1 h-full"
       style={{
         background: C.surf,
         border: `1px solid ${suspect ? C.redDim : C.border}`,
@@ -759,7 +759,7 @@ export function HackFullView({ onBack }: HackFullViewProps) {
             </div>
 
             {/* MAIN CASE DISPLAY ──────────────────────────────── */}
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 flex flex-col">
               <MainCaseDisplay person={activePerson} visible={contentVisible} />
             </div>
 
