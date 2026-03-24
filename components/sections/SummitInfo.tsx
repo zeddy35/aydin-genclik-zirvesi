@@ -242,10 +242,12 @@ export function SummitInfo() {
         {/* ── HERO STRIP ── */}
         <section className="sum-reveal sum-section--hero">
           <div className="sum-inner">
-            <div className="sum-hero-eyebrow">AYDIN GENÇLİK ZİRVESİ · 2026</div>
-            <h1 className="sum-hero-h1">
-              Üç Dünya.<br />
-              <span className="sum-hero-grad">Bir Sahne.</span>
+            <div className="sum-hero-eyebrow">ÜÇ KULÜP, ÜÇ ETKİNLİK · 2026</div>
+            <h1 className="sum-hero-h1 !text-8xl">
+              Aydın<br />
+              <span className="sum-hero-grad">Gençlik</span>
+              <br />
+              <span>Zirvesi</span>
             </h1>
             <p className="sum-hero-desc">
               Gençlerin teknoloji, yaratıcılık ve yenilikçiliğini sergileyebilecekleri bir platform. GDG on Campus Aydın, Oyun ve Tasarım Topluluğu ve Huawei Student Developers iş birliğiyle, üç etkinlik — bir çatı altında.

@@ -153,7 +153,7 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
         {/* ── Split container ───────────────────────────────────── */}
         <div
           className={`${s.split} flex h-full w-full`}
-          style={{ perspective: "1400px" }}
+          style={{ perspective: "1200px" }}
         >
 
           {/* ── LEFT — Game Jam ──────────────────────────────────── */}
