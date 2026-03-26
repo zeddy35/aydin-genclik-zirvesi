@@ -4,6 +4,7 @@
   .panel  { transition: none !important; }
   .shine  { display: none !important; }
   .scrollArrowInline { animation: none !important; }
+  .pillWrapper { animation: none !important; }
 }
 
 .panel {
@@ -78,9 +79,17 @@
 .navBtn:active       { transform: scale(0.93); }
 .navBtn:focus-visible { outline: 2px solid #a78bfa; outline-offset: 3px; }
 
-/* Desktop: add breathing room above arrows (below Başvur buttons) */
+/* Desktop: pin arrows to left/right edges of each panel */
 @media (min-width: 768px) {
-  .navBtn { margin-top: 28px; }
+  .navBtnJam,
+  .navBtnHack {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0;
+  }
+  .navBtnJam  { left: 24px; }
+  .navBtnHack { right: 24px; }
 }
 
 /* ── Panel login badges ───────────────────────────────────── */
@@ -135,6 +144,11 @@
 .loginHack:active { transform: scale(0.96); }
 
 /* ── Bottom stack wrapper (pill + arrow) ──────────────────── */
+@keyframes pill-float {
+  0%, 100% { transform: translateX(-50%) translateY(0px); }
+  50%       { transform: translateX(-50%) translateY(-5px); }
+}
+
 .pillWrapper {
   position: fixed;
   bottom: 16px;
@@ -144,6 +158,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  animation: pill-float 3.5s ease-in-out infinite;
 }
 
 /* ── Bottom pill nav ──────────────────────────────────────── */
