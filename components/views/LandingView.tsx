@@ -51,8 +51,6 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
   const router = useRouter();
   const [hovered, setHovered] = useState<"jam" | "hack" | null>(null);
   const [tapped,  setTapped]  = useState<"jam" | "hack" | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const badgeRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const scrollParentRef = useRef<HTMLElement | null>(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -61,26 +59,6 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
   const [modalError,    setModalError]    = useState('');
   const [modalLoading,  setModalLoading]  = useState(false);
   const [modalShowPw,   setModalShowPw]   = useState(false);
-
-  useEffect(() => { setMounted(true); }, []);
-
-  // Badge micro-float — stop loop when panel is inactive
-  useEffect(() => {
-    if (typeof window === "undefined" || !isActive) return;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mq.matches) return;
-    let frame: number;
-    let t = 0;
-    const tick = () => {
-      t += 0.018;
-      if (badgeRef.current) {
-        badgeRef.current.style.transform = `translateX(-50%) translateY(${Math.sin(t) * 5}px)`;
-      }
-      frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [isActive]);
 
   const [panelScrolled, setPanelScrolled] = useState(false);
   useEffect(() => {
@@ -238,14 +216,6 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
                 </Link>
               </div>
             </div>
-            <button
-              onClick={onJamClick}
-              className={`${s.navBtn} ${s.navBtnJam}`}
-              aria-label="Game Jam tam görünümüne git"
-              style={{ borderColor: `${T.jam.accent}55` }}
-            >
-              ←
-            </button>
           </div>
 
 
@@ -332,28 +302,38 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
                 </Link>
               </div>
             </div>
-            <button
-              onClick={onHackClick}
-              className={`${s.navBtn} ${s.navBtnHack}`}
-              aria-label="Hackathon tam görünümüne git"
-              style={{ borderColor: `${T.hack.accent}55` }}
-            >
-              →
-            </button>
           </div>
 
         </div>
+
+        {/* ── Nav arrows — outside panels so transforms don't move them ── */}
+        <button
+          onClick={onJamClick}
+          className={`${s.navBtn} ${s.navBtnJam}`}
+          aria-label="Game Jam tam görünümüne git"
+          style={{ borderColor: `${T.jam.accent}55` }}
+        >
+          ←
+        </button>
+        <button
+          onClick={onHackClick}
+          className={`${s.navBtn} ${s.navBtnHack}`}
+          aria-label="Hackathon tam görünümüne git"
+          style={{ borderColor: `${T.hack.accent}55` }}
+        >
+          →
+        </button>
 
       </div>
 
       {/* ── Bottom Stack: Pill + Scroll Arrow ─────────────────────── */}
       <div
-        ref={badgeRef}
         className={s.pillWrapper}
         style={{
           opacity: isActive && !panelScrolled ? 1 : 0,
           pointerEvents: isActive && !panelScrolled ? "auto" : "none",
           transition: "opacity 0.4s ease",
+          animationPlayState: isActive ? "running" : "paused",
         }}
       >
         {/* Pill — chevron left, title center, login right */}

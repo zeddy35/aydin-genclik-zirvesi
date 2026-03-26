@@ -79,18 +79,16 @@
 .navBtn:active       { transform: scale(0.93); }
 .navBtn:focus-visible { outline: 2px solid #a78bfa; outline-offset: 3px; }
 
-/* Desktop: pin arrows to left/right edges of each panel */
-@media (min-width: 768px) {
-  .navBtnJam,
-  .navBtnHack {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-top: 0;
-  }
-  .navBtnJam  { left: 24px; }
-  .navBtnHack { right: 24px; }
+/* Arrows are outside the panels — always pinned to hero edges */
+.navBtnJam,
+.navBtnHack {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
 }
+.navBtnJam  { left: 24px; }
+.navBtnHack { right: 24px; }
 
 /* ── Panel login badges ───────────────────────────────────── */
 .loginJam {
@@ -425,16 +423,6 @@
 @media (max-width: 767px) {
   .split  { flex-direction: column !important; }
   .panel  { flex: 1 1 50% !important; transform: none !important; }
-
-  /* Mobile: move nav arrows to panel sides */
-  .navBtnJam,
-  .navBtnHack {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .navBtnJam { left: 16px; }
-  .navBtnHack { right: 16px; }
 
   .divider {
     top: 50%; bottom: auto; left: 0; right: 0;
