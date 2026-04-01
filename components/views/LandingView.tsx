@@ -179,7 +179,12 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
             {/* Content */}
             <div className="relative z-10 flex flex-col items-center gap-5 sm:gap-6">
               {/* Logo */}
-              <div className="h-52 sm:h-72 w-52 sm:w-72 flex items-center justify-center">
+              <div
+                className="h-52 sm:h-72 w-52 sm:w-72 flex items-center justify-center cursor-pointer"
+                onClick={onJamClick}
+                role="button"
+                aria-label="Game Jam sayfasına git"
+              >
                 <Image
                   src="/logos/gamejamlogo.png"
                   alt="AGZ Game Jam Logo"
@@ -265,7 +270,12 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
             {/* Content */}
             <div className="relative z-10 flex flex-col items-center gap-5 sm:gap-6">
               {/* Logo */}
-              <div className="h-52 sm:h-72 w-52 sm:w-72 flex items-center justify-center">
+              <div
+                className="h-52 sm:h-72 w-52 sm:w-72 flex items-center justify-center cursor-pointer"
+                onClick={onHackClick}
+                role="button"
+                aria-label="Hackathon sayfasına git"
+              >
                 <Image
                   src="/logos/hackathonlogo.png"
                   alt="AGZ Hackathon Logo"
