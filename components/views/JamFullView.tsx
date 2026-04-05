@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { Code2, Palette, Music, Puzzle, Timer, Users, Trophy, Rocket, Wrench, Gamepad2, PersonStanding, Sword, Joystick, Skull, Flag, BookOpen, Sparkles } from "lucide-react";
 
 interface GameJamFullViewProps {
   onBack: () => void;
@@ -105,16 +106,16 @@ export function JamFullView({ onBack }: GameJamFullViewProps) {
   const [hoveredRole, setHoveredRole] = useState<number | null>(null);
 
   const ROLES = [
-    { emoji: "💻", title: "Geliştirici", desc: "Oyun motoru, kod tabanı, fizik sistemi. Unity, Godot, Pygame — seçim senin.", color: "#dbeafe", border: "#3b82f6", shadow: "#3b82f6" },
-    { emoji: "🎨", title: "Sanatçı", desc: "Sprite, karakter, ortam. Pixel art mı? 3D mi? Her stil kabul.", color: "#fce7f3", border: "#ec4899", shadow: "#ec4899" },
-    { emoji: "🎵", title: "Ses Tasarımcısı", desc: "SFX, müzik, atmosfer. Ses olmadan oyun yarım.", color: "#d1fae5", border: "#10b981", shadow: "#10b981" },
-    { emoji: "🧩", title: "Game Designer", desc: "Mekanik, denge, eğlence döngüsü. Oyunun kalbi senin elinde.", color: "#fef3c7", border: "#f59e0b", shadow: "#f59e0b" },
+    { emoji: <Code2 size={28} color="#3b82f6" />, title: "Geliştirici", desc: "Oyun motoru, kod tabanı, fizik sistemi. Unity, Godot, Pygame — seçim senin.", color: "#dbeafe", border: "#3b82f6", shadow: "#3b82f6" },
+    { emoji: <Palette size={28} color="#ec4899" />, title: "Sanatçı", desc: "Sprite, karakter, ortam. Pixel art mı? 3D mi? Her stil kabul.", color: "#fce7f3", border: "#ec4899", shadow: "#ec4899" },
+    { emoji: <Music size={28} color="#10b981" />, title: "Ses Tasarımcısı", desc: "SFX, müzik, atmosfer. Ses olmadan oyun yarım.", color: "#d1fae5", border: "#10b981", shadow: "#10b981" },
+    { emoji: <Puzzle size={28} color="#f59e0b" />, title: "Game Designer", desc: "Mekanik, denge, eğlence döngüsü. Oyunun kalbi senin elinde.", color: "#fef3c7", border: "#f59e0b", shadow: "#f59e0b" },
   ];
 
   const FEATURES = [
-    { icon: "⏱️", title: "48 Saatlik Maraton", desc: "Hızlı düşün, hızlı geliştir, hızlı sun. Jam ruhu: 'ship it!'" },
-    { icon: "🧩", title: "Takım & Roller", desc: "Coder, artist, designer, sound... Her rol bir 'party member'." },
-    { icon: "🏆", title: "Ödüller & Eğlence", desc: "Sürpriz ödüller, mini-challenge'lar, sahnede demo keyfi." },
+    { icon: <Timer size={28} />, title: "48 Saatlik Maraton", desc: "Hızlı düşün, hızlı geliştir, hızlı sun. Jam ruhu: 'ship it!'" },
+    { icon: <Users size={28} />, title: "Takım & Roller", desc: "Coder, artist, designer, sound... Her rol bir 'party member'." },
+    { icon: <Trophy size={28} />, title: "Ödüller & Eğlence", desc: "Sürpriz ödüller, mini-challenge'lar, sahnede demo keyfi." },
   ];
 
   const FAQS = [
@@ -215,7 +216,7 @@ export function JamFullView({ onBack }: GameJamFullViewProps) {
           {/* ── HERO ── */}
           <section className="gj-reveal" style={{ textAlign: "center", padding: "48px 0 36px" }}>
             {/* Floating decorations */}
-            <div className="gj-float" style={{ display: "inline-block", marginBottom: 8, fontSize: 40, lineHeight: 1 }}>🎮</div>
+            <div className="gj-float" style={{ display: "inline-block", marginBottom: 8, lineHeight: 1 }}><Gamepad2 size={40} color="#7c3aed" /></div>
             <div style={{ position: "relative", display: "inline-block" }}>
               {/* Pixel stars around title */}
               <div style={{ position: "absolute", top: -12, left: -24 }} className="gj-float2"><PixelStar size={10} color="#f472b6" /></div>
@@ -255,7 +256,9 @@ export function JamFullView({ onBack }: GameJamFullViewProps) {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18, flexWrap: "wrap", gap: 8 }}>
               <h2 style={{ fontFamily: C.display, fontSize: 20, color: C.dark, margin: 0 }}>Temel Bilgiler</h2>
               <div style={{ display: "flex", gap: 6 }}>
-                {["🎮", "🕹️", "👾"].map(e => <span key={e} style={{ fontSize: 16 }}>{e}</span>)}
+                <Gamepad2 size={16} color={C.purple} />
+                <Joystick size={16} color={C.purple} />
+                <Puzzle size={16} color={C.purple} />
               </div>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 10 }}>
@@ -312,14 +315,14 @@ export function JamFullView({ onBack }: GameJamFullViewProps) {
             </div>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               {[
-                { label: "Platformer", color: "#ede9fe", border: "#a78bfa", icon: "🏃" },
-                { label: "Puzzle", color: "#fce7f3", border: "#f9a8d4", icon: "🧩" },
-                { label: "RPG", color: "#d1fae5", border: "#6ee7b7", icon: "⚔️" },
-                { label: "Arcade", color: "#fef3c7", border: "#fde68a", icon: "👾" },
-                { label: "Horror", color: "#fee2e2", border: "#fca5a5", icon: "👻" },
-                { label: "Endless Runner", color: "#e0f2fe", border: "#7dd3fc", icon: "🏁" },
-                { label: "Visual Novel", color: "#f3e8ff", border: "#d8b4fe", icon: "📖" },
-                { label: "... Her şey!", color: "#f0fdf4", border: "#86efac", icon: "✨" },
+                { label: "Platformer", color: "#ede9fe", border: "#a78bfa", icon: <PersonStanding size={14} /> },
+                { label: "Puzzle", color: "#fce7f3", border: "#f9a8d4", icon: <Puzzle size={14} /> },
+                { label: "RPG", color: "#d1fae5", border: "#6ee7b7", icon: <Sword size={14} /> },
+                { label: "Arcade", color: "#fef3c7", border: "#fde68a", icon: <Joystick size={14} /> },
+                { label: "Horror", color: "#fee2e2", border: "#fca5a5", icon: <Skull size={14} /> },
+                { label: "Endless Runner", color: "#e0f2fe", border: "#7dd3fc", icon: <Flag size={14} /> },
+                { label: "Visual Novel", color: "#f3e8ff", border: "#d8b4fe", icon: <BookOpen size={14} /> },
+                { label: "... Her şey!", color: "#f0fdf4", border: "#86efac", icon: <Sparkles size={14} /> },
               ].map((t) => (
                 <div key={t.label} className="gj-card" style={{ background: t.color, border: `2px solid ${t.border}`, borderRadius: 24, padding: "7px 14px", display: "flex", alignItems: "center", gap: 6, cursor: "default" }}>
                   <span style={{ fontSize: 14 }}>{t.icon}</span>
@@ -336,9 +339,9 @@ export function JamFullView({ onBack }: GameJamFullViewProps) {
               <PixelStar size={10} color="#fbbf24" />
             </div>
             {[
-              { n: "01", icon: "🚀", title: "Tema Açıklanır", desc: "Tüm takımlar aynı anda öğreniyor. Beyin fırtınası başlasın!", time: "T+0", color: "#ede9fe", border: "#a78bfa" },
-              { n: "02", icon: "🛠️", title: "İnşa Et", desc: "Tasarım, kod, ses, sanat. 48 saat boyunca tam gaz.", time: "T+1 — T+46", color: "#d1fae5", border: "#6ee7b7" },
-              { n: "03", icon: "🎮", title: "Sun & Oyna", desc: "Demo sunumu, jüri oylaması, ve birbirinin oyunlarını oynama zamanı!", time: "T+48", color: "#fce7f3", border: "#f9a8d4" },
+              { n: "01", icon: <Rocket size={22} />, title: "Tema Açıklanır", desc: "Tüm takımlar aynı anda öğreniyor. Beyin fırtınası başlasın!", time: "T+0", color: "#ede9fe", border: "#a78bfa" },
+              { n: "02", icon: <Wrench size={22} />, title: "İnşa Et", desc: "Tasarım, kod, ses, sanat. 48 saat boyunca tam gaz.", time: "T+1 — T+46", color: "#d1fae5", border: "#6ee7b7" },
+              { n: "03", icon: <Gamepad2 size={22} />, title: "Sun & Oyna", desc: "Demo sunumu, jüri oylaması, ve birbirinin oyunlarını oynama zamanı!", time: "T+48", color: "#fce7f3", border: "#f9a8d4" },
             ].map((step) => (
               <div key={step.n} style={{ display: "flex", gap: 16, marginBottom: 14, alignItems: "flex-start" }}>
                 <div style={{ background: step.color, border: `2px solid ${step.border}`, borderRadius: 12, width: 48, height: 48, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>
@@ -395,7 +398,7 @@ export function JamFullView({ onBack }: GameJamFullViewProps) {
               </svg>
             </div>
             <div style={{ position: "relative", zIndex: 1 }}>
-              <div style={{ fontSize: 40, marginBottom: 12 }} className="gj-float">🎮</div>
+              <div style={{ marginBottom: 12 }} className="gj-float"><Gamepad2 size={40} color="#fff" /></div>
               <h3 style={{ fontFamily: C.display, fontSize: "clamp(22px,5vw,36px)", color: "#fff", margin: "0 0 10px", letterSpacing: "-0.01em" }}>
                 48 saatin var. Ne inşa edeceksin?
               </h3>
@@ -404,7 +407,7 @@ export function JamFullView({ onBack }: GameJamFullViewProps) {
               </p>
               <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
                 <Link href="/auth/register" className="gj-btn-primary" style={{ fontFamily: C.display, fontSize: 16, background: "#fff", color: C.purple, padding: "12px 28px", borderRadius: 12, textDecoration: "none", display: "inline-block", boxShadow: "0 4px 14px rgba(0,0,0,0.2)", border: "none" }}>
-                  Hemen Başvur 🚀
+                  Hemen Başvur <Rocket size={16} style={{ display: 'inline', marginLeft: 4 }} />
                 </Link>
                 <Link href="/gamejam/detay" className="gj-btn-outline" style={{ fontFamily: C.display, fontSize: 16, background: "rgba(255,255,255,0.1)", color: "#ddd6fe", padding: "12px 28px", borderRadius: 12, textDecoration: "none", display: "inline-block", border: "2px solid rgba(255,255,255,0.2)" }}>
                   Detaylar

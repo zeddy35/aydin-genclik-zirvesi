@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { FolderOpen, Search, Paperclip, Target, LogOut, Gamepad2, X } from 'lucide-react';
 
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
   const { user, kullanici, loading, signOut } = useAuth();
@@ -36,10 +37,10 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
   const accent = isHack ? '#d4a843' : '#7c3aed';
 
   const navItems = [
-    { href: '/panel', icon: '🗂️', label: 'Dosyam', mono: 'GENEL' },
-    { href: '/panel/durum', icon: '🔍', label: 'Durum Sorgula', mono: 'DURUM' },
-    { href: '/panel/belgelerim', icon: '📎', label: 'Belgelerim', mono: 'DOSYALAR' },
-    { href: '/panel/proje', icon: '🎯', label: 'Proje Gönder', mono: 'PROJE' },
+    { href: '/panel', icon: <FolderOpen size={17} />, label: 'Dosyam', mono: 'GENEL' },
+    { href: '/panel/durum', icon: <Search size={17} />, label: 'Durum Sorgula', mono: 'DURUM' },
+    { href: '/panel/belgelerim', icon: <Paperclip size={17} />, label: 'Belgelerim', mono: 'DOSYALAR' },
+    { href: '/panel/proje', icon: <Target size={17} />, label: 'Proje Gönder', mono: 'PROJE' },
   ];
 
   const initials = kullanici
@@ -93,7 +94,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
           <nav className="pl-sidebar">
             <div className="pl-side-profile">
               <div className="pl-side-name">{kullanici ? `${kullanici.isim} ${kullanici.soyisim}` : user.email}</div>
-              <div className="pl-side-ev">{isHack ? '🔍 Hackathon' : '🎮 Game Jam'} · {kullanici?.katilimTuru === 'takim' ? 'Takım' : 'Bireysel'}</div>
+              <div className="pl-side-ev" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>{isHack ? <Search size={11} /> : <Gamepad2 size={11} />}{isHack ? ' Hackathon' : ' Game Jam'} · {kullanici?.katilimTuru === 'takim' ? 'Takım' : 'Bireysel'}</div>
             </div>
             {navItems.map(item => (
               <Link key={item.href} href={item.href} className={`pl-nav-item ${pathname === item.href ? 'active' : ''}`}>
@@ -104,7 +105,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
             ))}
             <div className="pl-side-footer">
               <button className="pl-logout" onClick={() => signOut().then(() => router.push('/auth/login'))}>
-                <span>↩</span> Çıkış Yap
+                <LogOut size={14} /> Çıkış Yap
               </button>
             </div>
           </nav>
@@ -118,7 +119,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
           <div className="pl-mob-drawer" ref={menuRef}>
             <div className="pl-mob-overlay" onClick={() => setMenuAcik(false)} />
             <div className="pl-mob-panel">
-              <button className="pl-mob-close" onClick={() => setMenuAcik(false)}>✕</button>
+              <button className="pl-mob-close" onClick={() => setMenuAcik(false)}><X size={20} /></button>
               <div style={{ marginBottom: 20 }}>
                 <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 16, color: accent, marginBottom: 4 }}>[ AGZ PANEL ]</div>
                 <div style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: 11, color: '#6b6485', letterSpacing: '0.2em' }}>

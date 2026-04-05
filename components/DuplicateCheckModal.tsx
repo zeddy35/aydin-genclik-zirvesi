@@ -1,5 +1,7 @@
 "use client";
 
+import { AlertCircle } from "lucide-react";
+
 interface DuplicateCheckModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -23,19 +25,7 @@ export function DuplicateCheckModal({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-sm w-full p-8 space-y-6 animate-in fade-in zoom-in">
         <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto">
-          <svg
-            className="w-6 h-6 text-red-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 9v2m0 4v2m0-10a9 9 0 110 18 9 9 0 010-18z"
-            />
-          </svg>
+          <AlertCircle className="w-6 h-6 text-red-600" />
         </div>
 
         <div className="text-center space-y-2">

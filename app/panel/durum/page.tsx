@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getBasvuruDurumu } from '@/lib/firebase/basvuru';
 import type { BasvuruDurumuDoc } from '@/lib/firebase/types';
+import { Clock, Search, CheckCircle2, XCircle, ClipboardList, Check, X, AlertTriangle } from 'lucide-react';
 
-const DURUM_MAP: Record<string, { label: string; color: string; bg: string; icon: string; desc: string }> = {
-  beklemede: { label: 'BEKLEMEDE', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', icon: '⏳', desc: 'Başvurunuz alındı, inceleme sırası bekleniyor.' },
-  inceleniyor: { label: 'İNCELENİYOR', color: '#3b82f6', bg: 'rgba(59,130,246,0.1)', icon: '🔍', desc: 'Başvurunuz ekibimiz tarafından inceleniyor.' },
-  onaylandi: { label: 'ONAYLANDI', color: '#10b981', bg: 'rgba(16,185,129,0.1)', icon: '✅', desc: 'Tebrikler! Başvurunuz kabul edildi.' },
-  reddedildi: { label: 'REDDEDİLDİ', color: '#ef4444', bg: 'rgba(239,68,68,0.1)', icon: '❌', desc: 'Başvurunuz bu aşamada kabul edilemedi.' },
-  bekleme_listesi: { label: 'BEKLEME LİSTESİ', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)', icon: '📋', desc: 'Kontenjan açıldığında bildirim alacaksınız.' },
+const DURUM_MAP: Record<string, { label: string; color: string; bg: string; icon: React.ReactNode; desc: string }> = {
+  beklemede: { label: 'BEKLEMEDE', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', icon: <Clock size={52} color="#f59e0b" />, desc: 'Başvurunuz alındı, inceleme sırası bekleniyor.' },
+  inceleniyor: { label: 'İNCELENİYOR', color: '#3b82f6', bg: 'rgba(59,130,246,0.1)', icon: <Search size={52} color="#3b82f6" />, desc: 'Başvurunuz ekibimiz tarafından inceleniyor.' },
+  onaylandi: { label: 'ONAYLANDI', color: '#10b981', bg: 'rgba(16,185,129,0.1)', icon: <CheckCircle2 size={52} color="#10b981" />, desc: 'Tebrikler! Başvurunuz kabul edildi.' },
+  reddedildi: { label: 'REDDEDİLDİ', color: '#ef4444', bg: 'rgba(239,68,68,0.1)', icon: <XCircle size={52} color="#ef4444" />, desc: 'Başvurunuz bu aşamada kabul edilemedi.' },
+  bekleme_listesi: { label: 'BEKLEME LİSTESİ', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)', icon: <ClipboardList size={52} color="#8b5cf6" />, desc: 'Kontenjan açıldığında bildirim alacaksınız.' },
 };
 
 const ADIMLAR = ['beklemede', 'inceleniyor', 'onaylandi'];
@@ -93,7 +94,7 @@ export default function DurumPage() {
                     <div key={adim} className="dp-tl-step">
                       {i < ADIMLAR.length - 1 && <div className={`dp-tl-line ${isDone ? 'done' : ''}`} />}
                       <div className={`dp-tl-dot ${isDone ? 'done' : isActive ? 'active' : isFail ? 'fail' : ''}`}>
-                        {isDone ? '✓' : isFail ? '✕' : i + 1}
+                        {isDone ? <Check size={14} /> : isFail ? <X size={14} /> : i + 1}
                       </div>
                       <div className={`dp-tl-name ${isDone ? 'done' : isActive ? 'active' : ''}`}>
                         {DURUM_MAP[adim]?.label ?? adim}
@@ -106,7 +107,7 @@ export default function DurumPage() {
 
             {isRedded && durum?.adminNotu && (
               <div className="dp-reject-card">
-                <p className="dp-reject-title">⚠️ Admin Notu</p>
+                <p className="dp-reject-title" style={{ display: 'flex', alignItems: 'center', gap: 6 }}><AlertTriangle size={14} /> Admin Notu</p>
                 <p className="dp-reject-note">{durum.adminNotu}</p>
               </div>
             )}

@@ -9,13 +9,14 @@ import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase/config';
 import { registerSchema, type RegisterFormData } from '@/lib/validations/register';
 import './register.css';
+import { Code2, Palette, Music, BarChart2, Shuffle, Search, Gamepad2, User, Users, Sprout, Wrench, Rocket, Lock, Eye, EyeOff, CheckCircle2, XCircle } from 'lucide-react';
 
 const ROLLER = [
-  { id: 'gelistirici', label: '💻 Geliştirici' },
-  { id: 'tasarimci', label: '🎨 Tasarımcı' },
-  { id: 'ses_muzik', label: '🎵 Ses & Müzik' },
-  { id: 'proje_yoneticisi', label: '📊 Proje Yöneticisi' },
-  { id: 'hepsini_yaparim', label: '🔀 Hepsini Yaparım' },
+  { id: 'gelistirici', label: 'Geliştirici', icon: <Code2 size={14} style={{ display: 'inline', marginRight: 5 }} /> },
+  { id: 'tasarimci', label: 'Tasarımcı', icon: <Palette size={14} style={{ display: 'inline', marginRight: 5 }} /> },
+  { id: 'ses_muzik', label: 'Ses & Müzik', icon: <Music size={14} style={{ display: 'inline', marginRight: 5 }} /> },
+  { id: 'proje_yoneticisi', label: 'Proje Yöneticisi', icon: <BarChart2 size={14} style={{ display: 'inline', marginRight: 5 }} /> },
+  { id: 'hepsini_yaparim', label: 'Hepsini Yaparım', icon: <Shuffle size={14} style={{ display: 'inline', marginRight: 5 }} /> },
 ];
 
 const sifreGucu = (sifre: string) => {
@@ -235,7 +236,7 @@ export default function RegisterPageContent() {
                     className={`reg-selector-card ${watchedEtkinlik === 'hackathon' ? 'sel-hack' : ''}`}
                     onClick={() => setValue('etkinlikTuru', 'hackathon', { shouldValidate: true })}
                   >
-                    <div className="reg-card-icon">🔍</div>
+                    <div className="reg-card-icon"><Search size={28} /></div>
                     <div className="reg-card-name">HACKATHON</div>
                     <div className="reg-card-desc">Gizli Dosya teması<br />48 saat · Teknoloji & Ürün</div>
                   </div>
@@ -243,7 +244,7 @@ export default function RegisterPageContent() {
                     className={`reg-selector-card ${watchedEtkinlik === 'gamejam' ? 'sel-jam' : ''}`}
                     onClick={() => setValue('etkinlikTuru', 'gamejam', { shouldValidate: true })}
                   >
-                    <div className="reg-card-icon">🎮</div>
+                    <div className="reg-card-icon"><Gamepad2 size={28} /></div>
                     <div className="reg-card-name">GAME JAM</div>
                     <div className="reg-card-desc">Ship it! Ruhu<br />48 saat · Oyun & Tasarım</div>
                   </div>
@@ -260,7 +261,7 @@ export default function RegisterPageContent() {
                     className={`reg-selector-card ${watchedKatilim === 'bireysel' ? 'sel-default' : ''}`}
                     onClick={() => setValue('katilimTuru', 'bireysel', { shouldValidate: true })}
                   >
-                    <div className="reg-card-icon">👤</div>
+                    <div className="reg-card-icon"><User size={28} /></div>
                     <div className="reg-card-name">BİREYSEL</div>
                     <div className="reg-card-desc">Kendi başıma<br />(eşleşme mümkün)</div>
                   </div>
@@ -268,7 +269,7 @@ export default function RegisterPageContent() {
                     className={`reg-selector-card ${watchedKatilim === 'takim' ? 'sel-default' : ''}`}
                     onClick={() => setValue('katilimTuru', 'takim', { shouldValidate: true })}
                   >
-                    <div className="reg-card-icon">👥</div>
+                    <div className="reg-card-icon"><Users size={28} /></div>
                     <div className="reg-card-name">TAKIM</div>
                     <div className="reg-card-desc">Kendi takımımla<br />(max 4 kişi)</div>
                   </div>
@@ -359,9 +360,9 @@ export default function RegisterPageContent() {
                 <label className="reg-label">DENEYİM SEVİYESİ *</label>
                 <div className="reg-dny-grid">
                   {[
-                    { id: 'yeni_basliyor', icon: '🌱', name: 'Yeni Başlıyorum', desc: 'İlk deneyimim olacak' },
-                    { id: 'orta', icon: '🔧', name: 'Orta Seviye', desc: 'Birkaç proje yaptım' },
-                    { id: 'ileri', icon: '🚀', name: 'İleri Seviye', desc: 'Deneyimliyim' },
+                    { id: 'yeni_basliyor', icon: <Sprout size={28} />, name: 'Yeni Başlıyorum', desc: 'İlk deneyimim olacak' },
+                    { id: 'orta', icon: <Wrench size={28} />, name: 'Orta Seviye', desc: 'Birkaç proje yaptım' },
+                    { id: 'ileri', icon: <Rocket size={28} />, name: 'İleri Seviye', desc: 'Deneyimliyim' },
                   ].map(d => (
                     <div
                       key={d.id}
@@ -382,8 +383,8 @@ export default function RegisterPageContent() {
                 <label className="reg-label">ROLÜNÜZ * <span style={{ color: '#4a4568', fontSize: 11 }}>(birden fazla seçilebilir)</span></label>
                 <div className="reg-chips">
                   {ROLLER.map(r => (
-                    <button key={r.id} type="button" className={`reg-chip ${watchedRol.includes(r.id) ? 'on' : ''}`} onClick={() => toggleRol(r.id)}>
-                      {r.label}
+                    <button key={r.id} type="button" className={`reg-chip ${watchedRol.includes(r.id) ? 'on' : ''}`} onClick={() => toggleRol(r.id)} style={{ display: 'inline-flex', alignItems: 'center' }}>
+                      {r.icon}{r.label}
                     </button>
                   ))}
                 </div>
@@ -422,7 +423,7 @@ export default function RegisterPageContent() {
                 <label className="reg-label">ŞİFRE *</label>
                 <div className="reg-pw-wrap">
                   <input type={sifreGoster ? 'text' : 'password'} className="reg-input" placeholder="············" value={sifre} onChange={e => setSifre(e.target.value)} autoComplete="new-password" />
-                  <button type="button" className="reg-pw-eye" onClick={() => setSifreGoster(v => !v)}>{sifreGoster ? '🙈' : '👁'}</button>
+                  <button type="button" className="reg-pw-eye" onClick={() => setSifreGoster(v => !v)}>{sifreGoster ? <EyeOff size={16} /> : <Eye size={16} />}</button>
                 </div>
                 {sifre.length > 0 && (
                   <div style={{ marginTop: 8 }}>
@@ -441,8 +442,8 @@ export default function RegisterPageContent() {
                 <label className="reg-label">ŞİFRE TEKRAR *</label>
                 <div className="reg-pw-wrap">
                   <input type={sifreTekrarGoster ? 'text' : 'password'} className="reg-input" placeholder="············" value={sifreTekrar} onChange={e => setSifreTekrar(e.target.value)} autoComplete="new-password" style={{ paddingRight: sifreTekrar.length > 0 ? '68px' : '44px' }} />
-                  <button type="button" className="reg-pw-eye" onClick={() => setSifreTekrarGoster(v => !v)}>{sifreTekrarGoster ? '🙈' : '👁'}</button>
-                  {sifreTekrar.length > 0 && <span className="reg-pw-match">{sifreTekrar === sifre ? '✅' : '❌'}</span>}
+                  <button type="button" className="reg-pw-eye" onClick={() => setSifreTekrarGoster(v => !v)}>{sifreTekrarGoster ? <EyeOff size={16} /> : <Eye size={16} />}</button>
+                  {sifreTekrar.length > 0 && <span className="reg-pw-match">{sifreTekrar === sifre ? <CheckCircle2 size={16} color="#10b981" /> : <XCircle size={16} color="#ef4444" />}</span>}
                 </div>
                 {errors.sifreTekrar && <span className="reg-error">{errors.sifreTekrar.message}</span>}
               </div>
@@ -475,7 +476,7 @@ export default function RegisterPageContent() {
                 gap: 12,
                 alignItems: 'flex-start',
               }}>
-                <span style={{ fontSize: 18, lineHeight: 1, flexShrink: 0 }}>🔒</span>
+                <Lock size={18} style={{ flexShrink: 0 }} />
                 <div>
                   <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#f59e0b', letterSpacing: '0.05em' }}>
                     BAŞVURULAR HENÜZ AÇILMADI

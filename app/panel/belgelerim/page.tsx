@@ -4,19 +4,20 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getAdminBelgeler } from '@/lib/firebase/belgeler';
 import type { Belge } from '@/lib/firebase/types';
+import { Medal, Award, Trophy, Folder, Inbox, FileText, Download, Loader2 } from 'lucide-react';
 
 const BELGE_LABELS: Record<string, string> = {
-  katilim_sertifikasi: '🏅 Katılım Sertifikası',
-  finalist_belgesi: '🥇 Finalist Belgesi',
-  odul_belgesi: '🏆 Ödül Belgesi',
-  diger: '📁 Diğer',
+  katilim_sertifikasi: 'Katılım Sertifikası',
+  finalist_belgesi: 'Finalist Belgesi',
+  odul_belgesi: 'Ödül Belgesi',
+  diger: 'Diğer',
 };
 
-const BELGE_ICONS: Record<string, string> = {
-  katilim_sertifikasi: '🏅',
-  finalist_belgesi: '🥇',
-  odul_belgesi: '🏆',
-  diger: '📁',
+const BELGE_ICONS: Record<string, React.ReactNode> = {
+  katilim_sertifikasi: <Medal size={24} />,
+  finalist_belgesi: <Award size={24} />,
+  odul_belgesi: <Trophy size={24} />,
+  diger: <Folder size={24} />,
 };
 
 export default function BelgelerimPage() {
@@ -103,7 +104,7 @@ export default function BelgelerimPage() {
             <div className="bp-loading">YÜKLENİYOR...</div>
           ) : belgeler.length === 0 ? (
             <div className="bp-empty">
-              <div className="bp-empty-icon">📭</div>
+              <div className="bp-empty-icon"><Inbox size={40} /></div>
               <div className="bp-empty-title">Henüz belge yok</div>
               <div className="bp-empty-desc">
                 Etkinlik tamamlandıktan sonra katılım sertifikan ve<br />
@@ -114,7 +115,7 @@ export default function BelgelerimPage() {
             <div className="bp-file-list">
               {belgeler.map(b => (
                 <div key={b.id} className="bp-file-row">
-                  <span className="bp-file-icon">{BELGE_ICONS[b.belgeTuru] ?? '📄'}</span>
+                  <span className="bp-file-icon">{BELGE_ICONS[b.belgeTuru] ?? <FileText size={24} />}</span>
                   <div className="bp-file-info">
                     <div className="bp-file-tur">{BELGE_LABELS[b.belgeTuru] ?? b.belgeTuru}</div>
                     <div className="bp-file-name">{b.dosyaAdi}</div>
@@ -125,7 +126,7 @@ export default function BelgelerimPage() {
                     disabled={downloadingId === b.id}
                     onClick={() => handleDownload(b)}
                   >
-                    {downloadingId === b.id ? '⏳ İndiriliyor...' : '⬇ İndir'}
+                    {downloadingId === b.id ? <><Loader2 size={13} style={{ display: 'inline', marginRight: 4, animation: 'spin 1s linear infinite' }} /> İndiriliyor...</> : <><Download size={13} style={{ display: 'inline', marginRight: 4 }} /> İndir</>}
                   </button>
                 </div>
               ))}

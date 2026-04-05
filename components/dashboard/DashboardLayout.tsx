@@ -4,6 +4,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
+import { BarChart2, FileText, Menu, X } from "lucide-react";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -23,8 +24,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   // Get user's application to determine which event type
   // This would be fetched from a hook or context
   const menuItems = [
-    { href: "/dashboard/status", label: "Durum", icon: "📊" },
-    { href: "/dashboard/documents", label: "Belgelerim", icon: "📄" },
+    { href: "/dashboard/status", label: "Durum", icon: <BarChart2 size={18} /> },
+    { href: "/dashboard/documents", label: "Belgelerim", icon: <FileText size={18} /> },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -39,7 +40,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="p-2 rounded-lg hover:bg-gray-100"
           >
-            ☰
+            <Menu size={20} />
           </button>
         </div>
       </div>
@@ -58,7 +59,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 onClick={() => setSidebarOpen(false)}
                 className="lg:hidden text-gray-400 hover:text-white"
               >
-                ✕
+                <X size={20} />
               </button>
             </div>
 

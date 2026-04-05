@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useEasterEggs } from "@/components/EasterEggContext";
 import Image from "next/image";
+import { ImageIcon } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────
 // DESIGN TOKENS
@@ -409,11 +410,7 @@ export function SummitInfo() {
                     ) : (
                       <div className="sum-sponsor-placeholder" style={{ color: sp.accent }}>
                         <div className="sum-sponsor-placeholder-icon" style={{ border: `2px solid ${sp.accent}66` }}>
-                          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="3"/>
-                            <circle cx="8.5" cy="8.5" r="1.5"/>
-                            <path d="M21 15l-5-5L5 21"/>
-                          </svg>
+                          <ImageIcon size={32} strokeWidth={1.5} />
                         </div>
                         <span className="sum-sponsor-placeholder-text">Logo</span>
                       </div>

@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^5.2.2",
     "firebase": "^12.8.0",
     "firebase-admin": "^13.6.0",
+    "lucide-react": "^1.7.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-chrome-dino": "^0.1.3",

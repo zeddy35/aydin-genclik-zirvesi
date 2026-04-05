@@ -9,6 +9,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth as firebaseAuth, db } from "@/lib/firebase/config";
 import s from "./LandingView.module.css";
+import { Eye, EyeOff } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────────
    LandingView — Premium split hero  (replaces PanelSplit)
@@ -409,7 +410,7 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
                     onClick={() => setModalShowPw(v => !v)}
                     aria-label={modalShowPw ? 'Şifreyi gizle' : 'Şifreyi göster'}
                   >
-                    {modalShowPw ? '🙈' : '👁'}
+                    {modalShowPw ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
               </div>

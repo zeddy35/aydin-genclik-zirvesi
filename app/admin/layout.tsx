@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { BarChart2, Users, LogOut } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, isAdmin, loading } = useAuth();
@@ -27,8 +28,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   const navItems = [
-    { href: '/admin', icon: '📊', label: 'Genel Bakış' },
-    { href: '/admin/kullanicilar', icon: '👥', label: 'Kullanıcılar' },
+    { href: '/admin', icon: <BarChart2 size={17} />, label: 'Genel Bakış' },
+    { href: '/admin/kullanicilar', icon: <Users size={17} />, label: 'Kullanıcılar' },
   ];
 
   return (
@@ -67,7 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </Link>
             ))}
             <hr className="al-sep" />
-            <Link href="/panel" className="al-panel-link">↩ Kullanıcı Paneli</Link>
+            <Link href="/panel" className="al-panel-link"><LogOut size={13} style={{ display: 'inline', marginRight: 6 }} /> Kullanıcı Paneli</Link>
           </nav>
           <main className="al-content">{children}</main>
         </div>

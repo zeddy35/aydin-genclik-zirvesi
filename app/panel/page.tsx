@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getBasvuruDurumu } from '@/lib/firebase/basvuru';
 import type { BasvuruDurumuDoc } from '@/lib/firebase/types';
+import { Search, Paperclip, Target, Gamepad2, Users, User } from 'lucide-react';
 
 export default function PanelPage() {
   const { kullanici, user } = useAuth();
@@ -19,9 +20,9 @@ export default function PanelPage() {
   const accent = isHack ? '#d4a843' : '#7c3aed';
 
   const cards = [
-    { href: '/panel/durum', icon: '🔍', title: 'Durum Sorgula', desc: 'Başvuru durumunu görüntüle', tag: 'DURUM' },
-    { href: '/panel/belgelerim', icon: '📎', title: 'Belgelerim', desc: 'Gerekli belgeleri yükle', tag: 'BELGELER' },
-    { href: '/panel/proje', icon: '🎯', title: 'Proje Gönder', desc: isHack ? 'Hackathon projenizi gönderin' : 'Game jam oyununuzu gönderin', tag: 'PROJE' },
+    { href: '/panel/durum', icon: <Search size={24} />, title: 'Durum Sorgula', desc: 'Başvuru durumunu görüntüle', tag: 'DURUM' },
+    { href: '/panel/belgelerim', icon: <Paperclip size={24} />, title: 'Belgelerim', desc: 'Gerekli belgeleri yükle', tag: 'BELGELER' },
+    { href: '/panel/proje', icon: <Target size={24} />, title: 'Proje Gönder', desc: isHack ? 'Hackathon projenizi gönderin' : 'Game jam oyununuzu gönderin', tag: 'PROJE' },
   ];
 
   return (
@@ -82,13 +83,13 @@ export default function PanelPage() {
               </div>
               <div className="pp-field">
                 <div className="pp-field-label">ETKİNLİK</div>
-                <span className={`pp-badge ${isHack ? 'pp-badge-hack' : 'pp-badge-jam'}`}>
-                  {isHack ? '🔍 HACKATHON' : '🎮 GAME JAM'}
+                <span className={`pp-badge ${isHack ? 'pp-badge-hack' : 'pp-badge-jam'}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  {isHack ? <Search size={11} /> : <Gamepad2 size={11} />}{isHack ? ' HACKATHON' : ' GAME JAM'}
                 </span>
               </div>
               <div className="pp-field">
                 <div className="pp-field-label">KATILIM</div>
-                <div className="pp-field-val">{kullanici.katilimTuru === 'takim' ? `👥 Takım · ${kullanici.takimAdi ?? ''}` : '👤 Bireysel'}</div>
+                <div className="pp-field-val" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>{kullanici.katilimTuru === 'takim' ? <><Users size={14} /> Takım · {kullanici.takimAdi ?? ''}</> : <><User size={14} /> Bireysel</>}</div>
               </div>
               {kullanici.rol && kullanici.rol.length > 0 && (
                 <div className="pp-field" style={{ gridColumn: '1/-1' }}>
