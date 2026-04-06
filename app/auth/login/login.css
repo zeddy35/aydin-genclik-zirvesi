@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Share+Tech+Mono&display=swap');
 
 * {
   box-sizing: border-box;
@@ -36,7 +36,7 @@
 }
 
 .lgn-title {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Lexend', sans-serif;
   font-weight: 800;
   font-size: 28px;
   color: #d1cfe8;
@@ -129,7 +129,7 @@
   border: none;
   border-radius: 10px;
   padding: 13px;
-  font-family: 'Syne', sans-serif;
+  font-family: 'Lexend', sans-serif;
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;

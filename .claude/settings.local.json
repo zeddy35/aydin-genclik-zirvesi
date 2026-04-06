@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"dynamic\\\\|lazy\" C:/Users/zerde/Projects/aydin-genclik-zirvesi/components --include=*.tsx)",
+      "Bash(grep -r \"getPerformance\\\\|initializePerformance\" C:/Users/zerde/Projects/aydin-genclik-zirvesi/lib --include=*.ts --include=*.tsx)",
+      "Bash(grep -rn \"ProtectedRoute\\\\|AuthProvider\" C:UserszerdeProjectsaydin-genclik-zirvesiapp --include=*.tsx)",
+      "Bash(npx next:*)",
+      "mcp__5dff034d-b5ad-46f3-baf6-828641565f43__list_projects",
+      "mcp__5dff034d-b5ad-46f3-baf6-828641565f43__list_deployments",
+      "mcp__5dff034d-b5ad-46f3-baf6-828641565f43__get_project",
+      "mcp__5dff034d-b5ad-46f3-baf6-828641565f43__web_fetch_vercel_url",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Read(//c/Users/zerde/Projects/creative-design//**)",
+      "Read(//c/Users/zerde/Projects/azure//**)",
+      "Bash(for dir:*)",
+      "Bash(do echo:*)",
+      "Read(//c/Users/zerde/Projects/**)",
+      "Bash(done)",
+      "Bash(gh pr:*)"
+    ]
+  }
+}

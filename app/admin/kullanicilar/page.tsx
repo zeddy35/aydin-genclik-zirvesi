@@ -81,10 +81,10 @@ export default function KullanicilarPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         .kp-page { padding: 28px; }
         .kp-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: #4a4568; text-transform: uppercase; margin-bottom: 6px; }
-        .kp-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 20px; }
+        .kp-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 20px; }
         .kp-toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; }
         .kp-search { flex: 1; min-width: 200px; background: #13111f; border: 1px solid #2a2545; border-radius: 8px; padding: 9px 14px; color: #d1cfe8; font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; }
         .kp-search:focus { border-color: #7c3aed; }

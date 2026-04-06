@@ -160,7 +160,7 @@ const C = {
   txtSec:      "#918da8",
   txtMuted:    "#524e68",
   txtCode:     "#3c3a52",
-  ui:          "'Syne', sans-serif",
+  ui:          "'Lexend', sans-serif",
   mono:        "'Share Tech Mono', monospace",
   display:     "'Oswald', sans-serif",
 } as const;

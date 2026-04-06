@@ -33,14 +33,14 @@ export default function AdminPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         .ap-page { padding: 28px; max-width: 1000px; margin: 0 auto; }
         .ap-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: #4a4568; text-transform: uppercase; margin-bottom: 6px; }
-        .ap-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 28px; }
+        .ap-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 28px; }
         .ap-stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 14px; margin-bottom: 28px; }
         .ap-stat { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 20px; text-align: center; position: relative; overflow: hidden; }
         .ap-stat::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-        .ap-stat-val { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 34px; color: #d1cfe8; margin-bottom: 4px; }
+        .ap-stat-val { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 34px; color: #d1cfe8; margin-bottom: 4px; }
         .ap-stat-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: #6b6485; text-transform: uppercase; }
         .ap-card { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
         .ap-sec-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: #4a4568; text-transform: uppercase; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px dashed #1e1a2e; }
@@ -52,7 +52,7 @@ export default function AdminPage() {
         .ap-bar { height: 100%; border-radius: 4px; transition: width 600ms cubic-bezier(0.4,0,0.2,1); }
         .ap-usr-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 8px; transition: background 150ms; text-decoration: none; border: 1px solid transparent; margin-bottom: 4px; }
         .ap-usr-row:hover { background: rgba(255,255,255,0.02); border-color: #1e1a2e; }
-        .ap-usr-avatar { width: 36px; height: 36px; border-radius: 50%; background: #2a2545; border: 1.5px solid #3a3060; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; color: #9490b0; flex-shrink: 0; }
+        .ap-usr-avatar { width: 36px; height: 36px; border-radius: 50%; background: #2a2545; border: 1.5px solid #3a3060; display: flex; align-items: center; justify-content: center; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 13px; color: #9490b0; flex-shrink: 0; }
         .ap-usr-name { font-size: 14px; color: #c8c4e0; font-weight: 500; flex: 1; }
         .ap-usr-ev { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.15em; margin-left: auto; flex-shrink: 0; text-transform: uppercase; }
         .ap-skeleton { background: linear-gradient(90deg, #1e1a2e 25%, #2a2545 50%, #1e1a2e 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; height: 20px; }

@@ -57,11 +57,11 @@ export default function ProjePage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         @keyframes stampIn { from { transform: rotate(-15deg) scale(2); opacity: 0; } to { transform: rotate(-15deg) scale(1); opacity: 0.9; } }
         .prj-page { padding: 28px; max-width: 680px; margin: 0 auto; }
         .prj-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: #4a4568; text-transform: uppercase; margin-bottom: 6px; }
-        .prj-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 28px; }
+        .prj-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 28px; }
         .prj-card { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 28px; }
         .prj-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: #4a4568; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px dashed #1e1a2e; }
         .prj-group { margin-bottom: 18px; }
@@ -72,12 +72,12 @@ export default function ProjePage() {
         .prj-ta { resize: vertical; min-height: 120px; line-height: 1.6; }
         .prj-err { font-size: 12px; color: #f87171; margin-top: 4px; display: block; }
         .prj-hint { font-size: 12px; color: #4a4568; margin-top: 4px; }
-        .prj-btn-hack { width: 100%; background: #d4a843; color: #0a0a0f; border: none; border-radius: 10px; padding: 14px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 150ms; }
+        .prj-btn-hack { width: 100%; background: #d4a843; color: #0a0a0f; border: none; border-radius: 10px; padding: 14px; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 150ms; }
         .prj-btn-hack:hover:not(:disabled) { background: #c49930; }
-        .prj-btn-jam { width: 100%; background: linear-gradient(135deg,#7c3aed,#ec4899); color: #fff; border: none; border-radius: 10px; padding: 14px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; }
+        .prj-btn-jam { width: 100%; background: linear-gradient(135deg,#7c3aed,#ec4899); color: #fff; border: none; border-radius: 10px; padding: 14px; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; }
         .prj-glob-err { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 12px 16px; color: #fca5a5; font-size: 14px; margin-bottom: 16px; }
         .prj-scs { text-align: center; padding: 40px; }
-        .prj-scs-stamp { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 28px; color: ${accent}; border: 3px solid ${accent}; padding: 12px 24px; display: inline-block; animation: stampIn 0.6s ease forwards; }
+        .prj-scs-stamp { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 28px; color: ${accent}; border: 3px solid ${accent}; padding: 12px 24px; display: inline-block; animation: stampIn 0.6s ease forwards; }
         .prj-scs-sub { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.25em; color: #4a4568; margin-top: 16px; }
       `}</style>
 

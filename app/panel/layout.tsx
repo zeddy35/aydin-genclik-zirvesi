@@ -50,19 +50,19 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         * { box-sizing: border-box; }
         .pl-root { min-height: 100vh; background: ; display: flex; flex-direction: column; font-family: 'DM Sans', sans-serif; }
         .pl-topbar { height: 56px; background: #13111f; border-bottom: 1px solid #1e1a2e; display: flex; align-items: center; padding: 0 20px; gap: 12px; flex-shrink: 0; position: sticky; top: 0; z-index: 100; }
-        .pl-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; color: ${accent}; letter-spacing: 0.05em; flex: 1; }
-        .pl-avatar { width: 34px; height: 34px; border-radius: 50%; background: ${isHack ? 'rgba(212,168,67,0.2)' : 'rgba(124,58,237,0.2)'}; border: 1.5px solid ${accent}; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; color: ${accent}; }
+        .pl-logo { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 15px; color: ${accent}; letter-spacing: 0.05em; flex: 1; }
+        .pl-avatar { width: 34px; height: 34px; border-radius: 50%; background: ${isHack ? 'rgba(212,168,67,0.2)' : 'rgba(124,58,237,0.2)'}; border: 1.5px solid ${accent}; display: flex; align-items: center; justify-content: center; font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 13px; color: ${accent}; }
         .pl-hamburger { background: none; border: none; cursor: pointer; padding: 6px; display: flex; flex-direction: column; gap: 4px; }
         .pl-hamburger span { display: block; width: 22px; height: 2px; background: #9490b0; border-radius: 2px; transition: all 200ms; }
         .pl-body { display: flex; flex: 1; }
         .pl-sidebar { width: 240px; background: #13111f; border-right: 1px solid #1e1a2e; display: flex; flex-direction: column; padding: 20px 12px; flex-shrink: 0; }
         @media (max-width: 768px) { .pl-sidebar { display: none; } }
         .pl-side-profile { padding: 14px 12px; margin-bottom: 16px; background: #0d0b18; border-radius: 10px; border: 1px solid #1e1a2e; }
-        .pl-side-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: #d1cfe8; margin-bottom: 2px; }
+        .pl-side-name { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 14px; color: #d1cfe8; margin-bottom: 2px; }
         .pl-side-ev { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: ${accent}; text-transform: uppercase; }
         .pl-nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: #6b6485; font-size: 14px; font-weight: 500; text-decoration: none; transition: all 150ms; border: 1px solid transparent; margin-bottom: 2px; }
         .pl-nav-item:hover { background: rgba(255,255,255,0.03); color: #9490b0; }
@@ -121,7 +121,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
             <div className="pl-mob-panel">
               <button className="pl-mob-close" onClick={() => setMenuAcik(false)}><X size={20} /></button>
               <div style={{ marginBottom: 20 }}>
-                <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 16, color: accent, marginBottom: 4 }}>[ AGZ PANEL ]</div>
+                <div style={{ fontFamily: 'Lexend, sans-serif', fontWeight: 800, fontSize: 16, color: accent, marginBottom: 4 }}>[ AGZ PANEL ]</div>
                 <div style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: 11, color: '#6b6485', letterSpacing: '0.2em' }}>
                   {kullanici ? `${kullanici.isim} ${kullanici.soyisim}` : user.email}
                 </div>

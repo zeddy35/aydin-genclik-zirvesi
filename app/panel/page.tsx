@@ -28,11 +28,11 @@ export default function PanelPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         .pp-page { padding: 28px; max-width: 900px; margin: 0 auto; }
         .pp-greeting { margin-bottom: 28px; }
         .pp-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: #4a4568; text-transform: uppercase; margin-bottom: 6px; }
-        .pp-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; }
+        .pp-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; }
         .pp-profile-card { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 24px; margin-bottom: 28px; position: relative; overflow: hidden; }
         .pp-profile-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: ${accent}; }
         .pp-profile-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.3em; color: ${accent}; text-transform: uppercase; margin-bottom: 16px; }
@@ -49,7 +49,7 @@ export default function PanelPage() {
         .pp-quick-card:hover { border-color: #3a3060; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(124,58,237,0.1); }
         .pp-quick-icon { font-size: 24px; margin-bottom: 10px; }
         .pp-quick-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.25em; color: ${accent}; text-transform: uppercase; margin-bottom: 6px; }
-        .pp-quick-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: #d1cfe8; margin-bottom: 4px; }
+        .pp-quick-name { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; color: #d1cfe8; margin-bottom: 4px; }
         .pp-quick-desc { font-size: 12px; color: #6b6485; line-height: 1.5; }
       `}</style>
 

@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Syne, Lexend, Share_Tech_Mono, Press_Start_2P } from "next/font/google";
+import { Lexend, Share_Tech_Mono, Press_Start_2P } from "next/font/google";
 import { AuthProvider as AGZAuthProvider } from "@/contexts/AuthContext";
 import { EasterEggProvider } from "@/components/EasterEggProvider";
 import { EasterEggContext } from "@/components/EasterEggContext";
 import "./globals.css";
 import "./arcade-theme.css";
 
-const syne = Syne({
-  subsets: ["latin"],
-  weight: ["400", "700", "800"],
-  display: "swap",
-  variable: "--font-syne",
-});
 const lexend = Lexend({
   subsets: ["latin"],
   display: "swap",
@@ -52,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="tr" suppressHydrationWarning className={`${syne.variable} ${lexend.variable} ${shareTechMono.variable} ${pressStart2P.variable}`}>
+    <html lang="tr" suppressHydrationWarning className={`${lexend.variable} ${shareTechMono.variable} ${pressStart2P.variable}`}>
       <head>
         {/* Preload LCP background images so browser discovers them before React renders */}
         <link rel="preload" href="/backgrounds/jambg.png" as="image" />

@@ -35,11 +35,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         * { box-sizing: border-box; }
         .al-root { min-height: 100vh; background: #0a0a0f; display: flex; flex-direction: column; font-family: 'DM Sans', sans-serif; }
         .al-topbar { height: 56px; background: #13111f; border-bottom: 1px solid #1e1a2e; display: flex; align-items: center; padding: 0 20px; gap: 12px; flex-shrink: 0; position: sticky; top: 0; z-index: 100; }
-        .al-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; color: #ef4444; letter-spacing: 0.05em; flex: 1; }
+        .al-logo { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 15px; color: #ef4444; letter-spacing: 0.05em; flex: 1; }
         .al-badge { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.2em; background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); border-radius: 4px; padding: 3px 8px; }
         .al-body { display: flex; flex: 1; }
         .al-sidebar { width: 220px; background: #13111f; border-right: 1px solid #1e1a2e; padding: 20px 12px; flex-shrink: 0; }

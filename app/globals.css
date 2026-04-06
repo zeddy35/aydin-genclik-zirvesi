@@ -16,7 +16,7 @@
 @layer base {
   html {
     @apply scroll-smooth;
-    font-family: var(--font-syne), sans-serif;
+    font-family: var(--font-lexend), sans-serif;
   }
 
   body {
@@ -25,7 +25,6 @@
 
   /* Map next/font CSS variables to the font-family names used throughout the app */
   :root {
-    --font-family-syne: var(--font-syne), sans-serif;
     --font-family-lexend: var(--font-lexend), sans-serif;
     --font-family-share-tech-mono: var(--font-share-tech-mono), monospace;
     --font-family-press-start: var(--font-press-start), monospace;
@@ -116,7 +115,7 @@
   --c-bg: #f0edf8; --c-surf: #faf9fd; --c-border: #ddd8ef; --c-border-high: #c4bce0;
   --c-text: #16142a; --c-muted: #5c5778; --c-faint: #c0b9d8;
   --c-gold: #b8891e; --c-violet: #6d28d9; --c-violet-l: #7c3aed;
-  --fn-display: 'Syne', sans-serif; --fn-body: 'Lexend', sans-serif; --fn-mono: 'Share Tech Mono', monospace;
+  --fn-display: 'Lexend', sans-serif; --fn-body: 'Lexend', sans-serif; --fn-mono: 'Share Tech Mono', monospace;
   background: var(--c-bg); font-family: var(--fn-body); width: 100%; color: var(--c-text);
 }
 

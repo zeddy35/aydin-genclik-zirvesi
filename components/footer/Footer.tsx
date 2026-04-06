@@ -15,7 +15,7 @@ const F = {
   faint:       "#c0b9d8",
   gold:        "#b8891e",
   violetLight: "#7c3aed",
-  display:     "'Syne', sans-serif",
+  display:     "'Lexend', sans-serif",
   mono:        "'Share Tech Mono', monospace",
 };
 

@@ -49,7 +49,7 @@ export default function AdminLoginPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Share+Tech+Mono&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         .adm-page {
@@ -114,7 +114,7 @@ export default function AdminLoginPage() {
         .adm-badge::before { content: '◈'; }
 
         .adm-title {
-          font-family: 'Syne', sans-serif;
+          font-family: 'Lexend', sans-serif;
           font-weight: 800;
           font-size: 26px;
           color: #fff;

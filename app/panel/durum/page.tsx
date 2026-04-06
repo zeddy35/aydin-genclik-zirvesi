@@ -38,14 +38,14 @@ export default function DurumPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
         .dp-page { padding: 28px; max-width: 700px; margin: 0 auto; }
         .dp-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: #4a4568; text-transform: uppercase; margin-bottom: 6px; }
-        .dp-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 28px; }
+        .dp-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 28px; }
         .dp-badge-card { background: #13111f; border: 1px solid #1e1a2e; border-radius: 16px; padding: 32px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
         .dp-badge-icon { font-size: 52px; margin-bottom: 12px; }
-        .dp-badge-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(18px, 4vw, 28px); letter-spacing: 0.1em; margin-bottom: 8px; }
+        .dp-badge-label { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(18px, 4vw, 28px); letter-spacing: 0.1em; margin-bottom: 8px; }
         .dp-badge-desc { font-size: 14px; color: #8b85a8; line-height: 1.6; }
         .dp-pulse { animation: pulse 2s ease-in-out infinite; }
         .dp-timeline { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
@@ -62,7 +62,7 @@ export default function DurumPage() {
         .dp-tl-line { position: absolute; top: 15px; left: calc(50% + 16px); right: calc(-50% + 16px); height: 2px; background: #2a2545; z-index: 1; }
         .dp-tl-line.done { background: #10b981; }
         .dp-reject-card { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.25); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
-        .dp-reject-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: #fca5a5; margin-bottom: 8px; }
+        .dp-reject-title { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 14px; color: #fca5a5; margin-bottom: 8px; }
         .dp-reject-note { font-size: 14px; color: #e5e7eb; line-height: 1.7; }
         .dp-ts { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #4a4568; text-align: center; margin-top: 12px; }
       `}</style>

@@ -62,10 +62,10 @@ export default function BelgelerimPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         .bp-page { padding: 28px; max-width: 760px; margin: 0 auto; }
         .bp-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: #4a4568; text-transform: uppercase; margin-bottom: 6px; }
-        .bp-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 8px; }
+        .bp-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 8px; }
         .bp-desc { font-size: 14px; color: #6b6485; margin-bottom: 28px; line-height: 1.6; }
         .bp-card { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
         .bp-sec-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: #4a4568; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px dashed #1e1a2e; }
@@ -82,7 +82,7 @@ export default function BelgelerimPage() {
         .bp-dl-btn:disabled { opacity: 0.5; cursor: default; }
         .bp-empty { text-align: center; padding: 48px 24px; }
         .bp-empty-icon { font-size: 40px; margin-bottom: 12px; }
-        .bp-empty-title { font-family: 'Syne', sans-serif; font-size: 16px; color: #6b6485; margin-bottom: 6px; }
+        .bp-empty-title { font-family: 'Lexend', sans-serif; font-size: 16px; color: #6b6485; margin-bottom: 6px; }
         .bp-empty-desc { font-size: 13px; color: #4a4568; line-height: 1.6; }
         .bp-loading { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: #4a4568; padding: 32px; text-align: center; }
         .bp-msg-err { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 10px 14px; color: #fca5a5; font-size: 13px; margin-bottom: 16px; }

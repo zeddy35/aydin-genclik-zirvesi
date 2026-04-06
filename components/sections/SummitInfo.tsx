@@ -23,7 +23,7 @@ const T = {
   violetDim: "#3b1f7a",
   violetLight: "#7c3aed",
   fn: {
-    display: "'Syne', sans-serif",
+    display: "'Lexend', sans-serif",
     body: "'Lexend', sans-serif",
     mono: "'Share Tech Mono', monospace",
   },
@@ -123,7 +123,7 @@ function GDGMonogram() {
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
       <circle cx="24" cy="24" r="22" stroke={T.gold} strokeWidth="1.5" fill="none" />
       <circle cx="24" cy="24" r="16" fill="#1a1730" />
-      <text x="24" y="30" textAnchor="middle" fontSize="18" fontWeight="700" fontFamily="Syne, sans-serif" fill={T.gold}>G</text>
+      <text x="24" y="30" textAnchor="middle" fontSize="18" fontWeight="700" fontFamily="Lexend, sans-serif" fill={T.gold}>G</text>
     </svg>
   );
 }
@@ -133,7 +133,7 @@ function OTTMonogram() {
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
       <circle cx="24" cy="24" r="22" stroke={T.violetLight} strokeWidth="1.5" fill="none" />
       <circle cx="24" cy="24" r="16" fill="#1a1730" />
-      <text x="24" y="30" textAnchor="middle" fontSize="18" fontWeight="700" fontFamily="Syne, sans-serif" fill={T.violetLight}>O</text>
+      <text x="24" y="30" textAnchor="middle" fontSize="18" fontWeight="700" fontFamily="Lexend, sans-serif" fill={T.violetLight}>O</text>
     </svg>
   );
 }

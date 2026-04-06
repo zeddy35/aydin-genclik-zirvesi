@@ -22,7 +22,7 @@ export default function Loading() {
           gap: 28px;
         }
         .l-title {
-          font-family: 'Syne', sans-serif;
+          font-family: 'Lexend', sans-serif;
           font-weight: 800;
           font-size: clamp(18px, 4vw, 26px);
           color: #d1cfe8;

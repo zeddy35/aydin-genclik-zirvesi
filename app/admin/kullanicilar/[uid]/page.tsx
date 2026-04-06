@@ -89,13 +89,13 @@ export default function KullaniciDetailPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         .kd-page { padding: 28px; max-width: 800px; margin: 0 auto; }
         .kd-back { display: inline-flex; align-items: center; gap: 6px; color: #6b6485; font-size: 13px; text-decoration: none; margin-bottom: 20px; transition: color 150ms; }
         .kd-back:hover { color: #9490b0; }
         .kd-hdr { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
-        .kd-avatar { width: 52px; height: 52px; border-radius: 50%; background: #2a2545; border: 2px solid #3a3060; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: #9490b0; }
-        .kd-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: #d1cfe8; }
+        .kd-avatar { width: 52px; height: 52px; border-radius: 50%; background: #2a2545; border: 2px solid #3a3060; display: flex; align-items: center; justify-content: center; font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 18px; color: #9490b0; }
+        .kd-name { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 22px; color: #d1cfe8; }
         .kd-sub { font-size: 13px; color: #6b6485; margin-top: 2px; }
         .kd-tabs { display: flex; gap: 4px; border-bottom: 1px solid #1e1a2e; margin-bottom: 24px; }
         .kd-tab { padding: 9px 16px; font-size: 13px; color: #6b6485; cursor: pointer; border: none; background: none; font-family: 'DM Sans', sans-serif; border-bottom: 2px solid transparent; transition: all 150ms; }
@@ -111,7 +111,7 @@ export default function KullaniciDetailPage() {
         .kd-inp:focus, .kd-ta:focus, .kd-sel:focus { border-color: #7c3aed; }
         .kd-ta { resize: vertical; min-height: 90px; }
         .kd-sel option { background: #13111f; }
-        .kd-btn { background: #7c3aed; color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: opacity 150ms; }
+        .kd-btn { background: #7c3aed; color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: opacity 150ms; }
         .kd-btn:hover:not(:disabled) { opacity: 0.85; }
         .kd-msg-ok { color: #6ee7b7; font-size: 13px; margin-top: 8px; }
         .kd-msg-err { color: #fca5a5; font-size: 13px; margin-top: 8px; }
