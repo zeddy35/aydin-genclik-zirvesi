@@ -13,8 +13,8 @@ const F = {
   text:        "#16142a",
   muted:       "#5c5778",
   faint:       "#c0b9d8",
-  gold:        "#b8891e",
-  violetLight: "#7c3aed",
+  gold:        "#5BC8F5",
+  violetLight: "#9240CC",
   display:     "'Lexend', sans-serif",
   mono:        "'Share Tech Mono', monospace",
 };
