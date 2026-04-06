@@ -29,6 +29,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
   }
 
+  // Limit: max 20 belgeler per user
+  const existingSnap = await adminDb
+    .collection('belgeler')
+    .where('kullaniciId', '==', kullaniciId)
+    .count()
+    .get();
+  if (existingSnap.data().count >= 20) {
+    return NextResponse.json({ error: 'Belge limiti aşıldı (max 20).' }, { status: 422 });
+  }
+
+  // Allowed MIME types only
+  const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
+  if (!allowedTypes.includes(contentType)) {
+    return NextResponse.json({ error: 'Desteklenmeyen dosya türü.' }, { status: 422 });
+  }
+
   const safeFileName = dosyaAdi.replace(/[^a-zA-Z0-9._-]/g, '_');
   const r2Key = `admin_belgeler/${kullaniciId}/${belgeTuru}/${Date.now()}_${safeFileName}`;
 

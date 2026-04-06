@@ -69,8 +69,17 @@ export default function KullanicilarPage() {
   const handleBulk = async () => {
     if (!user || selected.size === 0) return;
     setBulkLoading(true);
-    await bulkUpdateDurum(Array.from(selected), bulkDurum, user.uid);
-    setMsg(`${selected.size} kullanıcı güncellendi.`);
+    try {
+      const idToken = await user.getIdToken();
+      const res = await fetch('/api/admin/basvuru/bulk-durum', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+        body:    JSON.stringify({ uids: Array.from(selected), durum: bulkDurum }),
+      });
+      setMsg(res.ok ? `${selected.size} kullanıcı güncellendi.` : 'Güncelleme başarısız.');
+    } catch {
+      setMsg('Güncelleme başarısız.');
+    }
     setSelected(new Set());
     await fetchData();
     setBulkLoading(false);
