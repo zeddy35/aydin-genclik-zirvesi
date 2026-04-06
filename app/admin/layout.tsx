@@ -39,7 +39,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         * { box-sizing: border-box; }
         .al-root { min-height: 100vh; background: #0a0a0f; display: flex; flex-direction: column; font-family: 'DM Sans', sans-serif; }
         .al-topbar { height: 56px; background: #13111f; border-bottom: 1px solid #1e1a2e; display: flex; align-items: center; padding: 0 20px; gap: 12px; flex-shrink: 0; position: sticky; top: 0; z-index: 100; }
-        .al-logo { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 15px; color: #ef4444; letter-spacing: 0.05em; flex: 1; }
+        .al-logo { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 0.05em; flex: 1; }
+        .al-logo-blue { color: #5BC8F5; }
+        .al-logo-purple { color: #9240CC; }
         .al-badge { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.2em; background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); border-radius: 4px; padding: 3px 8px; }
         .al-body { display: flex; flex: 1; }
         .al-sidebar { width: 220px; background: #13111f; border-right: 1px solid #1e1a2e; padding: 20px 12px; flex-shrink: 0; }
@@ -56,7 +58,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       <div className="al-root">
         <header className="al-topbar">
-          <div className="al-logo">[ AGZ ADMIN ]</div>
+          <div className="al-logo">
+            <span className="al-logo-blue">AYDIN </span>
+            <span className="al-logo-purple">Gençlik </span>
+            <span className="al-logo-blue">Zirvesi</span>
+          </div>
           <span className="al-badge">ADMIN</span>
         </header>
         <div className="al-body">

@@ -54,7 +54,9 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
         * { box-sizing: border-box; }
         .pl-root { min-height: 100vh; background: ; display: flex; flex-direction: column; font-family: 'DM Sans', sans-serif; }
         .pl-topbar { height: 56px; background: #13111f; border-bottom: 1px solid #1e1a2e; display: flex; align-items: center; padding: 0 20px; gap: 12px; flex-shrink: 0; position: sticky; top: 0; z-index: 100; }
-        .pl-logo { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 15px; color: ${accent}; letter-spacing: 0.05em; flex: 1; }
+        .pl-logo { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 0.05em; flex: 1; }
+        .pl-logo-blue { color: #5BC8F5; }
+        .pl-logo-purple { color: #9240CC; }
         .pl-avatar { width: 34px; height: 34px; border-radius: 50%; background: ${isHack ? 'rgba(212,168,67,0.2)' : 'rgba(124,58,237,0.2)'}; border: 1.5px solid ${accent}; display: flex; align-items: center; justify-content: center; font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 13px; color: ${accent}; }
         .pl-hamburger { background: none; border: none; cursor: pointer; padding: 6px; display: flex; flex-direction: column; gap: 4px; }
         .pl-hamburger span { display: block; width: 22px; height: 2px; background: #9490b0; border-radius: 2px; transition: all 200ms; }
@@ -87,7 +89,11 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
             <span /><span /><span />
           </button>
           <style>{`@media(max-width:768px){#pl-ham-btn{display:flex!important}}`}</style>
-          <div className="pl-logo">[  {isHack ? 'HACKATHON' : 'GAME JAM'} ]</div>
+          <div className="pl-logo">
+            <span className="pl-logo-blue">AYDIN </span>
+            <span className="pl-logo-purple">Gençlik </span>
+            <span className="pl-logo-blue">Zirvesi</span>
+          </div>
         </header>
 
         <div className="pl-body">
@@ -121,7 +127,11 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
             <div className="pl-mob-panel">
               <button className="pl-mob-close" onClick={() => setMenuAcik(false)}><X size={20} /></button>
               <div style={{ marginBottom: 20 }}>
-                <div style={{ fontFamily: 'Lexend, sans-serif', fontWeight: 800, fontSize: 16, color: accent, marginBottom: 4 }}>[ AGZ PANEL ]</div>
+                <div style={{ fontFamily: 'Lexend, sans-serif', fontWeight: 800, fontSize: 16, marginBottom: 4 }}>
+                  <span style={{ color: '#5BC8F5' }}>AYDIN </span>
+                  <span style={{ color: '#9240CC' }}>Gençlik </span>
+                  <span style={{ color: '#5BC8F5' }}>Zirvesi</span>
+                </div>
                 <div style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: 11, color: '#6b6485', letterSpacing: '0.2em' }}>
                   {kullanici ? `${kullanici.isim} ${kullanici.soyisim}` : user.email}
                 </div>
