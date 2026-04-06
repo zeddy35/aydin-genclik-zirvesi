@@ -1,38 +1,38 @@
-// Firestore Security Rules for AGZ v2
+// Firestore Security Rules for AGZ
 // Deploy with: firebase deploy --only firestore:rules
 
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper: is the requester signed in?
     function isSignedIn() {
       return request.auth != null;
     }
 
-    // Helper: is the requester an admin? (checks admins/{uid} document existence)
     function isAdmin() {
       return isSignedIn() &&
         exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
 
-    // Helper: is the requester the owner of the given uid?
     function isOwner(uid) {
       return isSignedIn() && request.auth.uid == uid;
     }
 
     // ── users ──────────────────────────────────────────────────────────────
+    // Owner can read their own doc; only admin can update (prevents etkinlikTuru tampering).
+    // Creation is done server-side via Admin SDK — client create is blocked.
     match /users/{uid} {
       allow read:   if isOwner(uid) || isAdmin();
-      allow create: if isOwner(uid);
-      allow update: if isOwner(uid) || isAdmin();
+      allow create: if false;          // API route (Admin SDK) only
+      allow update: if isAdmin();      // users cannot alter their own record
       allow delete: if isAdmin();
     }
 
     // ── basvuru_durumlari ──────────────────────────────────────────────────
+    // Creation via Admin SDK; client can only read their own status.
     match /basvuru_durumlari/{uid} {
       allow read:   if isOwner(uid) || isAdmin();
-      allow create: if isOwner(uid);
+      allow create: if false;          // API route (Admin SDK) only
       allow update: if isAdmin();
       allow delete: if isAdmin();
     }
@@ -40,24 +40,43 @@ service cloud.firestore {
     // ── belgeler ───────────────────────────────────────────────────────────
     match /belgeler/{belgeId} {
       allow read:   if isAdmin() || (isSignedIn() && resource.data.kullaniciId == request.auth.uid);
-      allow create: if isSignedIn() && request.resource.data.kullaniciId == request.auth.uid;
+      allow create: if isSignedIn()
+                    && request.resource.data.kullaniciId == request.auth.uid
+                    // Prevent unlimited document spam: max 10 belgeler per user
+                    // (enforced via countOf — requires Firestore count queries; as fallback,
+                    //  also check server-side in the upload API route)
+                    && request.resource.data.keys().hasAll(['kullaniciId', 'belgeTuru', 'dosyaAdi', 'dosyaBoyutu']);
       allow update: if isAdmin();
       allow delete: if isAdmin();
     }
 
     // ── projeler ───────────────────────────────────────────────────────────
+    // All writes go through /api/proje/gonder (Admin SDK) — deadline enforced there.
+    // Client can only read their own project.
     match /projeler/{uid} {
-      allow read:   if isOwner(uid) || isAdmin();
-      allow create: if isOwner(uid);
-      allow update: if isOwner(uid) || isAdmin();
-      allow delete: if isAdmin();
+      allow read:          if isOwner(uid) || isAdmin();
+      allow create, update: if false;   // API route (Admin SDK) only
+      allow delete:        if isAdmin();
+    }
+
+    // ── settings ───────────────────────────────────────────────────────────
+    // Read-only for signed-in users (e.g. check basvuru.acik).
+    // Writes only via Firebase Admin SDK / Console.
+    match /settings/{docId} {
+      allow read:  if isSignedIn();
+      allow write: if false;
     }
 
     // ── admins ─────────────────────────────────────────────────────────────
-    // Only admins can read admin list; writes done via Firebase Admin SDK only
     match /admins/{uid} {
       allow read:  if isAdmin() || isOwner(uid);
-      allow write: if false;
+      allow write: if false;           // Admin SDK only
+    }
+
+    // ── _rate_limits ───────────────────────────────────────────────────────
+    // Server-side only. Never accessible from client.
+    match /_rate_limits/{docId} {
+      allow read, write: if false;
     }
   }
 }

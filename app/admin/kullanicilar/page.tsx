@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import { getAllKullanicilarWithDurum, bulkUpdateDurum } from '@/lib/firebase/admin';
+import { bulkUpdateDurum } from '@/lib/firebase/admin';
 import type { KullaniciWithDurum } from '@/lib/firebase/admin';
 import { useAuth } from '@/contexts/AuthContext';
 import type { BasvuruDurumu } from '@/lib/firebase/types';
@@ -27,12 +27,23 @@ export default function KullanicilarPage() {
   const [msg, setMsg] = useState('');
 
   const fetchData = async () => {
-    const data = await getAllKullanicilarWithDurum();
-    setList(data);
-    setLoading(false);
+    if (!user) return;
+    try {
+      const idToken = await user.getIdToken();
+      const res = await fetch('/api/admin/kullanicilar?limit=200', {
+        headers: { Authorization: `Bearer ${idToken}` },
+      });
+      if (!res.ok) throw new Error('Unauthorized');
+      const json = await res.json();
+      setList(json.users as KullaniciWithDurum[]);
+    } catch {
+      setList([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => { if (user) fetchData(); }, [user]);
 
   const filtered = list.filter(k => {
     const q = search.toLowerCase();

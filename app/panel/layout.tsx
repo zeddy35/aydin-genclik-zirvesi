@@ -14,7 +14,9 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!loading && !user) router.replace('/auth/login');
+    if (loading) return;
+    if (!user) { router.replace('/auth/login'); return; }
+    if (!user.emailVerified) { router.replace('/auth/verify-email'); }
   }, [user, loading, router]);
 
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  if (loading || !user) {
+  if (loading || !user || !user.emailVerified) {
     return (
       <div style={{ minHeight: '100vh', background: '#0a0a0f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: 13, color: '#4a4568', letterSpacing: '0.3em' }}>YÜKLENİYOR...</div>

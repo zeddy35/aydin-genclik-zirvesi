@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from '@/lib/firebase/config';
+import { signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { auth } from '@/lib/firebase/config';
 import { registerSchema, type RegisterFormData } from '@/lib/validations/register';
+import Script from 'next/script';
 import './register.css';
 import { Code2, Palette, Music, BarChart2, Shuffle, Search, Gamepad2, User, Users, Sprout, Wrench, Rocket, Lock, Eye, EyeOff, CheckCircle2, XCircle } from 'lucide-react';
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
 const ROLLER = [
   { id: 'gelistirici', label: 'Geliştirici', icon: <Code2 size={14} style={{ display: 'inline', marginRight: 5 }} /> },
@@ -36,6 +38,8 @@ export default function RegisterPageContent() {
   const [sifreTekrarGoster, setSifreTekrarGoster] = useState(false);
   const [sifre, setSifre] = useState('');
   const [sifreTekrar, setSifreTekrar] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const turnstileRef = useRef<HTMLDivElement>(null);
 
   const {
     register,
@@ -88,63 +92,55 @@ export default function RegisterPageContent() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       setGlobalHata('');
-      const { user } = await createUserWithEmailAndPassword(auth, data.eposta, data.sifre);
 
-      // Firestore yazmaları ayrı try-catch ile — auth başarılıysa panel'e gidilir
-      try {
-        await setDoc(doc(db, 'users', user.uid), {
-          uid: user.uid,
-          isim: data.isim,
-          soyisim: data.soyisim,
-          eposta: data.eposta,
-          telefon: data.telefon,
-          universite: data.universite,
-          bolum: data.bolum,
-          etkinlikTuru: data.etkinlikTuru,
-          katilimTuru: data.katilimTuru,
-          takimAdi: data.takimAdi ?? null,
-          takimUyeleri: data.takimUyeleri ?? [],
-          motivasyon: data.motivasyon,
-          deneyimSeviyesi: data.deneyimSeviyesi,
-          rol: data.rol,
-          dahaOnceKatildi: data.dahaOnceKatildi,
-          dahaOnceHangi: data.dahaOnceHangi ?? null,
-          neOgrenmekIstiyor: data.neOgrenmekIstiyor ?? null,
-          projeFikri: data.projeFikri ?? null,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        });
+      // 1. Server-side kayıt: uygulama kapısı + rate limit + Firestore yazmaları
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, turnstileToken }),
+      });
 
-        await setDoc(doc(db, 'basvuru_durumlari', user.uid), {
-          kullaniciId: user.uid,
-          durum: 'beklemede',
-          adminNotu: null,
-          adminGizliNot: null,
-          guncellenmeTarihi: serverTimestamp(),
-          guncelleyenAdmin: null,
-        });
-      } catch (firestoreErr: unknown) {
-        console.error('[Firestore Write Error]', firestoreErr);
-        // Auth başarılı oldu, Firestore yazması başarısız — yine de devam et
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        const code = json?.code as string | undefined;
+
+        if (res.status === 429) {
+          setGlobalHata('Çok fazla deneme. Lütfen 15 dakika bekleyin.');
+          return;
+        }
+        if (res.status === 403 || code === 'applications_closed') {
+          setGlobalHata('Başvurular şu anda kapalı.');
+          return;
+        }
+        if (res.status === 409 || code === 'email_exists') {
+          setError('eposta', { message: 'Bu e-posta zaten kayıtlı. Giriş yap →' });
+          return;
+        }
+        if (res.status === 422) {
+          const json422 = await res.json().catch(() => ({}));
+          if (json422?.code === 'captcha_failed' || json422?.code === 'captcha_required') {
+            setGlobalHata('CAPTCHA doğrulaması başarısız. Lütfen sayfayı yenileyip tekrar deneyin.');
+          } else {
+            setGlobalHata('Form bilgileri geçersiz. Lütfen kontrol edin.');
+          }
+          return;
+        }
+        setGlobalHata('Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+        return;
       }
+
+      // 2. Hesap oluşturuldu — client oturumu başlat
+      const { user } = await signInWithEmailAndPassword(auth, data.eposta, data.sifre);
+
+      // 3. E-posta doğrulama gönder (non-fatal)
+      try {
+        await sendEmailVerification(user);
+      } catch { /* ignore */ }
 
       setBasarili(true);
       setTimeout(() => router.push('/panel'), 2500);
-    } catch (err: unknown) {
-      const code = (err as { code?: string }).code;
-      const message = (err as { message?: string }).message;
-      console.error('[Register Error]', code, message);
-      if (code === 'auth/email-already-in-use') {
-        setError('eposta', { message: 'Bu e-posta adresi zaten kayıtlı. Giriş yap →' });
-      } else if (code === 'auth/operation-not-allowed') {
-        setGlobalHata('E-posta/şifre girişi Firebase Console\'da aktif değil.');
-      } else if (code === 'auth/weak-password') {
-        setError('sifre', { message: 'Şifre en az 6 karakter olmalı.' });
-      } else if (code === 'auth/invalid-email') {
-        setError('eposta', { message: 'Geçersiz e-posta adresi.' });
-      } else {
-        setGlobalHata(`Kayıt sırasında bir hata oluştu: ${code ?? message ?? 'Bilinmeyen hata'}`);
-      }
+    } catch {
+      setGlobalHata('Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
     }
   };
 
@@ -174,6 +170,18 @@ export default function RegisterPageContent() {
 
   return (
     <>
+      {/* Turnstile script — loaded once */}
+      {TURNSTILE_SITE_KEY && (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          strategy="lazyOnload"
+          onLoad={() => {
+            // Expose callback globally for Turnstile
+            (window as unknown as Record<string, unknown>).onTurnstileSuccess =
+              (token: string) => setTurnstileToken(token);
+          }}
+        />
+      )}
       <div className="reg-page">
         <div className="reg-wrap">
           <div className="reg-header">
@@ -464,6 +472,19 @@ export default function RegisterPageContent() {
               </label>
               <hr className="reg-divider" />
               {globalHata && <div className="reg-global-error">{globalHata}</div>}
+
+              {/* ── Cloudflare Turnstile CAPTCHA ── */}
+              {TURNSTILE_SITE_KEY && (
+                <div style={{ marginBottom: 16 }}>
+                  <div
+                    ref={turnstileRef}
+                    className="cf-turnstile"
+                    data-sitekey={TURNSTILE_SITE_KEY}
+                    data-theme="dark"
+                    data-callback="onTurnstileSuccess"
+                  />
+                </div>
+              )}
 
               {/* ── Başvurular henüz açılmadı ── */}
               <div style={{

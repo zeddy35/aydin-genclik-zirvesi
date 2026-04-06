@@ -22,6 +22,12 @@ export default function LoginPage() {
 
     try {
       const { user } = await signInWithEmailAndPassword(auth, eposta, sifre);
+
+      // Set __session cookie so middleware can detect authenticated state.
+      // We use the ID token as the cookie value (short-lived, 1h).
+      const idToken = await user.getIdToken();
+      document.cookie = `__session=${idToken}; path=/; max-age=3600; SameSite=Strict; Secure`;
+
       const adminSnap = await getDoc(doc(db, 'admins', user.uid));
       router.push(adminSnap.exists() ? '/admin' : '/panel');
     } catch (err: unknown) {

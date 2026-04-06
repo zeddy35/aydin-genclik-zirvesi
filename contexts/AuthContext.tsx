@@ -54,6 +54,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const handleSignOut = async () => {
     await firebaseSignOut(auth);
+    // Clear the session cookie set at login
+    document.cookie = '__session=; path=/; max-age=0; SameSite=Strict; Secure';
     setUser(null);
     setKullanici(null);
     setIsAdmin(false);

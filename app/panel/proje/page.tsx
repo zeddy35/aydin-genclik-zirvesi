@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase/config';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface HackathonProje { projeAdi: string; aciklama: string; githubUrl?: string; canlıUrl?: string; dosya?: FileList; }
@@ -19,37 +17,26 @@ export default function ProjePage() {
   const { register: regH, handleSubmit: hsH, formState: { errors: eH, isSubmitting: isH } } = useForm<HackathonProje>();
   const { register: regJ, handleSubmit: hsJ, formState: { errors: eJ, isSubmitting: isJ } } = useForm<GameJamProje>();
 
-  const onHack = async (data: HackathonProje) => {
+  const postProje = async (body: object) => {
     if (!user) return;
-    try {
-      setHata('');
-      await setDoc(doc(db, 'projeler', user.uid), {
-        kullaniciId: user.uid,
-        etkinlikTuru: 'hackathon',
-        projeAdi: data.projeAdi,
-        aciklama: data.aciklama,
-        githubUrl: data.githubUrl ?? null,
-        canlıUrl: data.canlıUrl ?? null,
-        gonderiTarihi: serverTimestamp(),
-      });
-      setBasarili(true);
-    } catch { setHata('Gönderim sırasında hata oluştu.'); }
+    setHata('');
+    const idToken = await user.getIdToken();
+    const res = await fetch('/api/proje/gonder', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+      body:    JSON.stringify(body),
+    });
+    if (res.status === 403) { setHata('Proje gönderimi şu anda kapalı.'); return; }
+    if (!res.ok)            { setHata('Gönderim sırasında hata oluştu.'); return; }
+    setBasarili(true);
+  };
+
+  const onHack = async (data: HackathonProje) => {
+    await postProje({ type: 'hackathon', ...data });
   };
 
   const onJam = async (data: GameJamProje) => {
-    if (!user) return;
-    try {
-      setHata('');
-      await setDoc(doc(db, 'projeler', user.uid), {
-        kullaniciId: user.uid,
-        etkinlikTuru: 'gamejam',
-        oyunAdi: data.oyunAdi,
-        aciklama: data.aciklama,
-        itchUrl: data.itchUrl,
-        gonderiTarihi: serverTimestamp(),
-      });
-      setBasarili(true);
-    } catch { setHata('Gönderim sırasında hata oluştu.'); }
+    await postProje({ type: 'gamejam', ...data });
   };
 
   if (!user) return null;

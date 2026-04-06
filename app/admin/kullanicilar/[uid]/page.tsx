@@ -62,8 +62,15 @@ export default function KullaniciDetailPage() {
     if (!user) return;
     if (yeniDurum === 'reddedildi' && !adminNotu.trim()) { setSaveMsg('❌ Reddedildi durumu için admin notu zorunludur.'); return; }
     setSaving(true); setSaveMsg('');
-    await updateBasvuruDurumu(uid, yeniDurum, adminNotu || undefined, adminGizliNot || undefined, user.uid);
-    setSaveMsg('✓ Durum güncellendi.');
+    try {
+      const idToken = await user.getIdToken();
+      const res = await fetch('/api/admin/basvuru/durum', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+        body: JSON.stringify({ uid, durum: yeniDurum, adminNotu: adminNotu || undefined, adminGizliNot: adminGizliNot || undefined }),
+      });
+      setSaveMsg(res.ok ? '✓ Durum güncellendi.' : '❌ Güncelleme başarısız.');
+    } catch { setSaveMsg('❌ Güncelleme başarısız.'); }
     setSaving(false);
     setTimeout(() => setSaveMsg(''), 4000);
   };
