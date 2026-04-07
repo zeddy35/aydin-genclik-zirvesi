@@ -11,8 +11,14 @@ export default function ProjePage() {
   const { user, kullanici } = useAuth();
   const [basarili, setBasarili] = useState(false);
   const [hata, setHata] = useState('');
-  const isHack = kullanici?.etkinlikTuru === 'hackathon';
-  const accent = isHack ? '#d4a843' : '#7c3aed';
+  const isHack    = kullanici?.etkinlikTuru === 'hackathon';
+  const accent    = isHack ? '#c49a28' : '#7c3aed';
+  const cardBg    = isHack ? '#fffef5' : '#ffffff';
+  const innerBg   = isHack ? '#fdf9e8' : '#f8f7ff';
+  const border    = isHack ? '#ede5b8' : '#e8e3f8';
+  const textPri   = isHack ? '#1a1200' : '#1a1630';
+  const textSub   = isHack ? '#5a4a10' : '#5a5280';
+  const textDim   = isHack ? '#9a8a50' : '#9590b0';
 
   const { register: regH, handleSubmit: hsH, formState: { errors: eH, isSubmitting: isH } } = useForm<HackathonProje>();
   const { register: regJ, handleSubmit: hsJ, formState: { errors: eJ, isSubmitting: isJ } } = useForm<GameJamProje>();
@@ -47,25 +53,25 @@ export default function ProjePage() {
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         @keyframes stampIn { from { transform: rotate(-15deg) scale(2); opacity: 0; } to { transform: rotate(-15deg) scale(1); opacity: 0.9; } }
         .prj-page { padding: 28px; max-width: 680px; margin: 0 auto; }
-        .prj-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: #4a4568; text-transform: uppercase; margin-bottom: 6px; }
-        .prj-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 28px; }
-        .prj-card { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 28px; }
-        .prj-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: #4a4568; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px dashed #1e1a2e; }
+        .prj-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: ${textDim}; text-transform: uppercase; margin-bottom: 6px; }
+        .prj-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: ${textPri}; margin-bottom: 28px; }
+        .prj-card { background: ${cardBg}; border: 1px solid ${border}; border-radius: 12px; padding: 28px; box-shadow: 0 1px 8px ${isHack ? 'rgba(196,154,40,0.08)' : 'rgba(124,58,237,0.06)'}; }
+        .prj-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: ${textDim}; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px dashed ${border}; }
         .prj-group { margin-bottom: 18px; }
-        .prj-fl { display: block; font-size: 12px; color: #9490b0; letter-spacing: 0.05em; margin-bottom: 6px; }
-        .prj-inp, .prj-ta { width: 100%; background: #0d0b18; border: 1px solid #2a2545; border-radius: 8px; padding: 10px 14px; color: #d1cfe8; font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; transition: border-color 150ms; }
-        .prj-inp:focus, .prj-ta:focus { border-color: ${accent}; }
-        .prj-inp::placeholder, .prj-ta::placeholder { color: #3d3660; }
+        .prj-fl { display: block; font-size: 12px; color: ${textSub}; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600; }
+        .prj-inp, .prj-ta { width: 100%; background: ${innerBg}; border: 1px solid ${border}; border-radius: 8px; padding: 10px 14px; color: ${textPri}; font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; transition: border-color 150ms; }
+        .prj-inp:focus, .prj-ta:focus { border-color: ${accent}; box-shadow: 0 0 0 3px ${accent}18; }
+        .prj-inp::placeholder, .prj-ta::placeholder { color: ${isHack ? '#c8b870' : '#c0b8d8'}; }
         .prj-ta { resize: vertical; min-height: 120px; line-height: 1.6; }
-        .prj-err { font-size: 12px; color: #f87171; margin-top: 4px; display: block; }
-        .prj-hint { font-size: 12px; color: #4a4568; margin-top: 4px; }
-        .prj-btn-hack { width: 100%; background: #d4a843; color: #0a0a0f; border: none; border-radius: 10px; padding: 14px; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 150ms; }
-        .prj-btn-hack:hover:not(:disabled) { background: #c49930; }
-        .prj-btn-jam { width: 100%; background: linear-gradient(135deg,#7c3aed,#ec4899); color: #fff; border: none; border-radius: 10px; padding: 14px; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; }
-        .prj-glob-err { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 12px 16px; color: #fca5a5; font-size: 14px; margin-bottom: 16px; }
+        .prj-err { font-size: 12px; color: #ef4444; margin-top: 4px; display: block; }
+        .prj-hint { font-size: 12px; color: ${textDim}; margin-top: 4px; }
+        .prj-btn-hack { width: 100%; background: linear-gradient(135deg,#c49a28,#e8c84a); color: #ffffff; border: none; border-radius: 10px; padding: 14px; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 150ms; box-shadow: 0 2px 12px rgba(196,154,40,0.3); }
+        .prj-btn-hack:hover:not(:disabled) { background: linear-gradient(135deg,#b08820,#d4b638); }
+        .prj-btn-jam { width: 100%; background: linear-gradient(135deg,#7c3aed,#ec4899); color: #fff; border: none; border-radius: 10px; padding: 14px; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; box-shadow: 0 2px 12px rgba(124,58,237,0.3); }
+        .prj-glob-err { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 12px 16px; color: #ef4444; font-size: 14px; margin-bottom: 16px; }
         .prj-scs { text-align: center; padding: 40px; }
         .prj-scs-stamp { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 28px; color: ${accent}; border: 3px solid ${accent}; padding: 12px 24px; display: inline-block; animation: stampIn 0.6s ease forwards; }
-        .prj-scs-sub { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.25em; color: #4a4568; margin-top: 16px; }
+        .prj-scs-sub { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.25em; color: ${textDim}; margin-top: 16px; }
       `}</style>
 
       <div className="prj-page">
@@ -95,11 +101,11 @@ export default function ProjePage() {
                 {eH.aciklama && <span className="prj-err">{eH.aciklama.message}</span>}
               </div>
               <div className="prj-group">
-                <label className="prj-fl">GITHUB URL <span style={{ color: '#4a4568', fontSize: 11 }}>(opsiyonel)</span></label>
+                <label className="prj-fl">GITHUB URL <span style={{ color: textDim, fontSize: 11 }}>(opsiyonel)</span></label>
                 <input {...regH('githubUrl')} className="prj-inp" placeholder="https://github.com/..." />
               </div>
               <div className="prj-group">
-                <label className="prj-fl">CANLI DEMO URL <span style={{ color: '#4a4568', fontSize: 11 }}>(opsiyonel)</span></label>
+                <label className="prj-fl">CANLI DEMO URL <span style={{ color: textDim, fontSize: 11 }}>(opsiyonel)</span></label>
                 <input {...regH('canlıUrl')} className="prj-inp" placeholder="https://..." />
                 <span className="prj-hint">Vercel, Netlify vb. deploy linki</span>
               </div>

@@ -28,8 +28,14 @@ export default function DurumPage() {
 
   if (!user) return null;
 
-  const isHack = kullanici?.etkinlikTuru === 'hackathon';
-  const accent = isHack ? '#d4a843' : '#7c3aed';
+  const isHack    = kullanici?.etkinlikTuru === 'hackathon';
+  const accent    = isHack ? '#c49a28' : '#7c3aed';
+  const cardBg    = isHack ? '#fffef5' : '#ffffff';
+  const innerBg   = isHack ? '#fdf9e8' : '#f8f7ff';
+  const border    = isHack ? '#ede5b8' : '#e8e3f8';
+  const textPri   = isHack ? '#1a1200' : '#1a1630';
+  const textSub   = isHack ? '#2d2000' : '#2d2550';
+  const textDim   = isHack ? '#9a8a50' : '#9590b0';
   const durumKey = durum?.durum ?? 'beklemede';
   const durumInfo = DURUM_MAP[durumKey] ?? DURUM_MAP['beklemede'];
   const isRedded = durumKey === 'reddedildi';
@@ -41,30 +47,30 @@ export default function DurumPage() {
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
         .dp-page { padding: 28px; max-width: 700px; margin: 0 auto; }
-        .dp-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: #4a4568; text-transform: uppercase; margin-bottom: 6px; }
-        .dp-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 28px; }
-        .dp-badge-card { background: #13111f; border: 1px solid #1e1a2e; border-radius: 16px; padding: 32px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
+        .dp-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: ${textDim}; text-transform: uppercase; margin-bottom: 6px; }
+        .dp-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: ${textPri}; margin-bottom: 28px; }
+        .dp-badge-card { background: ${cardBg}; border: 1px solid ${border}; border-radius: 16px; padding: 32px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; box-shadow: 0 1px 8px ${isHack ? 'rgba(196,154,40,0.08)' : 'rgba(124,58,237,0.06)'}; }
         .dp-badge-icon { font-size: 52px; margin-bottom: 12px; }
         .dp-badge-label { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(18px, 4vw, 28px); letter-spacing: 0.1em; margin-bottom: 8px; }
-        .dp-badge-desc { font-size: 14px; color: #8b85a8; line-height: 1.6; }
+        .dp-badge-desc { font-size: 14px; color: ${isHack ? '#6a5c30' : '#5a5280'}; line-height: 1.6; }
         .dp-pulse { animation: pulse 2s ease-in-out infinite; }
-        .dp-timeline { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-        .dp-tl-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: #4a4568; text-transform: uppercase; margin-bottom: 20px; }
+        .dp-timeline { background: ${cardBg}; border: 1px solid ${border}; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 4px ${isHack ? 'rgba(196,154,40,0.05)' : 'rgba(124,58,237,0.04)'}; }
+        .dp-tl-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: ${textDim}; text-transform: uppercase; margin-bottom: 20px; }
         .dp-tl-steps { display: flex; align-items: center; gap: 0; }
         .dp-tl-step { flex: 1; position: relative; }
-        .dp-tl-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; margin: 0 auto 8px; border: 2px solid #2a2545; background: #0d0b18; transition: all 300ms; position: relative; z-index: 2; }
-        .dp-tl-dot.done { background: rgba(16,185,129,0.2); border-color: #10b981; }
-        .dp-tl-dot.active { background: ${accent}20; border-color: ${accent}; animation: pulse 2s ease-in-out infinite; }
-        .dp-tl-dot.fail { background: rgba(239,68,68,0.2); border-color: #ef4444; }
-        .dp-tl-name { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: #4a4568; text-align: center; margin-top: 4px; }
+        .dp-tl-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; margin: 0 auto 8px; border: 2px solid ${border}; background: ${innerBg}; color: ${textDim}; transition: all 300ms; position: relative; z-index: 2; }
+        .dp-tl-dot.done { background: rgba(16,185,129,0.12); border-color: #10b981; color: #10b981; }
+        .dp-tl-dot.active { background: ${accent}18; border-color: ${accent}; color: ${accent}; animation: pulse 2s ease-in-out infinite; }
+        .dp-tl-dot.fail { background: rgba(239,68,68,0.1); border-color: #ef4444; color: #ef4444; }
+        .dp-tl-name { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: ${textDim}; text-align: center; margin-top: 4px; }
         .dp-tl-name.done { color: #10b981; }
         .dp-tl-name.active { color: ${accent}; }
-        .dp-tl-line { position: absolute; top: 15px; left: calc(50% + 16px); right: calc(-50% + 16px); height: 2px; background: #2a2545; z-index: 1; }
+        .dp-tl-line { position: absolute; top: 15px; left: calc(50% + 16px); right: calc(-50% + 16px); height: 2px; background: ${border}; z-index: 1; }
         .dp-tl-line.done { background: #10b981; }
-        .dp-reject-card { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.25); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
-        .dp-reject-title { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 14px; color: #fca5a5; margin-bottom: 8px; }
-        .dp-reject-note { font-size: 14px; color: #e5e7eb; line-height: 1.7; }
-        .dp-ts { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: #4a4568; text-align: center; margin-top: 12px; }
+        .dp-reject-card { background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+        .dp-reject-title { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 14px; color: #ef4444; margin-bottom: 8px; }
+        .dp-reject-note { font-size: 14px; color: ${textSub}; line-height: 1.7; }
+        .dp-ts { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: ${textDim}; text-align: center; margin-top: 12px; }
       `}</style>
 
       <div className="dp-page">
@@ -72,7 +78,7 @@ export default function DurumPage() {
         <h1 className="dp-title">Başvuru Durumu</h1>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: 60, color: '#4a4568', fontFamily: 'Share Tech Mono, monospace', fontSize: 12, letterSpacing: '0.3em' }}>YÜKLENİYOR...</div>
+          <div style={{ textAlign: 'center', padding: 60, color: textDim, fontFamily: 'Share Tech Mono, monospace', fontSize: 12, letterSpacing: '0.3em' }}>YÜKLENİYOR...</div>
         ) : (
           <>
             <div className="dp-badge-card" style={{ background: durumInfo.bg, borderColor: durumInfo.color + '40' }}>

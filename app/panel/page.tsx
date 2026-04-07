@@ -16,8 +16,16 @@ export default function PanelPage() {
 
   if (!user) return null;
 
-  const isHack = kullanici?.etkinlikTuru === 'hackathon';
-  const accent = isHack ? '#d4a843' : '#7c3aed';
+  const isHack    = kullanici?.etkinlikTuru === 'hackathon';
+  const accent    = isHack ? '#c49a28' : '#7c3aed';
+  const cardBg    = isHack ? '#fffef5' : '#ffffff';
+  const innerBg   = isHack ? '#fdf9e8' : '#f8f7ff';
+  const border    = isHack ? '#ede5b8' : '#e8e3f8';
+  const borderHov = isHack ? '#d9c870' : '#d0c8f0';
+  const textPri   = isHack ? '#1a1200' : '#1a1630';
+  const textSub   = isHack ? '#2d2000' : '#2d2550';
+  const textMuted = isHack ? '#8a7840' : '#7a7295';
+  const textDim   = isHack ? '#9a8a50' : '#9590b0';
 
   const cards = [
     { href: '/panel/durum', icon: <Search size={24} />, title: 'Durum Sorgula', desc: 'Başvuru durumunu görüntüle', tag: 'DURUM' },
@@ -31,26 +39,26 @@ export default function PanelPage() {
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
         .pp-page { padding: 28px; max-width: 900px; margin: 0 auto; }
         .pp-greeting { margin-bottom: 28px; }
-        .pp-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: #4a4568; text-transform: uppercase; margin-bottom: 6px; }
-        .pp-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; }
-        .pp-profile-card { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 24px; margin-bottom: 28px; position: relative; overflow: hidden; }
-        .pp-profile-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: ${accent}; }
+        .pp-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: ${textDim}; text-transform: uppercase; margin-bottom: 6px; }
+        .pp-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: ${textPri}; }
+        .pp-profile-card { background: ${cardBg}; border: 1px solid ${border}; border-radius: 12px; padding: 24px; margin-bottom: 28px; position: relative; overflow: hidden; box-shadow: 0 1px 8px ${isHack ? 'rgba(196,154,40,0.08)' : 'rgba(124,58,237,0.06)'}; }
+        .pp-profile-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: ${isHack ? 'linear-gradient(90deg,#c49a28,#e8c84a)' : 'linear-gradient(90deg,#7c3aed,#a855f7)'}; }
         .pp-profile-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.3em; color: ${accent}; text-transform: uppercase; margin-bottom: 16px; }
         .pp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; margin-bottom: 16px; }
         .pp-field { }
-        .pp-field-label { font-size: 11px; color: #4a4568; letter-spacing: 0.05em; margin-bottom: 3px; }
-        .pp-field-val { font-size: 15px; color: #c8c4e0; font-weight: 500; }
+        .pp-field-label { font-size: 11px; color: ${textDim}; letter-spacing: 0.05em; margin-bottom: 3px; text-transform: uppercase; }
+        .pp-field-val { font-size: 15px; color: ${textSub}; font-weight: 500; }
         .pp-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.15em; }
-        .pp-badge-hack { background: rgba(212,168,67,0.15); color: #d4a843; border: 1px solid rgba(212,168,67,0.3); }
-        .pp-badge-jam { background: rgba(124,58,237,0.15); color: #c4b5fd; border: 1px solid rgba(124,58,237,0.3); }
-        .pp-quick-title { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: #4a4568; text-transform: uppercase; margin-bottom: 14px; }
+        .pp-badge-hack { background: rgba(196,154,40,0.12); color: #c49a28; border: 1px solid rgba(196,154,40,0.35); }
+        .pp-badge-jam { background: rgba(124,58,237,0.1); color: #7c3aed; border: 1px solid rgba(124,58,237,0.25); }
+        .pp-quick-title { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: ${textDim}; text-transform: uppercase; margin-bottom: 14px; }
         .pp-quick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
-        .pp-quick-card { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 150ms; text-decoration: none; display: block; }
-        .pp-quick-card:hover { border-color: #3a3060; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(124,58,237,0.1); }
-        .pp-quick-icon { font-size: 24px; margin-bottom: 10px; }
+        .pp-quick-card { background: ${cardBg}; border: 1px solid ${border}; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 150ms; text-decoration: none; display: block; box-shadow: 0 1px 4px ${isHack ? 'rgba(196,154,40,0.05)' : 'rgba(124,58,237,0.04)'}; }
+        .pp-quick-card:hover { border-color: ${borderHov}; transform: translateY(-2px); box-shadow: 0 4px 20px ${isHack ? 'rgba(196,154,40,0.12)' : 'rgba(124,58,237,0.1)'}; }
+        .pp-quick-icon { font-size: 24px; margin-bottom: 10px; color: ${accent}; }
         .pp-quick-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.25em; color: ${accent}; text-transform: uppercase; margin-bottom: 6px; }
-        .pp-quick-name { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; color: #d1cfe8; margin-bottom: 4px; }
-        .pp-quick-desc { font-size: 12px; color: #6b6485; line-height: 1.5; }
+        .pp-quick-name { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; color: ${textPri}; margin-bottom: 4px; }
+        .pp-quick-desc { font-size: 12px; color: ${textMuted}; line-height: 1.5; }
       `}</style>
 
       <div className="pp-page">
@@ -96,7 +104,7 @@ export default function PanelPage() {
                   <div className="pp-field-label">ROLLER</div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 }}>
                     {kullanici.rol.map((r: string) => (
-                      <span key={r} style={{ background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.3)', color: '#c4b5fd', borderRadius: 20, padding: '3px 10px', fontSize: 12, fontFamily: 'Share Tech Mono, monospace', letterSpacing: '0.1em' }}>{r}</span>
+                      <span key={r} style={{ background: isHack ? 'rgba(196,154,40,0.1)' : 'rgba(124,58,237,0.08)', border: `1px solid ${isHack ? 'rgba(196,154,40,0.3)' : 'rgba(124,58,237,0.2)'}`, color: accent, borderRadius: 20, padding: '3px 10px', fontSize: 12, fontFamily: 'Share Tech Mono, monospace', letterSpacing: '0.1em' }}>{r}</span>
                     ))}
                   </div>
                 </div>
@@ -104,12 +112,12 @@ export default function PanelPage() {
               {basvuru?.adminNotu && (
                 <div className="pp-field" style={{ gridColumn: '1/-1' }}>
                   <div className="pp-field-label">NOTLAR</div>
-                  <div style={{ fontSize: 20, color: '#6b6485', marginTop: 4 }}>{basvuru.adminNotu}</div>
+                  <div style={{ fontSize: 14, color: textSub, marginTop: 4 }}>{basvuru.adminNotu}</div>
                 </div>
               )}
             </div>
           ) : (
-            <div style={{ color: '#6b6485', fontSize: 14 }}>Profil bilgileri yükleniyor...</div>
+            <div style={{ color: textMuted, fontSize: 14 }}>Profil bilgileri yükleniyor...</div>
           )}
         </div>
 
