@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase/config';
 import './login.css';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function LoginPage() {
   const [eposta, setEposta] = useState('');
@@ -24,7 +25,8 @@ export default function LoginPage() {
       const { user } = await signInWithEmailAndPassword(auth, eposta, sifre);
 
       // Exchange ID token for an httpOnly session cookie (5 days, server-set)
-      const idToken = await user.getIdToken();
+      // Force refresh to guarantee a fresh token (required by createSessionCookie)
+      const idToken = await user.getIdToken(true);
       await fetch('/api/auth/session', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -84,7 +86,7 @@ export default function LoginPage() {
                   onClick={() => setSifreGoster(v => !v)}
                   aria-label={sifreGoster ? 'Şifreyi gizle' : 'Şifreyi göster'}
                 >
-                  {sifreGoster ? '🙈' : '👁'}
+                  {sifreGoster ? <EyeOff /> : <Eye />}
                 </button>
               </div>
             </div>
