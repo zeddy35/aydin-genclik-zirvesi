@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useEasterEggs } from "@/components/EasterEggContext";
 import Image from "next/image";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, CakeIcon } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────
 // DESIGN TOKENS
@@ -142,9 +142,9 @@ function OTTMonogram() {
 // SPONSOR DATA
 // ─────────────────────────────────────────────────────────────
 const SPONSORS: { id: string; name: string; url: string; accent: string; image?: string }[] = [
-  { id: "SP-01", name: "Yakında", url: "#", accent: T.gold },
-  { id: "SP-02", name: "Yakında", url: "#", accent: T.violetLight },
-  { id: "SP-03", name: "Yakında", url: "#", accent: T.gold },
+  { id: "SP-01", name: "TÜBİTAK", url: "https://tubitak.gov.tr/tr", accent: T.gold, image: "/sponsors/tubitak_logo.png" },
+  { id: "SP-02", name: "Gençlik ve Spor Bakanlığı", url: "https://genclikhizmetleri.gov.tr/", accent: T.violetLight, image: "/sponsors/unides_logo.svg" },
+  { id: "SP-03", name: "Adnan Menderes Üniversitesi", url: "https://www.adu.edu.tr/", accent: T.gold, image: "/sponsors/adu_logo.png" },
   { id: "SP-04", name: "Yakında", url: "#", accent: T.violetLight },
 ];
 
@@ -270,30 +270,13 @@ export function SummitInfo() {
               <div className="sum-about-card sum-about-card--hack">
                 <div className="sum-about-card-eyebrow sum-about-card-eyebrow--gold">HACKATHON</div>
                 <div className="sum-about-card-title">Yazılım & İnnova­syon</div>
-                <div className="sum-about-card-body">48 saat · Web, mobil, ya da AI<br />Fikir → Prototype → Sunuş</div>
+                <div className="sum-about-card-body">26 saat · Web, mobil, ya da AI<br />Fikir → Prototype → Sunuş</div>
               </div>
               <div className="sum-about-card sum-about-card--jam">
                 <div className="sum-about-card-eyebrow sum-about-card-eyebrow--violet">GAME JAM</div>
                 <div className="sum-about-card-title">Oyun & Tasarım</div>
-                <div className="sum-about-card-body">48 saat · Oyun mekanikleri & sanat<br />Konsept → Playable → Polish</div>
+                <div className="sum-about-card-body">30 saat · Oyun mekanikleri & sanat<br />Konsept → Playable → Polish</div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── STATS ── */}
-        <section className="sum-reveal sum-section">
-          <div className="sum-inner">
-            <SumSecHeader title="Rakamlarla Zirve" label="◈ Özet Veriler" />
-            <div className="sum-stats-grid">
-              {STATS.map((s) => (
-                <div key={s.sub} className="sum-stat-card">
-                  <div className="sum-stat-sub">{s.sub}</div>
-                  <div className="sum-stat-val">{s.v}</div>
-                  <div className="sum-stat-lbl">{s.l}</div>
-                  <div className="sum-stat-bar" style={{ "--stat-accent": s.accent } as React.CSSProperties} />
-                </div>
-              ))}
             </div>
           </div>
         </section>
@@ -383,7 +366,7 @@ export function SummitInfo() {
         <section className="sum-reveal sum-section--carousel">
           <div className="sum-sponsors-hdr-wrap">
             <div onClick={handleSponsorHeadingClick} className="sum-sponsors-click">
-              <SumSecHeader title={`Destekçilerimiz${cakeHeadingBadge ? " 🎂" : ""}`} label="◈ Sponsors" />
+              <SumSecHeader title={`Destekçilerimiz${cakeHeadingBadge ? <CakeIcon /> : ""}`} label="◈ Sponsors" />
             </div>
             <div className="sum-sponsors-sub">// Destekçi olmak için iletişime geçin</div>
           </div>

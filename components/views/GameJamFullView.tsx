@@ -2,42 +2,35 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import {
+  ArrowLeft,
+  Timer,
+  Puzzle,
+  Trophy,
+  Gamepad2,
+  Gamepad,
+  Ghost,
+  Zap,
+  ClipboardList,
+  Star,
+  Search,
+  Palette,
+  Settings,
+  Target,
+  Image as ImageIcon,
+  Monitor,
+  Music,
+  HelpCircle,
+  Medal,
+  Rocket,
+} from "lucide-react";
 import styles from "./GameJamFullView.module.css";
 
 interface GameJamFullViewProps {
   onBack: () => void;
 }
 
-// ── PIXEL STAR DECORATION ──
-function PixelStar({ size = 8, color = "#a78bfa" }: { size?: number; color?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 8 8" fill="none">
-      <rect x="3" y="0" width="2" height="2" fill={color} />
-      <rect x="3" y="6" width="2" height="2" fill={color} />
-      <rect x="0" y="3" width="2" height="2" fill={color} />
-      <rect x="6" y="3" width="2" height="2" fill={color} />
-      <rect x="3" y="3" width="2" height="2" fill={color} />
-    </svg>
-  );
-}
-
-// ── CONTROLLER ICON ──
-function ControllerIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="7" width="20" height="12" rx="5" fill="#7c3aed" />
-      <rect x="5" y="11" width="2" height="4" rx="1" fill="#ddd6fe" />
-      <rect x="4" y="12" width="4" height="2" rx="1" fill="#ddd6fe" />
-      <circle cx="16" cy="12" r="1.5" fill="#34d399" />
-      <circle cx="18.5" cy="13.5" r="1.5" fill="#f472b6" />
-      <circle cx="13.5" cy="13.5" r="1.5" fill="#fbbf24" />
-      <circle cx="16" cy="15" r="1.5" fill="#60a5fa" />
-      <rect x="9" y="9" width="6" height="2" rx="1" fill="#4c1d95" />
-    </svg>
-  );
-}
-
-// ── PIXEL EXPLOSION ──
+// ── PIXEL EXPLOSION (CTA bg deco only) ──
 function PixelBurst({ x, y, color }: { x: number; y: number; color: string }) {
   return (
     <g>
@@ -127,7 +120,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
 
   const ROLES = [
     {
-      emoji: "💻",
+      Icon: Monitor,
       title: "Geliştirici",
       desc: "Oyun motoru, kod tabanı, fizik sistemi. Unity, Godot, Pygame — seçim senin.",
       color: "#dbeafe",
@@ -135,7 +128,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
       shadow: "#3b82f6",
     },
     {
-      emoji: "🎨",
+      Icon: Palette,
       title: "Sanatçı",
       desc: "Sprite, karakter, ortam. Pixel art mı? 3D mi? Her stil kabul.",
       color: "#fce7f3",
@@ -143,7 +136,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
       shadow: "#ec4899",
     },
     {
-      emoji: "🎵",
+      Icon: Music,
       title: "Ses Tasarımcısı",
       desc: "SFX, müzik, atmosfer. Ses olmadan oyun yarım.",
       color: "#d1fae5",
@@ -151,7 +144,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
       shadow: "#10b981",
     },
     {
-      emoji: "🧩",
+      Icon: Puzzle,
       title: "Game Designer",
       desc: "Mekanik, denge, eğlence döngüsü. Oyunun kalbi senin elinde.",
       color: "#fef3c7",
@@ -162,23 +155,31 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
 
   const FEATURES = [
     {
-      icon: "⏱️",
+      Icon: Timer,
       title: "30 Saatlik Maraton",
       desc: "Hızlı düşün, hızlı geliştir, hızlı sun. Jam ruhu: 'ship it!'",
       bullets: ["Takım kur, prototip geliştir", "30 saatte sıfırdan demo", "Her motor, her dil kabul"],
     },
     {
-      icon: "🧩",
+      Icon: Puzzle,
       title: "Takım & Roller",
       desc: "Coder, artist, designer, sound... Her rol bir 'party member'.",
       bullets: ["1–4 kişilik takımlar", "Solo katılım + eşleşme akışı", "Mentor & atölye desteği"],
     },
     {
-      icon: "🏆",
+      Icon: Trophy,
       title: "Ödüller & Eğlence",
       desc: "Sürpriz ödüller, mini-challenge'lar, sahnede demo keyfi.",
       bullets: ["Nakit & teknik ödüller", "Anlık mini-challenge'lar", "Sahne demo sunumu"],
     },
+  ];
+
+  const CRITERIA = [
+    { Icon: Palette,    title: "Yaratıcılık & Özgünlük", desc: "Tema nasıl yorumlandı? Fikir ne kadar özgün ve cesur?", score: "25 PT" },
+    { Icon: Settings,   title: "Teknik Uygulama",         desc: "Oyun çalışıyor mu? Mekanikler tutarlı mı? Bug oranı?",  score: "25 PT" },
+    { Icon: Gamepad2,   title: "Oynanabilirlik & Eğlence", desc: "Demo keyifli mi? Oynamaya devam ettiriyor mu?",         score: "25 PT" },
+    { Icon: Target,     title: "Temaya Uyum",              desc: "Tema ne kadar iyi ve özgün biçimde işlendi?",           score: "15 PT" },
+    { Icon: ImageIcon,  title: "Sunum & Görsel",           desc: "Görsel bütünlük, ses tasarımı ve genel atmosfer.",      score: "10 PT" },
   ];
 
   const FAQS = [
@@ -209,58 +210,24 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
       <GJReveal />
 
       <div className={styles.wrapper}>
-        {/* ── BG DECORATION ── */}
-        <div className={styles.bgDecoration}>
-          <svg width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
-            <defs>
-              <radialGradient id="gj-radial1" cx="10%" cy="20%" r="50%">
-                <stop offset="0%" stopColor="#ddd6fe" stopOpacity="0.6" />
-                <stop offset="100%" stopColor="#f5f3ff" stopOpacity="0" />
-              </radialGradient>
-              <radialGradient id="gj-radial2" cx="90%" cy="80%" r="50%">
-                <stop offset="0%" stopColor="#fce7f3" stopOpacity="0.5" />
-                <stop offset="100%" stopColor="#f5f3ff" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#gj-radial1)" />
-            <rect width="100%" height="100%" fill="url(#gj-radial2)" />
-            {Array.from({ length: 12 }, (_, i) =>
-              Array.from({ length: 8 }, (_, j) => (
-                <rect
-                  key={`${i}-${j}`}
-                  x={i * 120 + 40}
-                  y={j * 110 + 30}
-                  width="3"
-                  height="3"
-                  rx="1"
-                  fill="#c4b5fd"
-                  opacity="0.3"
-                />
-              ))
-            )}
-            <PixelBurst x={80} y={120} color="#a78bfa" />
-            <PixelBurst x={340} y={60} color="#f472b6" />
-            <PixelBurst x={600} y={200} color="#34d399" />
-            <PixelBurst x={200} y={400} color="#fbbf24" />
-          </svg>
+        {/* ── STICKY BACK BUTTON ── */}
+        <div className={styles.topNav}>
+          <button onClick={onBack} className={styles.backBtn} aria-label="Geri dön">
+            <ArrowLeft size={15} strokeWidth={2.5} />
+            Geri
+          </button>
         </div>
 
         <div className={styles.container}>
-          {/* ── TOP NAV ── */}
-          <div className={styles.topNav}>
-            <button onClick={onBack} className={styles.backBtn} aria-label="Geri dön">
-              Geri →
-            </button>
-          </div>
 
           {/* ── HERO ── */}
           <section className={`gj-reveal ${styles.heroSection}`}>
             <div className={styles.heroTitleWrapper}>
-              <div className={styles.heroStarTL}><PixelStar size={10} color="#f472b6" /></div>
-              <div className={styles.heroStarTR}><PixelStar size={8} color="#34d399" /></div>
-              <div className={styles.heroStarBL}><PixelStar size={7} color="#fbbf24" /></div>
+              <div className={styles.heroStarTL}><Star size={10} fill="#f472b6" color="#f472b6" /></div>
+              <div className={styles.heroStarTR}><Star size={8} fill="#34d399" color="#34d399" /></div>
+              <div className={styles.heroStarBL}><Star size={7} fill="#fbbf24" color="#fbbf24" /></div>
               <h1 className={styles.heroTitlePixel}>
-                Game Jam Aydın 
+                Game Jam Aydın
               </h1>
             </div>
             <div className={styles.heroTagline}>★ PLAYER 1 READY? ★</div>
@@ -268,17 +235,13 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
             <div className={styles.countdownBox}>
               <GameCountdown />
             </div>
-
-            <div className={styles.heroCta}>
-              <Link href="/auth/register" className={styles.btnPrimary}>Başvur 🚀</Link>
-            </div>
           </section>
 
           {/* ── FEATURE CARDS ── */}
           <section className={`gj-reveal ${styles.featureGrid}`}>
             {FEATURES.map((f) => (
               <div key={f.title} className={styles.featureCard}>
-                <div className={styles.featureIcon}>{f.icon}</div>
+                <div className={styles.featureIcon}><f.Icon size={28} strokeWidth={1.5} /></div>
                 <div className={styles.featureTitle}>{f.title}</div>
                 <div className={styles.featureDesc}>{f.desc}</div>
                 <ul className={styles.featureBullets}>
@@ -295,14 +258,14 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>Temel Bilgiler</h2>
               <div className={styles.infoEmojis}>
-                {["🎮", "🕹️", "👾"].map((e) => (
-                  <span key={e} style={{ fontSize: 16 }}>{e}</span>
-                ))}
+                <Gamepad2 size={16} color="#7c3aed" />
+                <Gamepad size={16} color="#7c3aed" />
+                <Ghost size={16} color="#7c3aed" />
               </div>
             </div>
             <div className={styles.infoGrid}>
               {[
-                { label: "BAŞLAMA TARİHİ", value: "Yakında", color: "#ede9fe", border: "#c4b5fd" },
+                { label: "BAŞLAMA TARİHİ", value: "5 Mayıs", color: "#ede9fe", border: "#c4b5fd" },
                 { label: "YER",            value: "Aydın",   color: "#fce7f3", border: "#f9a8d4" },
                 { label: "SÜRE",           value: "30 Saat", color: "#d1fae5", border: "#6ee7b7" },
                 { label: "KATILIM",        value: "Ücretsiz",color: "#fef3c7", border: "#fde68a" },
@@ -324,17 +287,15 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>Game Jam Nedir?</h2>
               <div className={styles.infoEmojis}>
-                {["🎮", "⚡", "🕹️"].map((e) => (
-                  <span key={e} style={{ fontSize: 16 }}>{e}</span>
-                ))}
+                <Gamepad2 size={16} color="#7c3aed" />
+                <Zap size={16} color="#7c3aed" />
+                <Gamepad size={16} color="#7c3aed" />
               </div>
             </div>
             <p className={styles.whatIsText}>
-              {/* Placeholder — içerik yakında eklenecek */}
               Aydın Game Jam, belirlenen bir tema etrafında 30 saat içinde sıfırdan oyun geliştirdiğin yaratıcı bir etkinliktir. Tek başına ya da 5 kişilik bir ekiple katılabilirsin. Önemli olan bitmemiş ama çalışan bir prototip ortaya çıkarmak; mükemmel değil, gerçek.
             </p>
             <p className={styles.whatIsText}>
-              {/* Placeholder — içerik yakında eklenecek */}
               Tema başlangıçta açıklanır; o andan itibaren fikirler, kodlar ve pikseller birbirini kovalamaya başlar. Mentor desteği, atölyeler ve birlikte üretmenin enerjisiyle dolu bir hafta sonu seni bekliyor.
             </p>
           </section>
@@ -342,8 +303,10 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
           {/* ── KURALLAR ── */}
           <section className={`gj-reveal ${styles.rulesSection}`}>
             <div className={styles.sectionHeaderRow}>
-              <h2 className={styles.sectionTitleLg}>📋 Kurallar</h2>
-              <PixelStar size={10} color="#a78bfa" />
+              <h2 className={styles.sectionTitleLg} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <ClipboardList size={22} color="#7c3aed" /> Kurallar
+              </h2>
+              <Star size={10} fill="#a78bfa" color="#a78bfa" />
             </div>
             <div className={styles.rulesList}>
               {[
@@ -367,9 +330,9 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>Jüriler</h2>
               <div className={styles.infoEmojis}>
-                {["⭐", "🔎", "🏆"].map((e) => (
-                  <span key={e} style={{ fontSize: 16 }}>{e}</span>
-                ))}
+                <Star size={16} color="#7c3aed" />
+                <Search size={16} color="#7c3aed" />
+                <Trophy size={16} color="#7c3aed" />
               </div>
             </div>
             <div className={styles.juryGrid}>
@@ -386,19 +349,15 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
           {/* ── DEĞERLENDİRME KRİTERLERİ ── */}
           <section className={`gj-reveal ${styles.criteriaSection}`}>
             <div className={styles.sectionHeaderRow}>
-              <h2 className={styles.sectionTitleLg}>🏅 Değerlendirme Kriterleri</h2>
-              <PixelStar size={10} color="#fbbf24" />
+              <h2 className={styles.sectionTitleLg} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Medal size={22} color="#7c3aed" /> Değerlendirme Kriterleri
+              </h2>
+              <Star size={10} fill="#fbbf24" color="#fbbf24" />
             </div>
             <div className={styles.criteriaGrid}>
-              {[
-                { icon: "🎨", title: "Yaratıcılık & Özgünlük", desc: "Tema nasıl yorumlandı? Fikir ne kadar özgün ve cesur?", score: "25 PT" },
-                { icon: "⚙️", title: "Teknik Uygulama",         desc: "Oyun çalışıyor mu? Mekanikler tutarlı mı? Bug oranı?",  score: "25 PT" },
-                { icon: "🎮", title: "Oynanabilirlik & Eğlence", desc: "Demo keyifli mi? Oynamaya devam ettiriyor mu?",           score: "25 PT" },
-                { icon: "🎯", title: "Temaya Uyum",              desc: "Tema ne kadar iyi ve özgün biçimde işlendi?",             score: "15 PT" },
-                { icon: "🖼️", title: "Sunum & Görsel",           desc: "Görsel bütünlük, ses tasarımı ve genel atmosfer.",        score: "10 PT" },
-              ].map((c) => (
+              {CRITERIA.map((c) => (
                 <div key={c.title} className={styles.criteriaCard}>
-                  <div className={styles.criteriaIcon}>{c.icon}</div>
+                  <div className={styles.criteriaIcon}><c.Icon size={22} strokeWidth={1.5} /></div>
                   <div className={styles.criteriaTitleRow}>
                     <span className={styles.criteriaTitle}>{c.title}</span>
                     <span className={styles.criteriaScore}>{c.score}</span>
@@ -413,7 +372,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
           <section className={`gj-reveal ${styles.rolesSection}`}>
             <div className={styles.sectionHeaderRow}>
               <h2 className={styles.sectionTitleLg}>Takımda Rolün Ne?</h2>
-              <PixelStar size={12} color="#f472b6" />
+              <Star size={12} fill="#f472b6" color="#f472b6" />
             </div>
             <div className={styles.rolesGrid}>
               {ROLES.map((r) => (
@@ -427,7 +386,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
                   } as React.CSSProperties}
                 >
                   <span className={styles.equipBadge}>[ EQUIP ]</span>
-                  <div className={styles.roleEmoji}>{r.emoji}</div>
+                  <div className={styles.roleEmoji}><r.Icon size={32} strokeWidth={1.5} color={r.border} /></div>
                   <div className={styles.roleTitle}>{r.title}</div>
                   <div className={styles.roleDesc}>{r.desc}</div>
                 </div>
@@ -438,7 +397,9 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
           {/* ── FAQ ── */}
           <section className={`gj-reveal ${styles.faqSection}`}>
             <div className={styles.faqHeaderRow}>
-              <h2 className={styles.sectionTitleLg}>❓ Quest Log</h2>
+              <h2 className={styles.sectionTitleLg} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <HelpCircle size={22} color="#7c3aed" /> Quest Log
+              </h2>
               <div className={styles.faqHeaderLabel}>AKLINDAKI SORULAR</div>
             </div>
             <div className={styles.faqList}>
@@ -479,24 +440,23 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
               </svg>
             </div>
             <div className={styles.ctaContent}>
-              <div className={styles.ctaIcon}>🎮</div>
+              <div className={styles.ctaIcon}><Gamepad2 size={36} strokeWidth={1.5} color="white" /></div>
               <h3 className={styles.ctaTitle}>30 saatin var. Ne inşa edeceksin?</h3>
               <p className={styles.ctaDesc}>
                 Takımını kur, temayı bekle, oyununu yap. Kazanmak değil,{" "}
                 <strong className={styles.ctaDescStrong}>üretmek</strong> burada kural.
               </p>
               <div className={styles.ctaButtons}>
-                <Link href="/auth/register" className={styles.btnPrimaryWhite}>Hemen Başvur 🚀</Link>
+                <Link href="/auth/register" className={styles.btnPrimaryWhite}>
+                  Hemen Başvur <Rocket size={16} />
+                </Link>
               </div>
             </div>
           </section>
 
-          {/* ── FOOTER ── */}
-          {/* Footer removed for better mobile navigation - back button is sufficient */}
         </div>
       </div>
 
     </>
   );
 }
-

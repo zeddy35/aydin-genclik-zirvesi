@@ -19,9 +19,10 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0
 // Requires NEXT_PUBLIC_RECAPTCHA_SITE_KEY to be set (reCAPTCHA v3 site key).
 // Setup: Firebase Console → App Check → Apps → Register web app with reCAPTCHA v3
 if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
-  // Enable debug token in development
-  if (process.env.NODE_ENV !== 'production') {
-    (self as unknown as Record<string, unknown>).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+  // Use a fixed debug token in development (register it in Firebase Console → App Check → Manage debug tokens)
+  if (process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_APPCHECK_DEBUG_TOKEN) {
+    (self as unknown as Record<string, unknown>).FIREBASE_APPCHECK_DEBUG_TOKEN =
+      process.env.NEXT_PUBLIC_APPCHECK_DEBUG_TOKEN;
   }
   initializeAppCheck(app, {
     provider: new ReCaptchaEnterpriseProvider(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY),

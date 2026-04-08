@@ -34,6 +34,7 @@ export interface Kullanici {
   dahaOnceHangi?: string;
   neOgrenmekIstiyor?: string;
   projeFikri?: string;
+  betaTester?: boolean;
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }

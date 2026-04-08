@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
       path:     '/',
     });
     return response;
-  } catch {
+  } catch (err: unknown) {
+    console.error('[session] error:', (err as { code?: string; message?: string })?.code, (err as { message?: string })?.message);
     return NextResponse.json({ code: 'invalid_token' }, { status: 401 });
   }
 }
