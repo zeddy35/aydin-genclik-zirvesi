@@ -29,13 +29,13 @@ export default function DurumPage() {
   if (!user) return null;
 
   const isHack    = kullanici?.etkinlikTuru === 'hackathon';
-  const accent    = isHack ? '#c49a28' : '#7c3aed';
-  const cardBg    = isHack ? '#fffef5' : '#ffffff';
-  const innerBg   = isHack ? '#fdf9e8' : '#f8f7ff';
-  const border    = isHack ? '#ede5b8' : '#e8e3f8';
-  const textPri   = isHack ? '#1a1200' : '#1a1630';
-  const textSub   = isHack ? '#2d2000' : '#2d2550';
-  const textDim   = isHack ? '#9a8a50' : '#9590b0';
+  const accent    = isHack ? '#e8c84a'               : '#a78bfa';
+  const cardBg    = isHack ? '#140f02'               : '#131028';
+  const innerBg   = isHack ? '#1c1500'               : '#1a1638';
+  const border    = isHack ? 'rgba(196,154,40,0.18)' : 'rgba(124,58,237,0.2)';
+  const textPri   = isHack ? '#fff5d0'               : '#ede8ff';
+  const textSub   = isHack ? '#ddc880'               : '#c4b8f5';
+  const textDim   = isHack ? '#706030'               : '#6858a0';
   const durumKey = durum?.durum ?? 'beklemede';
   const durumInfo = DURUM_MAP[durumKey] ?? DURUM_MAP['beklemede'];
   const isRedded = durumKey === 'reddedildi';

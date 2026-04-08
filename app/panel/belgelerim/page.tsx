@@ -60,14 +60,14 @@ export default function BelgelerimPage() {
   if (!user) return null;
 
   const isHack    = kullanici?.etkinlikTuru === 'hackathon';
-  const accent    = isHack ? '#c49a28' : '#7c3aed';
-  const cardBg    = isHack ? '#fffef5' : '#ffffff';
-  const innerBg   = isHack ? '#fdf9e8' : '#f8f7ff';
-  const border    = isHack ? '#ede5b8' : '#e8e3f8';
-  const borderHov = isHack ? '#d9c870' : '#d0c8f0';
-  const textPri   = isHack ? '#1a1200' : '#1a1630';
-  const textSub   = isHack ? '#2d2000' : '#2d2550';
-  const textDim   = isHack ? '#9a8a50' : '#9590b0';
+  const accent    = isHack ? '#e8c84a'               : '#a78bfa';
+  const cardBg    = isHack ? '#140f02'               : '#131028';
+  const innerBg   = isHack ? '#1c1500'               : '#1a1638';
+  const border    = isHack ? 'rgba(196,154,40,0.18)' : 'rgba(124,58,237,0.2)';
+  const borderHov = isHack ? 'rgba(232,200,74,0.4)'  : 'rgba(167,139,250,0.4)';
+  const textPri   = isHack ? '#fff5d0'               : '#ede8ff';
+  const textSub   = isHack ? '#ddc880'               : '#c4b8f5';
+  const textDim   = isHack ? '#706030'               : '#6858a0';
 
   return (
     <>
@@ -82,7 +82,7 @@ export default function BelgelerimPage() {
         .bp-file-list { display: flex; flex-direction: column; gap: 10px; }
         .bp-file-row { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: ${innerBg}; border: 1px solid ${border}; border-radius: 10px; transition: border-color 150ms; }
         .bp-file-row:hover { border-color: ${borderHov}; }
-        .bp-file-icon { font-size: 24px; flex-shrink: 0; color: ${accent}; }
+        .bp-file-icon { display: flex; align-items: center; line-height: 0; flex-shrink: 0; color: ${accent}; }
         .bp-file-info { flex: 1; min-width: 0; }
         .bp-file-tur { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: ${accent}; text-transform: uppercase; margin-bottom: 3px; }
         .bp-file-name { font-size: 13px; color: ${textSub}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -91,7 +91,7 @@ export default function BelgelerimPage() {
         .bp-dl-btn:hover:not(:disabled) { background: ${isHack ? 'rgba(196,154,40,0.18)' : 'rgba(124,58,237,0.15)'}; border-color: ${accent}; }
         .bp-dl-btn:disabled { opacity: 0.5; cursor: default; }
         .bp-empty { text-align: center; padding: 48px 24px; }
-        .bp-empty-icon { font-size: 40px; margin-bottom: 12px; color: ${textDim}; }
+        .bp-empty-icon { display: flex; align-items: center; justify-content: center; line-height: 0; margin-bottom: 12px; color: ${textDim}; }
         .bp-empty-title { font-family: 'Lexend', sans-serif; font-size: 16px; color: ${isHack ? '#6a5c30' : '#7a7295'}; margin-bottom: 6px; }
         .bp-empty-desc { font-size: 13px; color: ${textDim}; line-height: 1.6; }
         .bp-loading { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: ${textDim}; padding: 32px; text-align: center; }

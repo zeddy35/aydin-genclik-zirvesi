@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
@@ -105,6 +106,15 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
     setModalLoading(true);
     try {
       const { user: fbUser } = await signInWithEmailAndPassword(firebaseAuth, modalEmail, modalPassword);
+
+      // Exchange ID token for httpOnly session cookie (required by middleware)
+      const idToken = await fbUser.getIdToken(true);
+      await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      });
+
       const adminSnap = await getDoc(doc(db, 'admins', fbUser.uid));
       router.push(adminSnap.exists() ? '/admin' : '/panel');
     } catch (err: unknown) {
@@ -375,9 +385,9 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
         </div>
       </div>
 
-      {/* ── Login Modal ──────────────────────────────────────── */}
-      {showLoginModal && (
-        <div className={s.modalOverlay} onClick={() => setShowLoginModal(false)}>
+      {/* ── Login Modal — portal to body to escape transform stacking context ── */}
+      {showLoginModal && createPortal(
+        <div className={`lnd-modal-overlay ${s.modalOverlay}`} onClick={() => setShowLoginModal(false)}>
           <div className={s.modalCard} onClick={e => e.stopPropagation()}>
             <button className={s.modalClose} onClick={() => setShowLoginModal(false)} aria-label="Kapat">×</button>
             <p className={s.modalEyebrow}>◈ Aydın Gençlik Zirvesi — GİRİŞ SİSTEMİ ◈</p>
@@ -424,7 +434,8 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
               <span style={{ color: '#666', cursor: 'not-allowed' }}>Kayıt Ol (Şimdilik Kapalı)</span>
             </p>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
 

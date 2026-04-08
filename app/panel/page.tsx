@@ -17,15 +17,15 @@ export default function PanelPage() {
   if (!user) return null;
 
   const isHack    = kullanici?.etkinlikTuru === 'hackathon';
-  const accent    = isHack ? '#c49a28' : '#7c3aed';
-  const cardBg    = isHack ? '#fffef5' : '#ffffff';
-  const innerBg   = isHack ? '#fdf9e8' : '#f8f7ff';
-  const border    = isHack ? '#ede5b8' : '#e8e3f8';
-  const borderHov = isHack ? '#d9c870' : '#d0c8f0';
-  const textPri   = isHack ? '#1a1200' : '#1a1630';
-  const textSub   = isHack ? '#2d2000' : '#2d2550';
-  const textMuted = isHack ? '#8a7840' : '#7a7295';
-  const textDim   = isHack ? '#9a8a50' : '#9590b0';
+  const accent    = isHack ? '#e8c84a'               : '#a78bfa';
+  const cardBg    = isHack ? '#140f02'               : '#131028';
+  const innerBg   = isHack ? '#1c1500'               : '#1a1638';
+  const border    = isHack ? 'rgba(196,154,40,0.18)' : 'rgba(124,58,237,0.2)';
+  const borderHov = isHack ? 'rgba(232,200,74,0.4)'  : 'rgba(167,139,250,0.4)';
+  const textPri   = isHack ? '#fff5d0'               : '#ede8ff';
+  const textSub   = isHack ? '#ddc880'               : '#c4b8f5';
+  const textMuted = isHack ? '#a08840'               : '#9080c0';
+  const textDim   = isHack ? '#706030'               : '#6858a0';
 
   const cards = [
     { href: '/panel/durum', icon: <Search size={24} />, title: 'Durum Sorgula', desc: 'Başvuru durumunu görüntüle', tag: 'DURUM' },
@@ -55,7 +55,7 @@ export default function PanelPage() {
         .pp-quick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
         .pp-quick-card { background: ${cardBg}; border: 1px solid ${border}; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 150ms; text-decoration: none; display: block; box-shadow: 0 1px 4px ${isHack ? 'rgba(196,154,40,0.05)' : 'rgba(124,58,237,0.04)'}; }
         .pp-quick-card:hover { border-color: ${borderHov}; transform: translateY(-2px); box-shadow: 0 4px 20px ${isHack ? 'rgba(196,154,40,0.12)' : 'rgba(124,58,237,0.1)'}; }
-        .pp-quick-icon { font-size: 24px; margin-bottom: 10px; color: ${accent}; }
+        .pp-quick-icon { display: flex; align-items: center; line-height: 0; margin-bottom: 10px; color: ${accent}; }
         .pp-quick-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.25em; color: ${accent}; text-transform: uppercase; margin-bottom: 6px; }
         .pp-quick-name { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; color: ${textPri}; margin-bottom: 4px; }
         .pp-quick-desc { font-size: 12px; color: ${textMuted}; line-height: 1.5; }
@@ -121,17 +121,6 @@ export default function PanelPage() {
           )}
         </div>
 
-        <p className="pp-quick-title">// HIZLI ERİŞİM</p>
-        <div className="pp-quick-grid">
-          {cards.map(card => (
-            <a key={card.href} href={card.href} className="pp-quick-card">
-              <div className="pp-quick-icon">{card.icon}</div>
-              <div className="pp-quick-tag">{card.tag}</div>
-              <div className="pp-quick-name">{card.title}</div>
-              <div className="pp-quick-desc">{card.desc}</div>
-            </a>
-          ))}
-        </div>
       </div>
     </>
   );
