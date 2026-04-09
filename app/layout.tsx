@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lexend, Share_Tech_Mono, Press_Start_2P } from "next/font/google";
+import { Lexend, Share_Tech_Mono, Press_Start_2P, Oswald } from "next/font/google";
 import { AuthProvider as AGZAuthProvider } from "@/contexts/AuthContext";
 import { EasterEggProvider } from "@/components/EasterEggProvider";
 import { EasterEggContext } from "@/components/EasterEggContext";
@@ -22,6 +22,11 @@ const pressStart2P = Press_Start_2P({
   weight: "400",
   display: "swap",
   variable: "--font-press-start",
+});
+const oswald = Oswald({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-oswald",
 });
 
 export const metadata: Metadata = {
@@ -46,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="tr" suppressHydrationWarning className={`${lexend.variable} ${shareTechMono.variable} ${pressStart2P.variable}`}>
+    <html lang="tr" suppressHydrationWarning className={`${lexend.variable} ${shareTechMono.variable} ${pressStart2P.variable} ${oswald.variable}`}>
       <head>
         {/* Preload LCP background images so browser discovers them before React renders */}
         <link rel="preload" href="/backgrounds/jambg.png" as="image" />
