@@ -33,6 +33,14 @@ function loginRateLimit(ip: string): boolean {
 // ── Main middleware ───────────────────────────────────────────────────────────
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const hostname = request.headers.get("host") ?? "";
+
+  // Subdomain routing: lore.* → /lore
+  if (hostname.startsWith("lore.")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/lore" + (pathname === "/" ? "" : pathname);
+    return NextResponse.rewrite(url);
+  }
 
   // 1. Rate-limit Firebase Auth sign-in calls that go through the app
   if (pathname === '/auth/login' && request.method === 'POST') {
@@ -102,10 +110,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/panel/:path*',
-    '/admin/:path*',
-    '/auth/:path*',
-    '/api/auth/:path*',
-    '/api/proje/:path*',
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 };

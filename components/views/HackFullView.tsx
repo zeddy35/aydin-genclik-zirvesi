@@ -1055,7 +1055,9 @@ export function HackFullView({ onBack }: HackFullViewProps) {
               <span style={{ color: C.red }}>→</span>
             </Link>
             <Link
-              href="/hackathon/dosya"
+              href="https://lore.aydingenclikzirvesi.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex-1 flex items-center justify-center no-underline rounded-lg transition-all duration-200"
               style={{
                 fontFamily:    C.ui,
