@@ -23,10 +23,32 @@ const DURUM_LABELS: Record<string, string> = {
 export default function AdminPage() {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [basvuruAcik, setBasvuruAcik] = useState<boolean | null>(null);
+  const [toggling, setToggling] = useState(false);
 
   useEffect(() => {
     getAdminStats().then(setStats).finally(() => setLoading(false));
+    fetch('/api/admin/settings/basvuru')
+      .then(r => r.json())
+      .then(d => setBasvuruAcik(d.acik))
+      .catch(() => {});
   }, []);
+
+  async function toggleBasvuru() {
+    if (basvuruAcik === null || toggling) return;
+    setToggling(true);
+    try {
+      const res = await fetch('/api/admin/settings/basvuru', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ acik: !basvuruAcik }),
+      });
+      const d = await res.json();
+      setBasvuruAcik(d.acik);
+    } finally {
+      setToggling(false);
+    }
+  }
 
   const totalDurum = stats ? Object.values(stats.durumDagilimi).reduce((a, b) => a + b, 0) : 0;
 
@@ -61,7 +83,35 @@ export default function AdminPage() {
 
       <div className="ap-page">
         <p className="ap-eyebrow">◈ ADMIN PANELİ</p>
-        <h1 className="ap-title">Genel Bakış</h1>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 28 }}>
+          <h1 className="ap-title" style={{ margin: 0 }}>Genel Bakış</h1>
+          <button
+            onClick={toggleBasvuru}
+            disabled={basvuruAcik === null || toggling}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
+              background: basvuruAcik ? '#0d2b1a' : '#1a1a1a',
+              border: `1px solid ${basvuruAcik ? '#10b981' : '#3a3060'}`,
+              borderRadius: 8, padding: '10px 18px', transition: 'all 200ms',
+              opacity: basvuruAcik === null ? 0.5 : 1,
+            }}
+          >
+            <span style={{
+              width: 38, height: 20, borderRadius: 10, position: 'relative',
+              background: basvuruAcik ? '#10b981' : '#2a2545',
+              transition: 'background 200ms', display: 'inline-block', flexShrink: 0,
+            }}>
+              <span style={{
+                position: 'absolute', top: 2, left: basvuruAcik ? 20 : 2,
+                width: 16, height: 16, borderRadius: '50%', background: '#fff',
+                transition: 'left 200ms',
+              }} />
+            </span>
+            <span style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: 11, letterSpacing: '0.2em', color: basvuruAcik ? '#10b981' : '#6b6485', textTransform: 'uppercase' }}>
+              {toggling ? '...' : basvuruAcik ? 'Başvurular Açık' : 'Başvurular Kapalı'}
+            </span>
+          </button>
+        </div>
 
         {loading ? (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14, marginBottom: 28 }}>
