@@ -71,11 +71,11 @@
   backdrop-filter: blur(8px);
   color: #fff;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  transition: background 0.2s, border-color 0.2s;
   z-index: 30;
 }
-.navBtn:hover        { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.32); transform: scale(1.1); }
-.navBtn:active       { transform: scale(0.93); }
+.navBtn:hover        { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.32); }
+.navBtn:active       { background: rgba(255,255,255,0.2); }
 .navBtn:focus-visible { outline: 2px solid #a78bfa; outline-offset: 3px; }
 
 /* Arrows are outside the panels — always pinned to hero edges */
