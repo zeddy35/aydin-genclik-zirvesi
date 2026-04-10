@@ -267,14 +267,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: hidden; /* Taşmayı engelle, ama artık kırpmayacak */
   flex-shrink: 0;
+  background-color: #fff; /* Şeffaf alanlar için beyaz zemin (isteğe bağlı) */
 }
 
 .sum-sponsor-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* cover yerine contain: görselin tamamı sığar, kırpılmaz */
   border-radius: 0;
 }
 
