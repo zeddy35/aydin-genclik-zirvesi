@@ -23,6 +23,7 @@ import {
   HelpCircle,
   Medal,
   Rocket,
+  ArrowRight,
 } from "lucide-react";
 import styles from "./GameJamFullView.module.css";
 
@@ -210,32 +211,48 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
       <GJReveal />
 
       <div className={styles.wrapper}>
+
         {/* ── STICKY BACK BUTTON ── */}
         <div className={styles.topNav}>
           <button onClick={onBack} className={styles.backBtn} aria-label="Geri dön">
-            <ArrowLeft size={15} strokeWidth={2.5} />
             Geri
+            <ArrowRight size={15} strokeWidth={2.5} />
           </button>
         </div>
 
         <div className={styles.container}>
-
           {/* ── HERO ── */}
           <section className={`gj-reveal ${styles.heroSection}`}>
-            <div className={styles.heroTitleWrapper}>
-              <div className={styles.heroStarTL}><Star size={10} fill="#f472b6" color="#f472b6" /></div>
-              <div className={styles.heroStarTR}><Star size={8} fill="#34d399" color="#34d399" /></div>
-              <div className={styles.heroStarBL}><Star size={7} fill="#fbbf24" color="#fbbf24" /></div>
-              <h1 className={styles.heroTitlePixel}>
-                Game Jam Aydın
-              </h1>
-            </div>
-            <div className={styles.heroTagline}>★ PLAYER 1 READY? ★</div>
+  <div className={styles.heroInner}>
+    
+    <div className={styles.heroTitleWrapper}>
+      <div className={styles.heroStarTL}>
+        <Star size={28} fill="#f472b6" color="#f472b6" />
+      </div>
 
-            <div className={styles.countdownBox}>
-              <GameCountdown />
-            </div>
-          </section>
+      <div className={styles.heroStarTR}>
+        <Star size={22} fill="#34d399" color="#34d399" />
+      </div>
+
+      <div className={styles.heroStarBL}>
+        <Star size={18} fill="#fbbf24" color="#fbbf24" />
+      </div>
+
+      <h1 className={styles.heroTitlePixel}>
+        Game Jam Aydın
+      </h1>
+    </div>
+
+    <div className={styles.heroTagline}>
+      ★ PLAYER 1 READY? ★
+    </div>
+
+    <div className={styles.countdownBox}>
+      <GameCountdown />
+    </div>
+
+  </div>
+</section>
 
           {/* ── FEATURE CARDS ── */}
           <section className={`gj-reveal ${styles.featureGrid}`}>

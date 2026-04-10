@@ -229,8 +229,7 @@ export function SummitInfo() {
 
   const FAQS = [
     { q: "Katılım ücretsiz mi?", a: "Evet, tamamen ücretsiz. GDG on Campus Aydın, Oyun & Tasarım Topluluğu ve Huawei Student Developers desteğiyle düzenleniyor." },
-    { q: "Tek başıma başvurabilir miyim?", a: "Evet. Eşleşme akışı mevcut — rolüne göre ekip bulmana yardım ediyoruz." },
-    { q: "Hackathon ve Game Jam aynı anda mı?", a: "Aydın Gençlik Zirvesi çatısı altında eş zamanlı ilerliyor. İstediğin etkinliği seçebilirsin." },
+    { q: "Hackathon, Game Jam ve konuşmacılar aynı anda mı?", a: "Aydın Gençlik Zirvesi çatısı altında eş zamanlı ilerliyor. İstediğin etkinliğe katılabilirsin. Sadece Jam ve Hackathon'a aynı anda başvuramazsın." },
     { q: "Daha önce hiç katılmadım, uygun muyum?", a: "Kesinlikle. Tüm seviyelere açık. Mentorlar ve rehber içerikler her adımda yanında." },
   ];
 
