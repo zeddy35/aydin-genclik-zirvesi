@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 /* ─── palette ───────────────────────────────────────────────── */
 const C = {
@@ -37,25 +37,27 @@ interface Character {
 const CHARACTERS: Character[] = [
   {
     id:      "01",
-    name:    "KARAKTER ADI",
-    role:    "Rol / Unvan",
+    name:    "Early Access",
+    role:    "Suça Sürüklenmiş Robot",
     status:  "AKTİF · İZLENİYOR",
     suspect: true,
+    photo:   "/lore/early_lore.svg",
     details: [
-      { label: "Konum",           value: "—" },
-      { label: "Son Görülme",     value: "—" },
-      { label: "Tehdit Seviyesi", value: "YÜKSEK" },
-      { label: "Bağlantılar",     value: "—" },
+      { label: "Konum",           value: "???" },
+      { label: "Son Görülme",     value: "??? Gün Önce" },
+      { label: "Tehdit Seviyesi", value: "MAXIMUM" },
+      { label: "Bağlantılar",     value: "PARALEL EVRENLER" },
     ],
     story:
       "Bu karakter hakkında hikaye buraya gelecek. Kişinin geçmişi, motivasyonları ve vakadaki rolü burada kısaca anlatılacak. Detaylar eklendikçe bu metin güncellenecek.",
   },
   {
     id:      "02",
-    name:    "KARAKTER ADI",
+    name:    "Beta",
     role:    "Rol / Unvan",
     status:  "KAYIP · ARAŞTIRILIYOR",
     suspect: false,
+    photo:   "/lore/beta_lore.svg",
     details: [
       { label: "Konum",       value: "—" },
       { label: "Son Görülme", value: "—" },
@@ -67,29 +69,31 @@ const CHARACTERS: Character[] = [
   },
   {
     id:      "03",
-    name:    "KARAKTER ADI",
-    role:    "Rol / Unvan",
-    status:  "TANIK · KORUMA ALTINDA",
+    name:    "DINO",
+    role:    "ANA DEDEKTIF",
+    status:  "GIZLI · YETKILENDIRILMIS",
     suspect: false,
+    photo:   "/lore/dino_logo.svg",
     details: [
-      { label: "Konum",        value: "—" },
-      { label: "Son Görülme",  value: "—" },
-      { label: "Güvenilirlik", value: "ORTA" },
-      { label: "İfade",        value: "ALINMADI" },
+      { label: "Konum",        value: "EVRENLER ARASINDA" },
+      { label: "Son Görülme",  value: "3 Gün Önce" },
+      { label: "Güvenilirlik", value: "YÜKSEK" },
+      { label: "İfade",        value: "ALINDI" },
     ],
     story:
       "Bu karakter hakkında hikaye buraya gelecek. Kişinin geçmişi, motivasyonları ve vakadaki rolü burada kısaca anlatılacak. Detaylar eklendikçe bu metin güncellenecek.",
   },
   {
     id:      "04",
-    name:    "KARAKTER ADI",
-    role:    "Rol / Unvan",
-    status:  "GİZLİ · YETKİLENDİRİLMİŞ",
+    name:    "PANDA",
+    role:    "STAJYER",
+    status:  "KENDI DE BILMIYOR",
     suspect: false,
+    photo:   "/lore/panda_logo.svg",
     details: [
-      { label: "Konum",       value: "—" },
-      { label: "Son Görülme", value: "—" },
-      { label: "Yetki",       value: "SINIRLI" },
+      { label: "Konum",       value: "DINO'NUN YANINDA" },
+      { label: "Son Görülme", value: "3 Gün Önce" },
+      { label: "Yetki",       value: "DÜŞÜK" },
       { label: "Görev",       value: "GİZLİ" },
     ],
     story:
@@ -99,9 +103,10 @@ const CHARACTERS: Character[] = [
 
 /* ─── component ─────────────────────────────────────────────── */
 export default function LorePage() {
-  const [idx, setIdx]           = useState(0);
+  const [idx, setIdx]             = useState(0);
   const [animating, setAnimating] = useState(false);
-  const [leaving, setLeaving]   = useState(false);
+  const [leaving, setLeaving]     = useState(false);
+  const timerRef                  = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const navigate = useCallback((dir: 1 | -1) => {
     if (animating) return;
@@ -113,6 +118,16 @@ export default function LorePage() {
       setTimeout(() => setAnimating(false), 400);
     }, 300);
   }, [animating]);
+
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => navigate(1), 40000000);
+  }, [navigate]);
+
+  useEffect(() => {
+    resetTimer();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [resetTimer]);
 
   const char  = CHARACTERS[idx];
   const accent = char.suspect ? C.redText : C.gold;
@@ -323,7 +338,7 @@ export default function LorePage() {
         {/* Left arrow */}
         <button
           className="lore-arrow"
-          onClick={() => navigate(-1)}
+          onClick={() => { navigate(-1); resetTimer(); }}
           disabled={animating}
           aria-label="Önceki karakter"
         >
@@ -481,7 +496,7 @@ export default function LorePage() {
         {/* Right arrow */}
         <button
           className="lore-arrow"
-          onClick={() => navigate(1)}
+          onClick={() => { navigate(1); resetTimer(); }}
           disabled={animating}
           aria-label="Sonraki karakter"
         >

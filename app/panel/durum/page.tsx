@@ -7,18 +7,18 @@ import type { BasvuruDurumuDoc } from '@/lib/firebase/types';
 import { Clock, Search, CheckCircle2, XCircle, ClipboardList, Check, X, AlertTriangle } from 'lucide-react';
 
 const DURUM_MAP: Record<string, { label: string; color: string; bg: string; icon: React.ReactNode; desc: string }> = {
-  beklemede: { label: 'BEKLEMEDE', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)', icon: <Clock size={52} color="#f59e0b" />, desc: 'Başvurunuz alındı, inceleme sırası bekleniyor.' },
-  inceleniyor: { label: 'İNCELENİYOR', color: '#3b82f6', bg: 'rgba(59,130,246,0.1)', icon: <Search size={52} color="#3b82f6" />, desc: 'Başvurunuz ekibimiz tarafından inceleniyor.' },
-  onaylandi: { label: 'ONAYLANDI', color: '#10b981', bg: 'rgba(16,185,129,0.1)', icon: <CheckCircle2 size={52} color="#10b981" />, desc: 'Tebrikler! Başvurunuz kabul edildi.' },
-  reddedildi: { label: 'REDDEDİLDİ', color: '#ef4444', bg: 'rgba(239,68,68,0.1)', icon: <XCircle size={52} color="#ef4444" />, desc: 'Başvurunuz bu aşamada kabul edilemedi.' },
-  bekleme_listesi: { label: 'BEKLEME LİSTESİ', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)', icon: <ClipboardList size={52} color="#8b5cf6" />, desc: 'Kontenjan açıldığında bildirim alacaksınız.' },
+  beklemede:      { label: 'BEKLEMEDE',      color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',  icon: <Clock size={52} color="#f59e0b" />,        desc: 'Başvurunuz alındı, inceleme sırası bekleniyor.' },
+  inceleniyor:    { label: 'İNCELENİYOR',    color: '#3b82f6', bg: 'rgba(59,130,246,0.1)',  icon: <Search size={52} color="#3b82f6" />,        desc: 'Başvurunuz ekibimiz tarafından inceleniyor.' },
+  onaylandi:      { label: 'ONAYLANDI',      color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: <CheckCircle2 size={52} color="#10b981" />,  desc: 'Tebrikler! Başvurunuz kabul edildi.' },
+  reddedildi:     { label: 'REDDEDİLDİ',    color: '#ef4444', bg: 'rgba(239,68,68,0.1)',   icon: <XCircle size={52} color="#ef4444" />,       desc: 'Başvurunuz bu aşamada kabul edilemedi.' },
+  bekleme_listesi:{ label: 'BEKLEME LİSTESİ',color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)', icon: <ClipboardList size={52} color="#8b5cf6" />, desc: 'Kontenjan açıldığında bildirim alacaksınız.' },
 };
 
 const ADIMLAR = ['beklemede', 'inceleniyor', 'onaylandi'];
 
 export default function DurumPage() {
   const { user, kullanici } = useAuth();
-  const [durum, setDurum] = useState<BasvuruDurumuDoc | null>(null);
+  const [durum, setDurum]   = useState<BasvuruDurumuDoc | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,81 +28,84 @@ export default function DurumPage() {
 
   if (!user) return null;
 
-  const isHack    = kullanici?.etkinlikTuru === 'hackathon';
-  const accent    = isHack ? '#e8c84a'               : '#a78bfa';
-  const cardBg    = isHack ? '#140f02'               : '#131028';
-  const innerBg   = isHack ? '#1c1500'               : '#1a1638';
-  const border    = isHack ? 'rgba(196,154,40,0.18)' : 'rgba(124,58,237,0.2)';
-  const textPri   = isHack ? '#fff5d0'               : '#ede8ff';
-  const textSub   = isHack ? '#ddc880'               : '#c4b8f5';
-  const textDim   = isHack ? '#706030'               : '#6858a0';
-  const durumKey = durum?.durum ?? 'beklemede';
+  const isHack   = kullanici?.etkinlikTuru === 'hackathon';
+  const accent   = isHack ? '#e8c84a'               : '#a78bfa';
+  const cardBg   = isHack ? '#140f02'               : '#131028';
+  const innerBg  = isHack ? '#1c1500'               : '#1a1638';
+  const border   = isHack ? 'rgba(196,154,40,0.18)' : 'rgba(124,58,237,0.2)';
+  const textPri  = isHack ? '#fff5d0'               : '#ede8ff';
+  const textSub  = isHack ? '#ddc880'               : '#c4b8f5';
+  const textDim  = isHack ? '#706030'               : '#6858a0';
+
+  const durumKey  = durum?.durum ?? 'beklemede';
   const durumInfo = DURUM_MAP[durumKey] ?? DURUM_MAP['beklemede'];
-  const isRedded = durumKey === 'reddedildi';
+  const isRedded  = durumKey === 'reddedildi';
   const stepIndex = ADIMLAR.indexOf(isRedded ? 'inceleniyor' : durumKey);
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
-        .dp-page { padding: 28px; max-width: 700px; margin: 0 auto; }
-        .dp-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: ${textDim}; text-transform: uppercase; margin-bottom: 6px; }
-        .dp-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: ${textPri}; margin-bottom: 28px; }
-        .dp-badge-card { background: ${cardBg}; border: 1px solid ${border}; border-radius: 16px; padding: 32px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; box-shadow: 0 1px 8px ${isHack ? 'rgba(196,154,40,0.08)' : 'rgba(124,58,237,0.06)'}; }
-        .dp-badge-icon { font-size: 52px; margin-bottom: 12px; }
-        .dp-badge-label { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(18px, 4vw, 28px); letter-spacing: 0.1em; margin-bottom: 8px; }
-        .dp-badge-desc { font-size: 14px; color: ${isHack ? '#6a5c30' : '#5a5280'}; line-height: 1.6; }
-        .dp-pulse { animation: pulse 2s ease-in-out infinite; }
-        .dp-timeline { background: ${cardBg}; border: 1px solid ${border}; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 4px ${isHack ? 'rgba(196,154,40,0.05)' : 'rgba(124,58,237,0.04)'}; }
-        .dp-tl-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: ${textDim}; text-transform: uppercase; margin-bottom: 20px; }
-        .dp-tl-steps { display: flex; align-items: center; gap: 0; }
-        .dp-tl-step { flex: 1; position: relative; }
-        .dp-tl-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; margin: 0 auto 8px; border: 2px solid ${border}; background: ${innerBg}; color: ${textDim}; transition: all 300ms; position: relative; z-index: 2; }
-        .dp-tl-dot.done { background: rgba(16,185,129,0.12); border-color: #10b981; color: #10b981; }
-        .dp-tl-dot.active { background: ${accent}18; border-color: ${accent}; color: ${accent}; animation: pulse 2s ease-in-out infinite; }
-        .dp-tl-dot.fail { background: rgba(239,68,68,0.1); border-color: #ef4444; color: #ef4444; }
-        .dp-tl-name { font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.15em; color: ${textDim}; text-align: center; margin-top: 4px; }
-        .dp-tl-name.done { color: #10b981; }
-        .dp-tl-name.active { color: ${accent}; }
-        .dp-tl-line { position: absolute; top: 15px; left: calc(50% + 16px); right: calc(-50% + 16px); height: 2px; background: ${border}; z-index: 1; }
-        .dp-tl-line.done { background: #10b981; }
-        .dp-reject-card { background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
-        .dp-reject-title { font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 14px; color: #ef4444; margin-bottom: 8px; }
-        .dp-reject-note { font-size: 14px; color: ${textSub}; line-height: 1.7; }
-        .dp-ts { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: ${textDim}; text-align: center; margin-top: 12px; }
-      `}</style>
+      <style>{`@keyframes pulse-slow { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }`}</style>
 
-      <div className="dp-page">
-        <p className="dp-eyebrow">◈ DURUM SORGULA</p>
-        <h1 className="dp-title">Başvuru Durumu</h1>
+      <div className="p-7 max-w-[700px] mx-auto">
+        <p className="font-[Share_Tech_Mono] text-[11px] tracking-[0.35em] uppercase mb-1.5" style={{ color: textDim }}>
+          ◈ DURUM SORGULA
+        </p>
+        <h1 className="font-[Lexend] font-extrabold text-[clamp(20px,4vw,30px)] mb-7" style={{ color: textPri }}>
+          Başvuru Durumu
+        </h1>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: 60, color: textDim, fontFamily: 'Share Tech Mono, monospace', fontSize: 12, letterSpacing: '0.3em' }}>YÜKLENİYOR...</div>
+          <div className="text-center py-16 font-[Share_Tech_Mono] text-xs tracking-[0.3em]" style={{ color: textDim }}>
+            YÜKLENİYOR...
+          </div>
         ) : (
           <>
-            <div className="dp-badge-card" style={{ background: durumInfo.bg, borderColor: durumInfo.color + '40' }}>
-              <div className={`dp-badge-icon ${durumKey === 'beklemede' || durumKey === 'inceleniyor' ? 'dp-pulse' : ''}`}>
+            {/* Status badge */}
+            <div className="rounded-2xl p-8 text-center mb-6 relative overflow-hidden"
+              style={{ background: durumInfo.bg, border: `1px solid ${durumInfo.color}40` }}>
+              <div className={`mb-3 ${(durumKey === 'beklemede' || durumKey === 'inceleniyor') ? '[animation:pulse-slow_2s_ease-in-out_infinite]' : ''}`}>
                 {durumInfo.icon}
               </div>
-              <div className="dp-badge-label" style={{ color: durumInfo.color }}>{durumInfo.label}</div>
-              <p className="dp-badge-desc">{durumInfo.desc}</p>
+              <div className="font-[Lexend] font-extrabold text-[clamp(18px,4vw,28px)] tracking-widest mb-2" style={{ color: durumInfo.color }}>
+                {durumInfo.label}
+              </div>
+              <p className="text-sm leading-relaxed" style={{ color: isHack ? '#6a5c30' : '#5a5280' }}>
+                {durumInfo.desc}
+              </p>
             </div>
 
-            <div className="dp-timeline">
-              <p className="dp-tl-label">// SÜREÇ</p>
-              <div className="dp-tl-steps">
+            {/* Timeline */}
+            <div className="rounded-xl p-6 mb-6" style={{ background: cardBg, border: `1px solid ${border}` }}>
+              <p className="font-[Share_Tech_Mono] text-[11px] tracking-[0.3em] uppercase mb-5" style={{ color: textDim }}>
+                // SÜREÇ
+              </p>
+              <div className="flex items-center">
                 {ADIMLAR.map((adim, i) => {
-                  const isDone = !isRedded && stepIndex > i;
+                  const isDone   = !isRedded && stepIndex > i;
                   const isActive = !isRedded && stepIndex === i;
-                  const isFail = isRedded && i === 1;
+                  const isFail   = isRedded && i === 1;
                   return (
-                    <div key={adim} className="dp-tl-step">
-                      {i < ADIMLAR.length - 1 && <div className={`dp-tl-line ${isDone ? 'done' : ''}`} />}
-                      <div className={`dp-tl-dot ${isDone ? 'done' : isActive ? 'active' : isFail ? 'fail' : ''}`}>
+                    <div key={adim} className="flex-1 relative">
+                      {/* Connector line */}
+                      {i < ADIMLAR.length - 1 && (
+                        <div className="absolute h-0.5 z-0"
+                          style={{ top: 15, left: 'calc(50% + 16px)', right: 'calc(-50% + 16px)', background: isDone ? '#10b981' : border }} />
+                      )}
+                      {/* Dot */}
+                      <div className="relative z-10 w-8 h-8 rounded-full flex items-center justify-center text-sm mx-auto mb-2 border-2 transition-all duration-300"
+                        style={isDone
+                          ? { background: 'rgba(16,185,129,0.12)', borderColor: '#10b981', color: '#10b981' }
+                          : isActive
+                          ? { background: `${accent}18`, borderColor: accent, color: accent, animation: 'pulse-slow 2s ease-in-out infinite' }
+                          : isFail
+                          ? { background: 'rgba(239,68,68,0.1)', borderColor: '#ef4444', color: '#ef4444' }
+                          : { background: innerBg, borderColor: border, color: textDim }
+                        }>
                         {isDone ? <Check size={14} /> : isFail ? <X size={14} /> : i + 1}
                       </div>
-                      <div className={`dp-tl-name ${isDone ? 'done' : isActive ? 'active' : ''}`}>
+                      {/* Label */}
+                      <div className="font-[Share_Tech_Mono] text-[9px] tracking-[0.15em] text-center mt-1"
+                        style={{ color: isDone ? '#10b981' : isActive ? accent : textDim }}>
                         {DURUM_MAP[adim]?.label ?? adim}
                       </div>
                     </div>
@@ -111,15 +114,18 @@ export default function DurumPage() {
               </div>
             </div>
 
+            {/* Reject note */}
             {isRedded && durum?.adminNotu && (
-              <div className="dp-reject-card">
-                <p className="dp-reject-title" style={{ display: 'flex', alignItems: 'center', gap: 6 }}><AlertTriangle size={14} /> Admin Notu</p>
-                <p className="dp-reject-note">{durum.adminNotu}</p>
+              <div className="rounded-xl p-5 mb-6" style={{ background: 'rgba(239,68,68,0.04)', border: '1px solid rgba(239,68,68,0.2)' }}>
+                <p className="flex items-center gap-1.5 font-[Lexend] font-bold text-sm text-red-500 mb-2">
+                  <AlertTriangle size={14} /> Admin Notu
+                </p>
+                <p className="text-sm leading-relaxed" style={{ color: textSub }}>{durum.adminNotu}</p>
               </div>
             )}
 
             {durum?.guncellenmeTarihi && (
-              <p className="dp-ts">
+              <p className="font-[Share_Tech_Mono] text-[11px] text-center mt-3" style={{ color: textDim }}>
                 Son güncelleme: {new Date((durum.guncellenmeTarihi as unknown as { toDate?: () => Date }).toDate?.() ?? Date.now()).toLocaleString('tr-TR')}
               </p>
             )}

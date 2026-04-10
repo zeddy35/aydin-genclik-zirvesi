@@ -11,6 +11,7 @@ export default function ProjePage() {
   const { user, kullanici } = useAuth();
   const [basarili, setBasarili] = useState(false);
   const [hata, setHata] = useState('');
+
   const isHack    = kullanici?.etkinlikTuru === 'hackathon';
   const accent    = isHack ? '#e8c84a'               : '#a78bfa';
   const cardBg    = isHack ? '#140f02'               : '#131028';
@@ -37,103 +38,128 @@ export default function ProjePage() {
     setBasarili(true);
   };
 
-  const onHack = async (data: HackathonProje) => {
-    await postProje({ type: 'hackathon', ...data });
-  };
-
-  const onJam = async (data: GameJamProje) => {
-    await postProje({ type: 'gamejam', ...data });
-  };
+  const onHack = async (data: HackathonProje) => { await postProje({ type: 'hackathon', ...data }); };
+  const onJam  = async (data: GameJamProje)   => { await postProje({ type: 'gamejam',   ...data }); };
 
   if (!user) return null;
 
+  const inputCls = `w-full rounded-lg px-3.5 py-2.5 text-[15px] font-[Lexend] outline-none transition-[border-color,box-shadow] duration-150`;
+  const fieldLblCls = `block text-[12px] font-semibold tracking-[0.05em] mb-1.5`;
+  const errCls = 'text-xs text-red-500 mt-1 block';
+  const hintCls = 'text-xs mt-1';
+
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
-        @keyframes stampIn { from { transform: rotate(-15deg) scale(2); opacity: 0; } to { transform: rotate(-15deg) scale(1); opacity: 0.9; } }
-        .prj-page { padding: 28px; max-width: 680px; margin: 0 auto; }
-        .prj-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: ${textDim}; text-transform: uppercase; margin-bottom: 6px; }
-        .prj-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: ${textPri}; margin-bottom: 28px; }
-        .prj-card { background: ${cardBg}; border: 1px solid ${border}; border-radius: 12px; padding: 28px; box-shadow: 0 1px 8px ${isHack ? 'rgba(196,154,40,0.08)' : 'rgba(124,58,237,0.06)'}; }
-        .prj-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: ${textDim}; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px dashed ${border}; }
-        .prj-group { margin-bottom: 18px; }
-        .prj-fl { display: block; font-size: 12px; color: ${textSub}; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600; }
-        .prj-inp, .prj-ta { width: 100%; background: ${innerBg}; border: 1px solid ${border}; border-radius: 8px; padding: 10px 14px; color: ${textPri}; font-family: 'DM Sans', sans-serif; font-size: 15px; outline: none; transition: border-color 150ms; }
-        .prj-inp:focus, .prj-ta:focus { border-color: ${accent}; box-shadow: 0 0 0 3px ${accent}18; }
-        .prj-inp::placeholder, .prj-ta::placeholder { color: ${isHack ? '#c8b870' : '#c0b8d8'}; }
-        .prj-ta { resize: vertical; min-height: 120px; line-height: 1.6; }
-        .prj-err { font-size: 12px; color: #ef4444; margin-top: 4px; display: block; }
-        .prj-hint { font-size: 12px; color: ${textDim}; margin-top: 4px; }
-        .prj-btn-hack { width: 100%; background: linear-gradient(135deg,#c49a28,#e8c84a); color: #ffffff; border: none; border-radius: 10px; padding: 14px; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 150ms; box-shadow: 0 2px 12px rgba(196,154,40,0.3); }
-        .prj-btn-hack:hover:not(:disabled) { background: linear-gradient(135deg,#b08820,#d4b638); }
-        .prj-btn-jam { width: 100%; background: linear-gradient(135deg,#7c3aed,#ec4899); color: #fff; border: none; border-radius: 10px; padding: 14px; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; box-shadow: 0 2px 12px rgba(124,58,237,0.3); }
-        .prj-glob-err { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 12px 16px; color: #ef4444; font-size: 14px; margin-bottom: 16px; }
-        .prj-scs { text-align: center; padding: 40px; }
-        .prj-scs-stamp { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 28px; color: ${accent}; border: 3px solid ${accent}; padding: 12px 24px; display: inline-block; animation: stampIn 0.6s ease forwards; }
-        .prj-scs-sub { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.25em; color: ${textDim}; margin-top: 16px; }
-      `}</style>
+      <style>{`@keyframes stampIn { from { transform: rotate(-15deg) scale(2); opacity: 0; } to { transform: rotate(-15deg) scale(1); opacity: 0.9; } }`}</style>
 
-      <div className="prj-page">
-        <p className="prj-eyebrow">◈ PROJE GÖNDER</p>
-        <h1 className="prj-title">Projeyi Teslim Et</h1>
+      <div className="p-7 max-w-[680px] mx-auto">
+        <p className="font-[Share_Tech_Mono] text-[11px] tracking-[0.35em] uppercase mb-1.5" style={{ color: textDim }}>
+          ◈ PROJE GÖNDER
+        </p>
+        <h1 className="font-[Lexend] font-extrabold text-[clamp(20px,4vw,30px)] mb-7" style={{ color: textPri }}>
+          Projeyi Teslim Et
+        </h1>
 
         {basarili ? (
-          <div className="prj-card">
-            <div className="prj-scs">
-              <div className="prj-scs-stamp">{isHack ? 'TESLİM EDİLDİ ✓' : 'GAME SHIPPED! 🎮'}</div>
-              <p className="prj-scs-sub">Proje başarıyla gönderildi.</p>
+          <div className="rounded-xl p-7" style={{ background: cardBg, border: `1px solid ${border}` }}>
+            <div className="text-center py-10">
+              <div className="font-[Lexend] font-extrabold text-[28px] border-[3px] px-6 py-3 inline-block"
+                style={{ color: accent, borderColor: accent, animation: 'stampIn 0.6s ease forwards' }}>
+                {isHack ? 'TESLİM EDİLDİ ✓' : 'GAME SHIPPED! 🎮'}
+              </div>
+              <p className="font-[Share_Tech_Mono] text-[12px] tracking-[0.25em] mt-4" style={{ color: textDim }}>
+                Proje başarıyla gönderildi.
+              </p>
             </div>
           </div>
         ) : isHack ? (
-          <div className="prj-card">
-            <p className="prj-label">// HACKATHON PROJESİ</p>
-            {hata && <div className="prj-glob-err">{hata}</div>}
+          <div className="rounded-xl p-7" style={{ background: cardBg, border: `1px solid ${border}` }}>
+            <p className="font-[Share_Tech_Mono] text-[11px] tracking-[0.3em] uppercase mb-[18px] pb-3 border-b border-dashed" style={{ color: textDim, borderColor: border }}>
+              // HACKATHON PROJESİ
+            </p>
+            {hata && <div className="bg-red-500/6 border border-red-500/20 rounded-lg px-4 py-3 text-red-500 text-[14px] mb-4">{hata}</div>}
             <form onSubmit={hsH(onHack)} noValidate>
-              <div className="prj-group">
-                <label className="prj-fl">PROJE ADI *</label>
-                <input {...regH('projeAdi', { required: 'Proje adı zorunludur.' })} className="prj-inp" placeholder="Projenizin adı" />
-                {eH.projeAdi && <span className="prj-err">{eH.projeAdi.message}</span>}
+              <div className="mb-[18px]">
+                <label className={fieldLblCls} style={{ color: textSub }}>PROJE ADI *</label>
+                <input {...regH('projeAdi', { required: 'Proje adı zorunludur.' })}
+                  className={inputCls}
+                  style={{ background: innerBg, border: `1px solid ${border}`, color: textPri }}
+                  placeholder="Projenizin adı" />
+                {eH.projeAdi && <span className={errCls}>{eH.projeAdi.message}</span>}
               </div>
-              <div className="prj-group">
-                <label className="prj-fl">AÇIKLAMA *</label>
-                <textarea {...regH('aciklama', { required: 'Açıklama zorunludur.', minLength: { value: 50, message: 'En az 50 karakter giriniz.' } })} className="prj-ta" placeholder="Projenizin ne yaptığını, ne problemi çözdüğünü kısaca açıklayın." />
-                {eH.aciklama && <span className="prj-err">{eH.aciklama.message}</span>}
+              <div className="mb-[18px]">
+                <label className={fieldLblCls} style={{ color: textSub }}>AÇIKLAMA *</label>
+                <textarea {...regH('aciklama', { required: 'Açıklama zorunludur.', minLength: { value: 50, message: 'En az 50 karakter giriniz.' } })}
+                  className={`${inputCls} resize-y min-h-[120px] leading-relaxed`}
+                  style={{ background: innerBg, border: `1px solid ${border}`, color: textPri }}
+                  placeholder="Projenizin ne yaptığını, ne problemi çözdüğünü kısaca açıklayın." />
+                {eH.aciklama && <span className={errCls}>{eH.aciklama.message}</span>}
               </div>
-              <div className="prj-group">
-                <label className="prj-fl">GITHUB URL <span style={{ color: textDim, fontSize: 11 }}>(opsiyonel)</span></label>
-                <input {...regH('githubUrl')} className="prj-inp" placeholder="https://github.com/..." />
+              <div className="mb-[18px]">
+                <label className={fieldLblCls} style={{ color: textSub }}>
+                  GITHUB URL <span className="text-[11px]" style={{ color: textDim }}>(opsiyonel)</span>
+                </label>
+                <input {...regH('githubUrl')}
+                  className={inputCls}
+                  style={{ background: innerBg, border: `1px solid ${border}`, color: textPri }}
+                  placeholder="https://github.com/..." />
               </div>
-              <div className="prj-group">
-                <label className="prj-fl">CANLI DEMO URL <span style={{ color: textDim, fontSize: 11 }}>(opsiyonel)</span></label>
-                <input {...regH('canlıUrl')} className="prj-inp" placeholder="https://..." />
-                <span className="prj-hint">Vercel, Netlify vb. deploy linki</span>
+              <div className="mb-[18px]">
+                <label className={fieldLblCls} style={{ color: textSub }}>
+                  CANLI DEMO URL <span className="text-[11px]" style={{ color: textDim }}>(opsiyonel)</span>
+                </label>
+                <input {...regH('canlıUrl')}
+                  className={inputCls}
+                  style={{ background: innerBg, border: `1px solid ${border}`, color: textPri }}
+                  placeholder="https://..." />
+                <span className={hintCls} style={{ color: textDim }}>Vercel, Netlify vb. deploy linki</span>
               </div>
-              <button type="submit" className="prj-btn-hack" disabled={isH}>{isH ? '⟳ GÖNDERİLİYOR...' : 'DOSYAYI TESLİM ET →'}</button>
+              <button type="submit"
+                className="w-full rounded-[10px] py-3.5 font-[Lexend] font-bold text-[15px] text-white border-none cursor-pointer transition-all duration-150 disabled:opacity-60"
+                style={{ background: 'linear-gradient(135deg,#c49a28,#e8c84a)', boxShadow: '0 2px 12px rgba(196,154,40,0.3)' }}
+                disabled={isH}>
+                {isH ? '⟳ GÖNDERİLİYOR...' : 'DOSYAYI TESLİM ET →'}
+              </button>
             </form>
           </div>
         ) : (
-          <div className="prj-card">
-            <p className="prj-label">// GAME JAM PROJESİ</p>
-            {hata && <div className="prj-glob-err">{hata}</div>}
+          <div className="rounded-xl p-7" style={{ background: cardBg, border: `1px solid ${border}` }}>
+            <p className="font-[Share_Tech_Mono] text-[11px] tracking-[0.3em] uppercase mb-[18px] pb-3 border-b border-dashed" style={{ color: textDim, borderColor: border }}>
+              // GAME JAM PROJESİ
+            </p>
+            {hata && <div className="bg-red-500/6 border border-red-500/20 rounded-lg px-4 py-3 text-red-500 text-[14px] mb-4">{hata}</div>}
             <form onSubmit={hsJ(onJam)} noValidate>
-              <div className="prj-group">
-                <label className="prj-fl">OYUN ADI *</label>
-                <input {...regJ('oyunAdi', { required: 'Oyun adı zorunludur.' })} className="prj-inp" placeholder="Oyununuzun adı" />
-                {eJ.oyunAdi && <span className="prj-err">{eJ.oyunAdi.message}</span>}
+              <div className="mb-[18px]">
+                <label className={fieldLblCls} style={{ color: textSub }}>OYUN ADI *</label>
+                <input {...regJ('oyunAdi', { required: 'Oyun adı zorunludur.' })}
+                  className={inputCls}
+                  style={{ background: innerBg, border: `1px solid ${border}`, color: textPri }}
+                  placeholder="Oyununuzun adı" />
+                {eJ.oyunAdi && <span className={errCls}>{eJ.oyunAdi.message}</span>}
               </div>
-              <div className="prj-group">
-                <label className="prj-fl">AÇIKLAMA *</label>
-                <textarea {...regJ('aciklama', { required: 'Açıklama zorunludur.', minLength: { value: 30, message: 'En az 30 karakter giriniz.' } })} className="prj-ta" placeholder="Oyununuzu kısaca tanıtın. Tema nasıl işlediniz?" />
-                {eJ.aciklama && <span className="prj-err">{eJ.aciklama.message}</span>}
+              <div className="mb-[18px]">
+                <label className={fieldLblCls} style={{ color: textSub }}>AÇIKLAMA *</label>
+                <textarea {...regJ('aciklama', { required: 'Açıklama zorunludur.', minLength: { value: 30, message: 'En az 30 karakter giriniz.' } })}
+                  className={`${inputCls} resize-y min-h-[120px] leading-relaxed`}
+                  style={{ background: innerBg, border: `1px solid ${border}`, color: textPri }}
+                  placeholder="Oyununuzu kısaca tanıtın. Tema nasıl işlediniz?" />
+                {eJ.aciklama && <span className={errCls}>{eJ.aciklama.message}</span>}
               </div>
-              <div className="prj-group">
-                <label className="prj-fl">ITCH.IO SAYFASI *</label>
-                <input {...regJ('itchUrl', { required: 'itch.io URL zorunludur.', pattern: { value: new RegExp('^https?://.+\.itch\.io/.+'), message: 'Geçerli bir itch.io URL girin.' } })} className="prj-inp" placeholder="https://kullanici.itch.io/oyun-adi" />
-                {eJ.itchUrl && <span className="prj-err">{eJ.itchUrl.message}</span>}
-                <span className="prj-hint">Oyununuzun itch.io publish linki</span>
+              <div className="mb-[18px]">
+                <label className={fieldLblCls} style={{ color: textSub }}>ITCH.IO SAYFASI *</label>
+                <input {...regJ('itchUrl', { required: 'itch.io URL zorunludur.', pattern: { value: new RegExp('^https?://.+\.itch\.io/.+'), message: 'Geçerli bir itch.io URL girin.' } })}
+                  className={inputCls}
+                  style={{ background: innerBg, border: `1px solid ${border}`, color: textPri }}
+                  placeholder="https://kullanici.itch.io/oyun-adi" />
+                {eJ.itchUrl && <span className={errCls}>{eJ.itchUrl.message}</span>}
+                <span className={hintCls} style={{ color: textDim }}>Oyununuzun itch.io publish linki</span>
               </div>
-              <button type="submit" className="prj-btn-jam" disabled={isJ ? true : false}>{isJ ? '⟳ GÖNDERİLİYOR...' : 'BAŞVURUYU GÖNDER 🚀'}</button>
+              <button type="submit"
+                className="w-full rounded-[10px] py-3.5 font-[Lexend] font-bold text-[15px] text-white border-none cursor-pointer transition-all duration-150 disabled:opacity-60"
+                style={{ background: 'linear-gradient(135deg,#7c3aed,#ec4899)', boxShadow: '0 2px 12px rgba(124,58,237,0.3)' }}
+                disabled={isJ}>
+                {isJ ? '⟳ GÖNDERİLİYOR...' : 'BAŞVURUYU GÖNDER 🚀'}
+              </button>
             </form>
           </div>
         )}

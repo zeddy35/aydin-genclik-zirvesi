@@ -53,121 +53,101 @@ export default function AdminPage() {
   const totalDurum = stats ? Object.values(stats.durumDagilimi).reduce((a, b) => a + b, 0) : 0;
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
-        .ap-page { padding: 28px; max-width: 1000px; margin: 0 auto; }
-        .ap-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: #4a4568; text-transform: uppercase; margin-bottom: 6px; }
-        .ap-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: #d1cfe8; margin-bottom: 28px; }
-        .ap-stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 14px; margin-bottom: 28px; }
-        .ap-stat { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 20px; text-align: center; position: relative; overflow: hidden; }
-        .ap-stat::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
-        .ap-stat-val { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: 34px; color: #d1cfe8; margin-bottom: 4px; }
-        .ap-stat-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: #6b6485; text-transform: uppercase; }
-        .ap-card { background: #13111f; border: 1px solid #1e1a2e; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
-        .ap-sec-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: #4a4568; text-transform: uppercase; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px dashed #1e1a2e; }
-        .ap-bar-row { margin-bottom: 12px; }
-        .ap-bar-top { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .ap-bar-name { font-size: 13px; color: #9490b0; }
-        .ap-bar-count { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #6b6485; }
-        .ap-bar-bg { background: #1e1a2e; border-radius: 4px; height: 8px; overflow: hidden; }
-        .ap-bar { height: 100%; border-radius: 4px; transition: width 600ms cubic-bezier(0.4,0,0.2,1); }
-        .ap-usr-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 8px; transition: background 150ms; text-decoration: none; border: 1px solid transparent; margin-bottom: 4px; }
-        .ap-usr-row:hover { background: rgba(255,255,255,0.02); border-color: #1e1a2e; }
-        .ap-usr-avatar { width: 36px; height: 36px; border-radius: 50%; background: #2a2545; border: 1.5px solid #3a3060; display: flex; align-items: center; justify-content: center; font-family: 'Lexend', sans-serif; font-weight: 700; font-size: 13px; color: #9490b0; flex-shrink: 0; }
-        .ap-usr-name { font-size: 14px; color: #c8c4e0; font-weight: 500; flex: 1; }
-        .ap-usr-ev { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.15em; margin-left: auto; flex-shrink: 0; text-transform: uppercase; }
-        .ap-skeleton { background: linear-gradient(90deg, #1e1a2e 25%, #2a2545 50%, #1e1a2e 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; height: 20px; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-      `}</style>
+    <div className="p-7 max-w-[1000px] mx-auto">
+      <p className="font-[Share_Tech_Mono] text-[11px] tracking-[0.35em] text-[#4a4568] uppercase mb-1.5">◈ ADMIN PANELİ</p>
 
-      <div className="ap-page">
-        <p className="ap-eyebrow">◈ ADMIN PANELİ</p>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 28 }}>
-          <h1 className="ap-title" style={{ margin: 0 }}>Genel Bakış</h1>
-          <button
-            onClick={toggleBasvuru}
-            disabled={basvuruAcik === null || toggling}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
-              background: basvuruAcik ? '#0d2b1a' : '#1a1a1a',
-              border: `1px solid ${basvuruAcik ? '#10b981' : '#3a3060'}`,
-              borderRadius: 8, padding: '10px 18px', transition: 'all 200ms',
-              opacity: basvuruAcik === null ? 0.5 : 1,
-            }}
-          >
-            <span style={{
-              width: 38, height: 20, borderRadius: 10, position: 'relative',
-              background: basvuruAcik ? '#10b981' : '#2a2545',
-              transition: 'background 200ms', display: 'inline-block', flexShrink: 0,
-            }}>
-              <span style={{
-                position: 'absolute', top: 2, left: basvuruAcik ? 20 : 2,
-                width: 16, height: 16, borderRadius: '50%', background: '#fff',
-                transition: 'left 200ms',
-              }} />
-            </span>
-            <span style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: 11, letterSpacing: '0.2em', color: basvuruAcik ? '#10b981' : '#6b6485', textTransform: 'uppercase' }}>
-              {toggling ? '...' : basvuruAcik ? 'Başvurular Açık' : 'Başvurular Kapalı'}
-            </span>
-          </button>
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-7">
+        <h1 className="font-[Lexend] font-extrabold text-[clamp(20px,4vw,30px)] text-[#d1cfe8]">Genel Bakış</h1>
+        <button
+          onClick={toggleBasvuru}
+          disabled={basvuruAcik === null || toggling}
+          className="flex items-center gap-2.5 px-[18px] py-2.5 rounded-lg transition-all duration-200 cursor-pointer disabled:opacity-50"
+          style={{
+            background: basvuruAcik ? '#0d2b1a' : '#1a1a1a',
+            border: `1px solid ${basvuruAcik ? '#10b981' : '#3a3060'}`,
+          }}
+        >
+          <span className="relative inline-block w-[38px] h-5 rounded-[10px] flex-shrink-0 transition-colors duration-200"
+            style={{ background: basvuruAcik ? '#10b981' : '#2a2545' }}>
+            <span className="absolute top-0.5 w-4 h-4 rounded-full bg-white transition-[left] duration-200"
+              style={{ left: basvuruAcik ? 20 : 2 }} />
+          </span>
+          <span className="font-[Share_Tech_Mono] text-[11px] tracking-[0.2em] uppercase"
+            style={{ color: basvuruAcik ? '#10b981' : '#6b6485' }}>
+            {toggling ? '...' : basvuruAcik ? 'Başvurular Açık' : 'Başvurular Kapalı'}
+          </span>
+        </button>
+      </div>
+
+      {loading ? (
+        <div className="grid grid-cols-4 gap-3.5 mb-7">
+          {[1,2,3,4].map(i => (
+            <div key={i} className="h-[100px] rounded-lg bg-gradient-to-r from-[#1e1a2e] via-[#2a2545] to-[#1e1a2e] bg-[length:200%_100%] animate-[shimmer_1.5s_infinite]" />
+          ))}
         </div>
-
-        {loading ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14, marginBottom: 28 }}>
-            {[1,2,3,4].map(i => <div key={i} className="ap-skeleton" style={{ height: 100 }} />)}
+      ) : stats && (
+        <>
+          {/* Stat cards */}
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-3.5 mb-7">
+            {[
+              { val: stats.toplamKullanici,                   label: 'Toplam Kayıt', color: '#7c3aed' },
+              { val: stats.hackathonKullanici,                label: 'Hackathon',    color: '#d4a843' },
+              { val: stats.gamejamKullanici,                  label: 'Game Jam',     color: '#7c3aed' },
+              { val: stats.durumDagilimi['onaylandi'] ?? 0,   label: 'Onaylanan',    color: '#10b981' },
+            ].map(s => (
+              <div key={s.label} className="bg-[#13111f] border border-[#1e1a2e] rounded-xl p-5 text-center relative overflow-hidden"
+                style={{ borderTop: `3px solid ${s.color}` }}>
+                <div className="font-[Lexend] font-extrabold text-[34px] mb-1" style={{ color: s.color }}>{s.val}</div>
+                <div className="font-[Share_Tech_Mono] text-[10px] tracking-[0.2em] text-[#6b6485] uppercase">{s.label}</div>
+              </div>
+            ))}
           </div>
-        ) : stats && (
-          <>
-            <div className="ap-stat-grid">
-              {[
-                { val: stats.toplamKullanici, label: 'Toplam Kayıt', color: '#7c3aed' },
-                { val: stats.hackathonKullanici, label: 'Hackathon', color: '#d4a843' },
-                { val: stats.gamejamKullanici, label: 'Game Jam', color: '#7c3aed' },
-                { val: stats.durumDagilimi['onaylandi'] ?? 0, label: 'Onaylanan', color: '#10b981' },
-              ].map(s => (
-                <div key={s.label} className="ap-stat" style={{ borderTop: `3px solid ${s.color}` }}>
-                  <div className="ap-stat-val" style={{ color: s.color }}>{s.val}</div>
-                  <div className="ap-stat-label">{s.label}</div>
-                </div>
-              ))}
-            </div>
 
-            <div className="ap-card">
-              <p className="ap-sec-label">// DURUM DAĞILIMI</p>
-              {Object.entries(stats.durumDagilimi).map(([key, cnt]) => (
-                <div key={key} className="ap-bar-row">
-                  <div className="ap-bar-top">
-                    <span className="ap-bar-name" style={{ color: DURUM_COLORS[key] }}>{DURUM_LABELS[key] ?? key}</span>
-                    <span className="ap-bar-count">{cnt} / {totalDurum}</span>
-                  </div>
-                  <div className="ap-bar-bg">
-                    <div className="ap-bar" style={{ width: totalDurum ? `${(cnt/totalDurum)*100}%` : '0%', background: DURUM_COLORS[key] ?? '#6b6485' }} />
-                  </div>
+          {/* Status distribution */}
+          <div className="bg-[#13111f] border border-[#1e1a2e] rounded-xl p-6 mb-5">
+            <p className="font-[Share_Tech_Mono] text-[11px] tracking-[0.3em] text-[#4a4568] uppercase mb-5 pb-3 border-b border-dashed border-[#1e1a2e]">
+              // DURUM DAĞILIMI
+            </p>
+            {Object.entries(stats.durumDagilimi).map(([key, cnt]) => (
+              <div key={key} className="mb-3">
+                <div className="flex justify-between mb-1">
+                  <span className="text-[13px]" style={{ color: DURUM_COLORS[key] }}>{DURUM_LABELS[key] ?? key}</span>
+                  <span className="font-[Share_Tech_Mono] text-[12px] text-[#6b6485]">{cnt} / {totalDurum}</span>
                 </div>
-              ))}
-            </div>
-
-            {stats.sonKayitlar.length > 0 && (
-              <div className="ap-card">
-                <p className="ap-sec-label">// SON KAYITLAR</p>
-                {stats.sonKayitlar.map(k => (
-                  <Link key={k.uid} href={`/admin/kullanicilar/${k.uid}`} className="ap-usr-row">
-                    <div className="ap-usr-avatar">{k.isim[0]}{k.soyisim[0]}</div>
-                    <span className="ap-usr-name">{k.isim} {k.soyisim}</span>
-                    <span className="ap-usr-ev" style={{ color: k.etkinlikTuru === 'hackathon' ? '#d4a843' : '#7c3aed' }}>
-                      {k.etkinlikTuru === 'hackathon' ? '🔍 HACK' : '🎮 JAM'}
-                    </span>
-                  </Link>
-                ))}
-                <div style={{ marginTop: 16, textAlign: 'right' }}>
-                  <Link href="/admin/kullanicilar" style={{ font: '13px DM Sans, sans-serif', color: '#7c3aed', textDecoration: 'none' }}>Tüm kullanıcıları gör →</Link>
+                <div className="bg-[#1e1a2e] rounded h-2 overflow-hidden">
+                  <div className="h-full rounded transition-[width] duration-[600ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+                    style={{ width: totalDurum ? `${(cnt/totalDurum)*100}%` : '0%', background: DURUM_COLORS[key] ?? '#6b6485' }} />
                 </div>
               </div>
-            )}
-          </>
-        )}
-      </div>
-    </>
+            ))}
+          </div>
+
+          {/* Recent registrations */}
+          {stats.sonKayitlar.length > 0 && (
+            <div className="bg-[#13111f] border border-[#1e1a2e] rounded-xl p-6 mb-5">
+              <p className="font-[Share_Tech_Mono] text-[11px] tracking-[0.3em] text-[#4a4568] uppercase mb-5 pb-3 border-b border-dashed border-[#1e1a2e]">
+                // SON KAYITLAR
+              </p>
+              {stats.sonKayitlar.map(k => (
+                <Link key={k.uid} href={`/admin/kullanicilar/${k.uid}`}
+                  className="flex items-center gap-3 px-3.5 py-3 rounded-lg transition-colors duration-150 no-underline border border-transparent hover:bg-white/2 hover:border-[#1e1a2e] mb-1">
+                  <div className="w-9 h-9 rounded-full bg-[#2a2545] border border-[#3a3060] flex items-center justify-center font-[Lexend] font-bold text-[13px] text-[#9490b0] flex-shrink-0">
+                    {k.isim[0]}{k.soyisim[0]}
+                  </div>
+                  <span className="text-[14px] text-[#c8c4e0] font-medium flex-1">{k.isim} {k.soyisim}</span>
+                  <span className="font-[Share_Tech_Mono] text-[10px] tracking-[0.15em] uppercase flex-shrink-0"
+                    style={{ color: k.etkinlikTuru === 'hackathon' ? '#d4a843' : '#7c3aed' }}>
+                    {k.etkinlikTuru === 'hackathon' ? '🔍 HACK' : '🎮 JAM'}
+                  </span>
+                </Link>
+              ))}
+              <div className="mt-4 text-right">
+                <Link href="/admin/kullanicilar" className="text-[13px] text-[#7c3aed] no-underline">Tüm kullanıcıları gör →</Link>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </div>
   );
 }

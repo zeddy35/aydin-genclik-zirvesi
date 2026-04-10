@@ -314,7 +314,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
                 { n: "02", text: "Takımlar 1–4 kişiden oluşabilir. Solo katılım tamamen serbesttir." },
                 { n: "03", text: "Her oyun motoru, programlama dili ve araç seti kabul edilir. Kısıt yok." },
                 { n: "04", text: "Daha önce hazırlanmış asset'ler (ses, grafik, font vb.) kullanılabilir; ancak hazır oyun tabanları kullanılamaz." },
-                { n: "05", text: "Jama katılan herkes diğer takımların oyunlarına saygı göstermeli; yapıcı geri bildirim kültürü esastır." },
+                { n: "05", text: "Jam'e katılan herkes diğer takımların oyunlarına saygı göstermeli; yapıcı geri bildirim kültürü esastır." },
                 { n: "06", text: "Süre dolduğunda yapılan son build geçerli sayılır. Teslim linki zamanında paylaşılmalıdır." },
               ].map((r) => (
                 <div key={r.n} className={styles.rulesItem}>

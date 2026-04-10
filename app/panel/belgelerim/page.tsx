@@ -70,80 +70,72 @@ export default function BelgelerimPage() {
   const textDim   = isHack ? '#706030'               : '#6858a0';
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Share+Tech+Mono&display=swap');
-        .bp-page { padding: 28px; max-width: 760px; margin: 0 auto; }
-        .bp-eyebrow { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.35em; color: ${textDim}; text-transform: uppercase; margin-bottom: 6px; }
-        .bp-title { font-family: 'Lexend', sans-serif; font-weight: 800; font-size: clamp(20px,4vw,30px); color: ${textPri}; margin-bottom: 8px; }
-        .bp-desc { font-size: 14px; color: ${isHack ? '#6a5c30' : '#7a7295'}; margin-bottom: 28px; line-height: 1.6; }
-        .bp-card { background: ${cardBg}; border: 1px solid ${border}; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 8px ${isHack ? 'rgba(196,154,40,0.08)' : 'rgba(124,58,237,0.06)'}; }
-        .bp-sec-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 0.3em; color: ${textDim}; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px dashed ${border}; }
-        .bp-file-list { display: flex; flex-direction: column; gap: 10px; }
-        .bp-file-row { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: ${innerBg}; border: 1px solid ${border}; border-radius: 10px; transition: border-color 150ms; }
-        .bp-file-row:hover { border-color: ${borderHov}; }
-        .bp-file-icon { display: flex; align-items: center; line-height: 0; flex-shrink: 0; color: ${accent}; }
-        .bp-file-info { flex: 1; min-width: 0; }
-        .bp-file-tur { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: ${accent}; text-transform: uppercase; margin-bottom: 3px; }
-        .bp-file-name { font-size: 13px; color: ${textSub}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .bp-file-size { font-size: 11px; color: ${textDim}; margin-top: 2px; }
-        .bp-dl-btn { background: ${isHack ? 'rgba(196,154,40,0.1)' : 'rgba(124,58,237,0.08)'}; border: 1px solid ${isHack ? 'rgba(196,154,40,0.3)' : 'rgba(124,58,237,0.25)'}; color: ${accent}; border-radius: 8px; padding: 8px 16px; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; transition: all 150ms; flex-shrink: 0; white-space: nowrap; }
-        .bp-dl-btn:hover:not(:disabled) { background: ${isHack ? 'rgba(196,154,40,0.18)' : 'rgba(124,58,237,0.15)'}; border-color: ${accent}; }
-        .bp-dl-btn:disabled { opacity: 0.5; cursor: default; }
-        .bp-empty { text-align: center; padding: 48px 24px; }
-        .bp-empty-icon { display: flex; align-items: center; justify-content: center; line-height: 0; margin-bottom: 12px; color: ${textDim}; }
-        .bp-empty-title { font-family: 'Lexend', sans-serif; font-size: 16px; color: ${isHack ? '#6a5c30' : '#7a7295'}; margin-bottom: 6px; }
-        .bp-empty-desc { font-size: 13px; color: ${textDim}; line-height: 1.6; }
-        .bp-loading { font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 0.3em; color: ${textDim}; padding: 32px; text-align: center; }
-        .bp-msg-err { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 10px 14px; color: #ef4444; font-size: 13px; margin-bottom: 16px; }
-      `}</style>
+    <div className="p-7 max-w-[760px] mx-auto">
+      <p className="font-[Share_Tech_Mono] text-[11px] tracking-[0.35em] uppercase mb-1.5" style={{ color: textDim }}>
+        ◈ BELGELERİM
+      </p>
+      <h1 className="font-[Lexend] font-extrabold text-[clamp(20px,4vw,30px)] mb-2" style={{ color: textPri }}>
+        Belgelerim
+      </h1>
+      <p className="text-[14px] leading-relaxed mb-7" style={{ color: isHack ? '#6a5c30' : '#7a7295' }}>
+        Etkinlik sonrası sana atanan sertifika ve belgeler burada görünür. İndirmek için ilgili belgenin yanındaki butona tıkla.
+      </p>
 
-      <div className="bp-page">
-        <p className="bp-eyebrow">◈ BELGELERİM</p>
-        <h1 className="bp-title">Belgelerim</h1>
-        <p className="bp-desc">
-          Etkinlik sonrası sana atanan sertifika ve belgeler burada görünür. İndirmek için ilgili belgenin yanındaki butona tıkla.
+      {hata && (
+        <div className="bg-red-500/6 border border-red-500/20 rounded-lg px-3.5 py-2.5 text-red-500 text-[13px] mb-4">{hata}</div>
+      )}
+
+      <div className="rounded-xl p-6 mb-5" style={{ background: cardBg, border: `1px solid ${border}` }}>
+        <p className="font-[Share_Tech_Mono] text-[11px] tracking-[0.3em] uppercase mb-[18px] pb-3 border-b border-dashed" style={{ color: textDim, borderColor: border }}>
+          // SERTİFİKALAR & BELGELER
         </p>
 
-        {hata && <div className="bp-msg-err">{hata}</div>}
-
-        <div className="bp-card">
-          <p className="bp-sec-label">// SERTİFİKALAR & BELGELER</p>
-
-          {loading ? (
-            <div className="bp-loading">YÜKLENİYOR...</div>
-          ) : belgeler.length === 0 ? (
-            <div className="bp-empty">
-              <div className="bp-empty-icon"><Inbox size={40} /></div>
-              <div className="bp-empty-title">Henüz belge yok</div>
-              <div className="bp-empty-desc">
-                Etkinlik tamamlandıktan sonra katılım sertifikan ve<br />
-                varsa finalist / ödül belgen burada görünecek.
-              </div>
+        {loading ? (
+          <div className="text-center py-8 font-[Share_Tech_Mono] text-xs tracking-[0.3em]" style={{ color: textDim }}>YÜKLENİYOR...</div>
+        ) : belgeler.length === 0 ? (
+          <div className="text-center py-12 px-6">
+            <div className="flex items-center justify-center mb-3" style={{ color: textDim }}><Inbox size={40} /></div>
+            <div className="font-[Lexend] text-base mb-1.5" style={{ color: isHack ? '#6a5c30' : '#7a7295' }}>Henüz belge yok</div>
+            <div className="text-[13px] leading-relaxed" style={{ color: textDim }}>
+              Etkinlik tamamlandıktan sonra katılım sertifikan ve<br />
+              varsa finalist / ödül belgen burada görünecek.
             </div>
-          ) : (
-            <div className="bp-file-list">
-              {belgeler.map(b => (
-                <div key={b.id} className="bp-file-row">
-                  <span className="bp-file-icon">{BELGE_ICONS[b.belgeTuru] ?? <FileText size={24} />}</span>
-                  <div className="bp-file-info">
-                    <div className="bp-file-tur">{BELGE_LABELS[b.belgeTuru] ?? b.belgeTuru}</div>
-                    <div className="bp-file-name">{b.dosyaAdi}</div>
-                    <div className="bp-file-size">{(b.dosyaBoyutu / 1024).toFixed(0)} KB</div>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2.5">
+            {belgeler.map(b => (
+              <div key={b.id} className="flex items-center gap-3.5 px-[18px] py-4 rounded-[10px] border transition-[border-color] duration-150"
+                style={{ background: innerBg, border: `1px solid ${border}` }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = borderHov)}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = border)}>
+                <span className="flex items-center leading-none flex-shrink-0" style={{ color: accent }}>
+                  {BELGE_ICONS[b.belgeTuru] ?? <FileText size={24} />}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="font-[Share_Tech_Mono] text-[10px] tracking-[0.2em] uppercase mb-0.5" style={{ color: accent }}>
+                    {BELGE_LABELS[b.belgeTuru] ?? b.belgeTuru}
                   </div>
-                  <button
-                    className="bp-dl-btn"
-                    disabled={downloadingId === b.id}
-                    onClick={() => handleDownload(b)}
-                  >
-                    {downloadingId === b.id ? <><Loader2 size={13} style={{ display: 'inline', marginRight: 4, animation: 'spin 1s linear infinite' }} /> İndiriliyor...</> : <><Download size={13} style={{ display: 'inline', marginRight: 4 }} /> İndir</>}
-                  </button>
+                  <div className="text-[13px] whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: textSub }}>{b.dosyaAdi}</div>
+                  <div className="text-[11px] mt-0.5" style={{ color: textDim }}>{(b.dosyaBoyutu / 1024).toFixed(0)} KB</div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+                <button
+                  className="flex-shrink-0 whitespace-nowrap rounded-lg px-4 py-2 text-xs font-semibold font-[Lexend] cursor-pointer transition-all duration-150 border disabled:opacity-50 disabled:cursor-default"
+                  style={{
+                    background: isHack ? 'rgba(196,154,40,0.1)' : 'rgba(124,58,237,0.08)',
+                    border: `1px solid ${isHack ? 'rgba(196,154,40,0.3)' : 'rgba(124,58,237,0.25)'}`,
+                    color: accent,
+                  }}
+                  disabled={downloadingId === b.id}
+                  onClick={() => handleDownload(b)}>
+                  {downloadingId === b.id
+                    ? <><Loader2 size={13} className="inline mr-1 animate-spin" /> İndiriliyor...</>
+                    : <><Download size={13} className="inline mr-1" /> İndir</>}
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }
