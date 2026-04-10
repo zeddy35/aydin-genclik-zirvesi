@@ -1,7 +1,5 @@
 'use client';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore — no types for webgl-fluid
 import { useEffect, useRef } from 'react';
 
 export default function FluidBackground() {
