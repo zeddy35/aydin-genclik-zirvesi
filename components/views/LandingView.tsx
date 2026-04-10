@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -207,20 +208,6 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
                 />
               </div>
 
-              {/* Genre pill */}
-              <div style={{
-                fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 10,
-                letterSpacing: "0.2em",
-                color: T.jam.accentBr,
-                background: "rgba(155,89,182,0.12)",
-                border: `1px solid ${T.jam.accent}40`,
-                borderRadius: 100,
-                padding: "4px 14px",
-              }}>
-                Sola KAYDIR // HCK-AYD-48
-              </div>
-
               {/* CTA row */}
               <div className="flex flex-col items-center gap-3">
                 <Link
@@ -298,20 +285,6 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
                 />
               </div>
 
-              {/* Status pill */}
-              <div style={{
-                fontFamily: "'Share Tech Mono', monospace",
-                fontSize: 10,
-                letterSpacing: "0.2em",
-                color: T.hack.accentBr,
-                background: "rgba(212,168,67,0.10)",
-                border: `1px solid ${T.hack.accent}40`,
-                borderRadius: 100,
-                padding: "4px 14px",
-              }}>
-                Sağa KAYDIR // HCK-AYD-48
-              </div>
-
               {/* CTA row */}
               <div className="flex flex-col items-center gap-3">
                 <Link
@@ -334,7 +307,7 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
           aria-label="Game Jam tam görünümüne git"
           style={{ borderColor: `${T.jam.accent}55` }}
         >
-          ←
+          <ChevronLeft size={24} strokeWidth={2} />
         </button>
         <button
           onClick={onHackClick}
@@ -342,7 +315,7 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
           aria-label="Hackathon tam görünümüne git"
           style={{ borderColor: `${T.hack.accent}55` }}
         >
-          →
+          <ChevronRight size={24} strokeWidth={2} />
         </button>
 
       </div>
