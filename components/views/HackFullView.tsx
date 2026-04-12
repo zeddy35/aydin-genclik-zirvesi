@@ -128,17 +128,21 @@ const INTEL_STATS = [
 ] as const;
 
 const PHASES = [
-  { day: "GÜN 1 · 5 MAYIS", n: "01", label: "AÇILIŞ",      note: "Brifing · takım eşleşmesi · problem alanı açıklanıyor.", accent: false },
-  { day: "GÜN 1 · 5 MAYIS", n: "02", label: "İNŞA",        note: "Kod · tasarım · mentor checkpoint'leri.",                accent: false },
-  { day: "GÜN 2 · 6 MAYIS", n: "03", label: "SON SPRINT",  note: "Geliştirme tamamlanıyor · prototip hazırlanıyor.",       accent: false },
-  { day: "GÜN 2 · 6 MAYIS", n: "04", label: "KAPANIŞ",     note: "Demo · pitch · jüri değerlendirmesi · sonuçlar.",       accent: true  },
+  { day: "GÜN 1 · 5 MAYIS", n: "01", label: "AÇILIŞ",      note: "Saat 10:00'da alan kontrolü · 14:00'de kick-off · tema açıklanıyor · takım eşleşmesi.", accent: false },
+  { day: "GÜN 1 · 5 MAYIS", n: "02", label: "İNŞA",        note: "Kod · tasarım · mentor checkpoint'leri · 24 saatlik süre başlıyor.",                     accent: false },
+  { day: "GÜN 2 · 6 MAYIS", n: "03", label: "SON SPRINT",  note: "Geliştirme tamamlanıyor · prototip hazırlanıyor · site yüklemesi yapılıyor.",            accent: false },
+  { day: "GÜN 2 · 6 MAYIS", n: "04", label: "KAPANIŞ",     note: "Demo · jüriye kısa sunum · projenin amacı + hedef kitle + çözüm · ödüller.",            accent: true  },
 ];
 
 const FAQS = [
-  { q: "Takımım yok, ne yapacağım?",         a: "Sorun değil. Eşleşme akışı var — rolüne göre ekip bulmana yardım ediyoruz. Tek başına gelen çok kişi oluyor." },
-  { q: "Proje fikrim yok, gelebilir miyim?", a: "Evet. Problem alanları ve ipucu havuzu paylaşılacak. Mentorlar fikirleri netleştirmen için yanında." },
-  { q: "Ne teslim etmem gerekiyor?",         a: "Çalışan demo (MVP), kısa sunum ve kanıt niteliğinde ekranlar. Jüri tutarlılık, etki ve uygulanabilirliğe bakar." },
-  { q: "Hackathon ücretsiz mi?",             a: "Evet, tamamen ücretsiz. GDG on Campus ADÜ, OTT ve HSD iş birliğiyle düzenleniyor." },
+  { q: "Kimler katılabilir?",                  a: "Adnan Menderes Üniversitesi ve Türkiye'deki tüm üniversite öğrencileri katılabilir. Bölüm ve sınıf fark etmez." },
+  { q: "Takım kaç kişiden oluşabilir?",        a: "Takımlar en fazla 4 kişiden oluşabilir. Bireysel katılım da mümkündür. Tek başına gelip takım eşleşmesi de isteyebilirsin — organizasyon ekibi sana bir takım bulur." },
+  { q: "Tema ne zaman açıklanacak?",           a: "Yarışma teması yarışma günü, açılış sırasında duyurulacak. Öncesinde herhangi bir ipucu verilmeyecek." },
+  { q: "Önceden proje geliştirebilir miyim?",  a: "Hayır. Yarışma başlamadan önce geliştirilmiş proje kesinlikle kabul edilmez ve diskalifiye sebebidir. Tüm geliştirme faaliyetleri yarışma alanında ve belirlenen 24 saatlik süre içinde yapılmalıdır." },
+  { q: "Ne teslim etmem gerekiyor?",           a: "Projeyi sitedeki 'yükleme' kısmına yüklemen ve ardından jüriye kısa sunum yaparak çalışan bir demo göstermen zorunludur. Sunumda projenin amacı, hedef kitlesi ve çözümün detayları yer almalıdır." },
+  { q: "Değerlendirme nasıl yapılıyor?",       a: "Jüri; problemin tanımı ve önemi, çözümün özgünlüğü ve yaratıcılığı, teknik uygulanabilirlik, projenin çalışır durumda olması ve sunumun etkinliğini değerlendirir. Ayrıca yapay zeka kullanımının sınırlı tutulması ve projenin büyük ölçüde katılımcılar tarafından geliştirilmesi beklenir." },
+  { q: "Yapay zeka araçları kullanabilir miyim?", a: "Açık kaynak kütüphaneler ve araçlar serbesttir; ancak projenin özgün olması şarttır. Yapay zeka kullanımının sınırlı tutulması değerlendirme kriterlerinden biridir — projenin büyük bölümü siz geliştirmelisiniz." },
+  { q: "Hackathon ücretsiz mi, nerede yapılıyor?", a: "Evet, tamamen ücretsiz. Etkinlik, Aydın Adnan Menderes Üniversitesi merkez kampüsündeki Atatürk Kültür Merkezi'nde fiziksel olarak gerçekleşecek. Katılımcıların saat 10:00'da alanda hazır olması, yarışma ise 14:00'de başlayacak." },
 ];
 
 /* ════════════════════════════════════════════════════════════════
@@ -1007,13 +1011,13 @@ export function HackFullView({ onBack }: HackFullViewProps) {
             {/* Desktop: 2-col */}
             <div className="hidden lg:grid grid-cols-2">
               <div className="border-r" style={{ borderColor: C.border }}>
-                {FAQS.slice(0, 2).map((f, i) => (
+                {FAQS.slice(0, Math.ceil(FAQS.length / 2)).map((f, i) => (
                   <FAQItem key={f.q} item={f} open={openFaq === i} onToggle={() => setOpenFaq(openFaq === i ? null : i)} />
                 ))}
               </div>
               <div>
-                {FAQS.slice(2).map((f, i) => (
-                  <FAQItem key={f.q} item={f} open={openFaq === i + 2} onToggle={() => setOpenFaq(openFaq === i + 2 ? null : i + 2)} />
+                {FAQS.slice(Math.ceil(FAQS.length / 2)).map((f, i) => (
+                  <FAQItem key={f.q} item={f} open={openFaq === i + Math.ceil(FAQS.length / 2)} onToggle={() => setOpenFaq(openFaq === i + Math.ceil(FAQS.length / 2) ? null : i + Math.ceil(FAQS.length / 2))} />
                 ))}
               </div>
             </div>
