@@ -36,7 +36,8 @@ export async function middleware(request: NextRequest) {
   const hostname = request.headers.get("host") ?? "";
 
   // Subdomain routing: lore.* → /lore
-  if (hostname.startsWith("lore.")) {
+  // Skip rewrite for static asset requests (files with extensions)
+  if (hostname.startsWith("lore.") && !/\.[a-zA-Z0-9]+$/.test(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = "/lore" + (pathname === "/" ? "" : pathname);
     return NextResponse.rewrite(url);
