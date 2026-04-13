@@ -205,7 +205,7 @@ export function SummitInfo() {
     { v: "5+", l: "Konuşmacı", sub: "Konuşmacı", accent: T.violet },
   ];
 
-  type SchedType = "info" | "talk" | "food" | "competition" | "milestone" | "presentation";
+  type SchedType = "info" | "talk" | "food" | "competition" | "milestone" | "presentation" | "devblock";
   type SchedItem = { time: string; title: string; desc?: string; type: SchedType };
 
   const SCHEDULE: { day1: SchedItem[]; day2: SchedItem[] } = {
@@ -214,16 +214,19 @@ export function SummitInfo() {
       { time: "11:00", title: "Konuşma Başlıyor", desc: "1. Konuşmacı",                  type: "talk" },
       { time: "11:45", title: "Game Jam & Hackathon Tema Açıklanışı",                     type: "milestone" },
       { time: "12:00", title: "Hackathon & Game Jam Başlangıç",                           type: "competition" },
+      { time: "13:00", title: "Öğle Yemeği",                                              type: "food" },
       { time: "15:00", title: "2. Konuşmacı",                                             type: "talk" },
+      { time: "16:00 – 00:00", title: "Geliştirme Saati", desc: "Takımlar projelerini geliştiriyor", type: "devblock" },
     ],
     day2: [
-      { time: "11:00", title: "Konuşma Başlıyor", desc: "3. Konuşmacı",                  type: "talk" },
-      { time: "12:00", title: "Hackathon Bitiş",                                          type: "competition" },
-      { time: "13:00", title: "4. Konuşmacı",                                             type: "talk" },
-      { time: "14:00", title: "Hackathon Sunum Başlangıcı",                               type: "presentation" },
-      { time: "15:00", title: "Game Jam Bitiş",                                           type: "competition" },
-      { time: "16:00", title: "Game Jam Sunum Başlangıcı",                                type: "presentation" },
-      { time: "18:00", title: "Etkinlik Sonu",                                            type: "milestone" },
+      { time: "00:00 – 11:00", title: "Geliştirme Saati", desc: "Takımlar projelerini geliştiriyor", type: "devblock" },
+      { time: "11:00", title: "Konuşma Başlıyor", desc: "3. Konuşmacı — Berk Durmuş Bayar", type: "talk" },
+      { time: "12:00", title: "Hackathon Bitiş",                                             type: "competition" },
+      { time: "13:00", title: "Konuşma Başlıyor", desc: "4. Konuşmacı",      type: "talk" },
+      { time: "14:00", title: "Hackathon Sunum Başlangıcı",                                  type: "presentation" },
+      { time: "17:00", title: "Game Jam Bitiş",                                              type: "competition" },
+      { time: "17:15", title: "Game Jam Sunum Başlangıcı",                                   type: "presentation" },
+      { time: "18:30", title: "Etkinlik Sonu",                                               type: "milestone" },
     ],
   };
 
