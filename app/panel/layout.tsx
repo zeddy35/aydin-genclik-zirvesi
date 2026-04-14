@@ -16,7 +16,6 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
   useEffect(() => {
     if (loading) return;
     if (!user) { router.replace('/auth/login'); return; }
-    if (!user.emailVerified && !kullanici?.betaTester) { router.replace('/auth/verify-email'); return; }
     getBasvuruDurumu(user.uid).then(doc => {
       const approved = doc?.durum === 'onaylandi';
       setOnaylandi(approved);
@@ -26,7 +25,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
     });
   }, [user, kullanici, loading, router, pathname]);
 
-  if (loading || !user || (!user.emailVerified && !kullanici?.betaTester)) {
+  if (loading || !user) {
     const loadBg = kullanici?.etkinlikTuru === 'hackathon' ? '#0c0900' : '#0d0b1a';
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: loadBg }}>

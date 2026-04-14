@@ -5,7 +5,7 @@ import FluidBackground from '@/components/FluidBackground';
 import { useRouter } from 'next/navigation';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase/config';
 import { registerSchema, type RegisterFormData } from '@/lib/validations/register';
 import { Code2, Palette, Music, BarChart2, Shuffle, Search, Gamepad2, User, Users, Sprout, Wrench, Rocket, Lock, Eye, EyeOff, CheckCircle2, XCircle } from 'lucide-react';
@@ -116,8 +116,7 @@ export default function RegisterPageContent() {
         return;
       }
 
-      const { user } = await signInWithEmailAndPassword(auth, data.eposta, data.sifre);
-      try { await sendEmailVerification(user); } catch { /* ignore */ }
+      await signInWithEmailAndPassword(auth, data.eposta, data.sifre);
       setBasarili(true);
       setTimeout(() => router.push('/panel'), 2500);
     } catch {
