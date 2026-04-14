@@ -96,14 +96,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ code: 'invalid_request' }, { status: 400 });
   }
 
-  // 4. Turnstile CAPTCHA verification
-  const turnstileToken = (body as Record<string, unknown>)?.turnstileToken as string | undefined;
-  if (!turnstileToken) {
-    return NextResponse.json({ code: 'captcha_required' }, { status: 422 });
-  }
-  const captchaOk = await verifyTurnstile(turnstileToken, ip);
-  if (!captchaOk) {
-    return NextResponse.json({ code: 'captcha_failed', message: 'CAPTCHA doğrulaması başarısız.' }, { status: 422 });
+  // 4. Turnstile CAPTCHA verification (skipped when secret not configured)
+  if (process.env.TURNSTILE_SECRET_KEY) {
+    const turnstileToken = (body as Record<string, unknown>)?.turnstileToken as string | undefined;
+    if (!turnstileToken) {
+      return NextResponse.json({ code: 'captcha_required' }, { status: 422 });
+    }
+    const captchaOk = await verifyTurnstile(turnstileToken, ip);
+    if (!captchaOk) {
+      return NextResponse.json({ code: 'captcha_failed', message: 'CAPTCHA doğrulaması başarısız.' }, { status: 422 });
+    }
   }
 
   // 5. Server-side schema validation (never trust client-side only)
