@@ -24,7 +24,7 @@ export default function LoginPage() {
     try {
       const { user } = await signInWithEmailAndPassword(auth, eposta, sifre);
       const idToken = await user.getIdToken();
-      const [, adminSnap] = await Promise.all([
+      const [sessionRes, adminSnap] = await Promise.all([
         fetch('/api/auth/session', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -32,6 +32,7 @@ export default function LoginPage() {
         }),
         getDoc(doc(db, 'admins', user.uid)),
       ]);
+      if (!sessionRes.ok) throw new Error('session_failed');
       router.push(adminSnap.exists() ? '/admin' : '/panel');
     } catch (err: unknown) {
       const code = (err as { code?: string }).code;
