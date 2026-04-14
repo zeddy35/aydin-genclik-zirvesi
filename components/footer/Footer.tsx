@@ -21,21 +21,32 @@ const F = {
 
 function GDGMark() {
   return (
-    <button >
-      <Image src="/logos/gdg-logo.svg" alt="GDG Mark" width={40} height={40} style={{ borderRadius: "20%" }} />
-    </button>
+      <a href="https://www.instagram.com/gdgoncampusaydin/" target="_blank" rel="noopener noreferrer">
+        <div className="hover:scale-120 transition-transform">
+         <Image src="/logos/gdg-logo.svg" alt="GDG Mark" width={40} height={40} style={{ borderRadius: "20%" }} />
+        </div>
+      </a>
+   
   );
 }
 
 function OTTMark() {
   return (
-    <Image src="/logos/ott-logo.png" alt="OTT Mark" width={40} height={40} style={{ borderRadius: "20%" }} />
+    <a href="https://www.instagram.com/adu_ott/" target="_blank" rel="noopener noreferrer">
+      <div className="hover:scale-120 transition-transform">
+          <Image src="/logos/ott-logo.png" alt="OTT Mark" width={40} height={40} style={{ borderRadius: "20%" }} />
+      </div>
+    </a>
   );
 }
 
 function HSDMark() {
-  return (
-    <Image src="/logos/hsd-logo.svg" alt="HSD Mark" width={40} height={40} style={{ borderRadius: "20%" }} />
+  return (  
+    <a href="https://www.instagram.com/hsdaydin/" target="_blank" rel="noopener noreferrer">
+      <div className="hover:scale-120 transition-transform">
+          <Image src="/logos/hsd-logo.svg" alt="HSD Mark" width={40} height={40} style={{ borderRadius: "20%" }} />
+      </div>
+    </a>
   );
 }
 

@@ -52,7 +52,15 @@ export default function RegisterPageContent() {
   const [sifre, setSifre]                 = useState('');
   const [sifreTekrar, setSifreTekrar]     = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
+  const [basvuruAcik, setBasvuruAcik]     = useState<boolean | null>(null);
   const turnstileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch('/api/admin/settings/basvuru')
+      .then(r => r.json())
+      .then(d => setBasvuruAcik(d.acik === true))
+      .catch(() => setBasvuruAcik(false));
+  }, []);
 
   const {
     register, handleSubmit, watch, setValue, getValues, control, setError,
@@ -492,20 +500,23 @@ export default function RegisterPageContent() {
                 </div>
               )}
 
-              {/* Başvurular kapalı uyarısı */}
-              <div className="flex items-start gap-3 bg-amber-500/8 border border-amber-500/30 rounded-xl px-[18px] py-3.5 mb-3">
-                <Lock size={18} className="flex-shrink-0 text-amber-400 mt-0.5" />
-                <div>
-                  <p className="text-[13px] font-bold text-amber-400 tracking-wide">BAŞVURULAR HENÜZ AÇILMADI</p>
-                  <p className="text-xs text-[#92836a] leading-relaxed mt-1">
-                    Site hazırlık aşamasında. Başvurular açıldığında buradan kayıt olabilirsin. Takipte kal!
-                  </p>
+              {basvuruAcik === false && (
+                <div className="flex items-start gap-3 bg-amber-500/8 border border-amber-500/30 rounded-xl px-[18px] py-3.5 mb-3">
+                  <Lock size={18} className="flex-shrink-0 text-amber-400 mt-0.5" />
+                  <div>
+                    <p className="text-[13px] font-bold text-amber-400 tracking-wide">BAŞVURULAR HENÜZ AÇILMADI</p>
+                    <p className="text-xs text-[#92836a] leading-relaxed mt-1">
+                      Site hazırlık aşamasında. Başvurular açıldığında buradan kayıt olabilirsin. Takipte kal!
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <button type="button" disabled
-                className="w-full bg-[#1e1a2e] text-[#4a4568] border-none rounded-xl py-3.5 font-[Lexend] font-bold text-base cursor-not-allowed opacity-45">
-                BAŞVURULAR YAKINDA AÇILACAK
+              <button
+                type="submit"
+                disabled={isSubmitting || basvuruAcik === false || basvuruAcik === null}
+                className="w-full bg-violet-700 hover:enabled:bg-violet-800 hover:enabled:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-base rounded-xl py-3.5 border-none font-[Lexend] transition-all duration-150 tracking-wide cursor-pointer">
+                {isSubmitting ? 'GÖNDERİLİYOR...' : basvuruAcik === null ? 'YÜKLENİYOR...' : basvuruAcik ? 'BAŞVURUYU TAMAMLA →' : 'BAŞVURULAR YAKINDA AÇILACAK'}
               </button>
 
               <p className="text-center mt-4 text-[13px] text-[#4a4568]">

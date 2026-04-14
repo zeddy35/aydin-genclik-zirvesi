@@ -115,10 +115,6 @@ const PEOPLE: Person[] = [
 /* ════════════════════════════════════════════════════════════════
    PAGE DATA
 ════════════════════════════════════════════════════════════════ */
-const KONAMI = [
-  "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
-  "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a",
-];
 
 const INTEL_STATS = [
   { label: "Bölge",  value: "Aydın"      },
@@ -621,8 +617,6 @@ export function HackFullView({ onBack }: HackFullViewProps) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   /* ── Easter eggs ─────────────────────────────────────────────── */
-  const [konamiIdx,   setKonamiIdx]   = useState(0);
-  const [showKonami,  setShowKonami]  = useState(false);
   const [showStamp,   setShowStamp]   = useState(false);
   const [stampClicks, setStampClicks] = useState(0);
   const [showMcBlock, setShowMcBlock] = useState(false);
@@ -630,21 +624,6 @@ export function HackFullView({ onBack }: HackFullViewProps) {
   const mcFireRef  = useRef(false);
   const mcTimerRef = useRef<NodeJS.Timeout | null>(null);
   const { markEggSeen } = useEasterEggs();
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      setKonamiIdx((idx) => {
-        if (e.key === KONAMI[idx]) {
-          const next = idx + 1;
-          if (next === KONAMI.length) { setShowKonami(true); return 0; }
-          return next;
-        }
-        return e.key === KONAMI[0] ? 1 : 0;
-      });
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
 
   const handleStampClick = () => {
     const next = stampClicks + 1;
@@ -675,36 +654,6 @@ export function HackFullView({ onBack }: HackFullViewProps) {
   /* ── Render ──────────────────────────────────────────────────── */
   return (
     <>
-      {/* ─── KONAMI OVERLAY ───────────────────────────────────── */}
-      {showKonami && (
-        <div
-          onClick={() => setShowKonami(false)}
-          className="fixed inset-0 z-[9998] bg-black/95 flex flex-col items-center justify-center gap-5 p-6 cursor-pointer"
-        >
-          <p style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.3em",
-            textTransform: "uppercase", color: "#4a4828" }}>↑↑↓↓←→←→BA</p>
-          <p className="font-display text-[clamp(28px,7vw,56px)] tracking-[0.06em] uppercase"
-            style={{ color: C.txt }}>
-            Konami Kodu!
-          </p>
-          <div className="flex gap-8 mt-2">
-            <Image src="/dino/dino1.png" alt="Dino" width={180} height={48} className="object-contain opacity-90" />
-            <Image src="/beta/beta_kaban.png" alt="Beta" width={180} height={48} className="object-contain opacity-90" />
-          </div>
-          <p style={{ fontFamily: C.ui, fontSize: 14, color: "#7a7060" }}>
-            Gerçek bir dedektifsin, ajan.
-          </p>
-          <div style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.2em",
-            border: `1px solid #2a2818`, color: "#4a4828", padding: "6px 16px", borderRadius: 2 }}>
-            EXTRA LIFE +1
-          </div>
-          <p style={{ fontFamily: C.mono, fontSize: 10, letterSpacing: "0.15em",
-            textTransform: "uppercase", color: "#28261e" }}>
-            [ tıkla / kapat ]
-          </p>
-        </div>
-      )}
-
       {/* ─── STAMP OVERLAY ────────────────────────────────────── */}
       {showStamp && (
         <div className="fixed inset-0 z-[8000] pointer-events-none flex items-center justify-center">

@@ -1,17 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { auth as firebaseAuth, db } from "@/lib/firebase/config";
 import s from "./LandingView.module.css";
-import { Eye, EyeOff } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────────
    LandingView — Premium split hero  (replaces PanelSplit)
@@ -51,17 +45,10 @@ const T = {
 
 export function LandingView({ onJamClick, onHackClick, isActive = true }: LandingViewProps) {
   const { user } = useAuth();
-  const router = useRouter();
   const [hovered, setHovered] = useState<"jam" | "hack" | null>(null);
   const [tapped,  setTapped]  = useState<"jam" | "hack" | null>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const scrollParentRef = useRef<HTMLElement | null>(null);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [modalEmail,    setModalEmail]    = useState('');
-  const [modalPassword, setModalPassword] = useState('');
-  const [modalError,    setModalError]    = useState('');
-  const [modalLoading,  setModalLoading]  = useState(false);
-  const [modalShowPw,   setModalShowPw]   = useState(false);
 
   const [panelScrolled, setPanelScrolled] = useState(false);
   useEffect(() => {
@@ -100,41 +87,6 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
     : active === "jam"
     ? "perspective(1400px) translateZ(-12px) rotateY(4deg) scale(0.985)"
     : "perspective(1400px) translateZ(0px) rotateY(0deg)";
-
-  const handleModalLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setModalError('');
-    setModalLoading(true);
-    try {
-      const { user: fbUser } = await signInWithEmailAndPassword(firebaseAuth, modalEmail, modalPassword);
-
-      // Exchange ID token for httpOnly session cookie (required by middleware)
-      const idToken = await fbUser.getIdToken(true);
-      await fetch('/api/auth/session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken }),
-      });
-
-      const adminSnap = await getDoc(doc(db, 'admins', fbUser.uid));
-      router.push(adminSnap.exists() ? '/admin' : '/panel');
-    } catch (err: unknown) {
-      const code = (err as { code?: string }).code;
-      if (code === 'auth/user-not-found' || code === 'auth/invalid-credential') {
-        setModalError('E-posta veya şifre hatalı.');
-      } else if (code === 'auth/wrong-password') {
-        setModalError('Şifre hatalı.');
-      } else if (code === 'auth/invalid-email') {
-        setModalError('Geçersiz e-posta adresi.');
-      } else if (code === 'auth/too-many-requests') {
-        setModalError('Çok fazla başarısız deneme. Lütfen bekleyin.');
-      } else {
-        setModalError('Giriş başarısız. Lütfen tekrar deneyin.');
-      }
-    } finally {
-      setModalLoading(false);
-    }
-  };
 
   return (
     <>
@@ -351,65 +303,11 @@ export function LandingView({ onJamClick, onHackClick, isActive = true }: Landin
           {user ? (
             <Link href="/panel" className={s.pillLoginBtn}>PANELİM</Link>
           ) : (
-            <button className={s.pillLoginBtn} onClick={() => setShowLoginModal(true)}>
-              GİRİŞ YAP
-            </button>
+            <Link href="/auth/login" className={s.pillLoginBtn}>GİRİŞ YAP</Link>
           )}
         </div>
       </div>
 
-      {/* ── Login Modal — portal to body to escape transform stacking context ── */}
-      {showLoginModal && createPortal(
-        <div className={`lnd-modal-overlay ${s.modalOverlay}`} onClick={() => setShowLoginModal(false)}>
-          <div className={s.modalCard} onClick={e => e.stopPropagation()}>
-            <button className={s.modalClose} onClick={() => setShowLoginModal(false)} aria-label="Kapat">×</button>
-            <p className={s.modalEyebrow}>◈ Aydın Gençlik Zirvesi — GİRİŞ SİSTEMİ ◈</p>
-            <h2 className={s.modalTitle}>Giriş Yap</h2>
-            <p className={s.modalSub}>Hesabınıza erişmek için giriş yapın.</p>
-
-            {modalError && <div className={s.modalError}>{modalError}</div>}
-
-            <form onSubmit={handleModalLogin} autoComplete="on">
-              <div className={s.modalGroup}>
-                <label className={s.modalLabel} htmlFor="modal-email">E-POSTA</label>
-                <input
-                  id="modal-email" type="email" className={s.modalInput}
-                  placeholder="ornek@eposta.com"
-                  value={modalEmail} onChange={e => setModalEmail(e.target.value)}
-                  autoComplete="email" required
-                />
-              </div>
-              <div className={s.modalGroup}>
-                <label className={s.modalLabel} htmlFor="modal-pw">ŞİFRE</label>
-                <div className={s.modalPwWrap}>
-                  <input
-                    id="modal-pw" type={modalShowPw ? 'text' : 'password'} className={s.modalInput}
-                    placeholder="············"
-                    value={modalPassword} onChange={e => setModalPassword(e.target.value)}
-                    autoComplete="current-password" required
-                    style={{ paddingRight: 42 }}
-                  />
-                  <button type="button" className={s.modalEye}
-                    onClick={() => setModalShowPw(v => !v)}
-                    aria-label={modalShowPw ? 'Şifreyi gizle' : 'Şifreyi göster'}
-                  >
-                    {modalShowPw ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-              </div>
-              <button type="submit" className={s.modalSubmit} disabled={modalLoading}>
-                {modalLoading ? 'Giriş yapılıyor…' : 'Giriş Yap'}
-              </button>
-            </form>
-
-            <p className={s.modalRegister}>
-              Hesabın yok mu?{' '}
-              <span style={{ color: '#666', cursor: 'not-allowed' }}>Kayıt Ol (Şimdilik Kapalı)</span>
-            </p>
-          </div>
-        </div>,
-        document.body
-      )}
 
 
     </>

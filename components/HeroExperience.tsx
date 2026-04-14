@@ -96,7 +96,6 @@ export function HeroExperience() {
   // ── Keyboard: Escape → Mid, Arrows ← → ──
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (document.querySelector('.lnd-modal-overlay')) return;
       if (e.key === "Escape")     goToMid();
       if (e.key === "ArrowLeft")  moveLeft();
       if (e.key === "ArrowRight") moveRight();
@@ -111,7 +110,6 @@ export function HeroExperience() {
     const THRESHOLD = 80;
 
     const onWheel = (e: WheelEvent) => {
-      if (document.querySelector('.lnd-modal-overlay')) return;
       // Let vertical scroll pass through to panels
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) return;
       e.preventDefault();
@@ -134,7 +132,6 @@ export function HeroExperience() {
       startY = e.touches[0].clientY;
     };
     const onTouchEnd = (e: TouchEvent) => {
-      if (document.querySelector('.lnd-modal-overlay')) return;
       const dx = e.changedTouches[0].clientX - startX;
       const dy = e.changedTouches[0].clientY - startY;
       if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx)) return;
