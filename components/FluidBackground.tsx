@@ -11,6 +11,8 @@ export default function FluidBackground() {
 
     let destroyed = false;
 
+    const blockClick = (e: Event) => { e.stopPropagation(); e.preventDefault(); };
+
     import('webgl-fluid').then(({ default: WebGLFluid }) => {
       if (destroyed || !canvas) return;
       WebGLFluid(canvas, {
@@ -34,9 +36,17 @@ export default function FluidBackground() {
         BLOOM_INTENSITY: 0.4,
         SUNRAYS: false,
       });
+      canvas.addEventListener('mousedown', blockClick, true);
+      canvas.addEventListener('touchstart', blockClick, { capture: true, passive: false });
+      canvas.addEventListener('touchend', blockClick, { capture: true, passive: false });
     });
 
-    return () => { destroyed = true; };
+    return () => {
+      destroyed = true;
+      canvas.removeEventListener('mousedown', blockClick, true);
+      canvas.removeEventListener('touchstart', blockClick, true);
+      canvas.removeEventListener('touchend', blockClick, true);
+    };
   }, []);
 
   return (
