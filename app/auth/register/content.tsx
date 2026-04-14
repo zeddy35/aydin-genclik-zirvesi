@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import FluidBackground from '@/components/FluidBackground';
 import { useRouter } from 'next/navigation';
 import { useForm, useFieldArray } from 'react-hook-form';
@@ -8,10 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth } from '@/lib/firebase/config';
 import { registerSchema, type RegisterFormData } from '@/lib/validations/register';
-import Script from 'next/script';
 import { Code2, Palette, Music, BarChart2, Shuffle, Search, Gamepad2, User, Users, Sprout, Wrench, Rocket, Lock, Eye, EyeOff, CheckCircle2, XCircle } from 'lucide-react';
-
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
 const ROLLER = [
   { id: 'gelistirici',     label: 'Geliştirici',      icon: <Code2 size={14} className="inline mr-1.5" /> },
@@ -51,9 +48,7 @@ export default function RegisterPageContent() {
   const [sifreTekrarGoster, setSifreTekrarGoster] = useState(false);
   const [sifre, setSifre]                 = useState('');
   const [sifreTekrar, setSifreTekrar]     = useState('');
-  const [turnstileToken, setTurnstileToken] = useState('');
   const [basvuruAcik, setBasvuruAcik]     = useState<boolean | null>(null);
-  const turnstileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch('/api/admin/settings/basvuru')
@@ -101,7 +96,7 @@ export default function RegisterPageContent() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, turnstileToken }),
+        body: JSON.stringify(data),
       });
 
       if (!res.ok) {
@@ -158,14 +153,6 @@ export default function RegisterPageContent() {
 
   return (
     <>
-      {TURNSTILE_SITE_KEY && (
-        <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="lazyOnload"
-          onLoad={() => {
-            (window as unknown as Record<string, unknown>).onTurnstileSuccess = (token: string) => setTurnstileToken(token);
-          }}
-        />
-      )}
-
       <div className="min-h-screen bg-[#0a0a0f] px-4 py-8 pb-16 font-[Lexend] relative overflow-hidden">
         <FluidBackground />
         <div className="relative z-10 max-w-[680px] mx-auto">
@@ -491,12 +478,6 @@ export default function RegisterPageContent() {
               {globalHata && (
                 <div className="bg-red-500/8 border border-red-500/30 rounded-lg px-4 py-3 text-red-300 text-[15px] mb-5 leading-relaxed">
                   {globalHata}
-                </div>
-              )}
-
-              {TURNSTILE_SITE_KEY && (
-                <div className="mb-4">
-                  <div ref={turnstileRef} className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="dark" data-callback="onTurnstileSuccess" />
                 </div>
               )}
 
