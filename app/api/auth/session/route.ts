@@ -17,9 +17,7 @@ export async function POST(request: NextRequest) {
   if (!idToken) return NextResponse.json({ code: 'missing_token' }, { status: 400 });
 
   try {
-    // Basic verification — createSessionCookie enforces freshness (< 5 min) internally
-    await adminAuth.verifyIdToken(idToken);
-
+    // createSessionCookie verifies the token and enforces freshness (< 5 min) internally
     const sessionCookie = await adminAuth.createSessionCookie(idToken, {
       expiresIn: SESSION_MS,
     });

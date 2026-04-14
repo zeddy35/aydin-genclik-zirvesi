@@ -68,7 +68,11 @@ export async function POST(request: NextRequest) {
     request.headers.get('x-real-ip') ??
     'unknown';
 
-  const allowed = await checkRateLimit(ip);
+  const [allowed, settingsSnap] = await Promise.all([
+    checkRateLimit(ip),
+    adminDb.collection('settings').doc('basvuru').get(),
+  ]);
+
   if (!allowed) {
     return NextResponse.json(
       { code: 'rate_limited', message: 'Çok fazla deneme. 15 dakika sonra tekrar deneyin.' },
@@ -77,7 +81,6 @@ export async function POST(request: NextRequest) {
   }
 
   // 2. Application gate — settings/basvuru.acik must be true
-  const settingsSnap = await adminDb.collection('settings').doc('basvuru').get();
   if (!settingsSnap.exists || settingsSnap.data()?.acik !== true) {
     return NextResponse.json(
       { code: 'applications_closed', message: 'Başvurular şu anda kapalı.' },
