@@ -17,9 +17,6 @@ async function verifyAdmin(): Promise<boolean> {
 }
 
 export async function GET() {
-  if (!(await verifyAdmin())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
   const snap = await adminDb.collection('settings').doc('basvuru').get();
   return NextResponse.json({ acik: snap.data()?.acik === true });
 }
