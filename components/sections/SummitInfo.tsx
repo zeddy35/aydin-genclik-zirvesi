@@ -271,8 +271,8 @@ export function SummitInfo() {
             <div className="sum-about-cards">
               <div className="sum-about-card sum-about-card--hack">
                 <div className="sum-about-card-eyebrow sum-about-card-eyebrow--gold">HACKATHON</div>
-                <div className="sum-about-card-title">Yazılım & İnnova­syon</div>
-                <div className="sum-about-card-body">26 saat · Web, mobil, ya da AI<br />Fikir → Prototype → Sunuş</div>
+                <div className="sum-about-card-title">Yazılım & İnova­syon</div>
+                <div className="sum-about-card-body">24 saat · Web, mobil, ya da AI<br />Fikir → Prototype → Sunuş</div>
               </div>
               <div className="sum-about-card sum-about-card--jam">
                 <div className="sum-about-card-eyebrow sum-about-card-eyebrow--violet">GAME JAM</div>
