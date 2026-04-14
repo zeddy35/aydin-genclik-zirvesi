@@ -101,7 +101,7 @@ export async function middleware(request: NextRequest) {
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
       "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.cloudfunctions.net wss://*.firebaseio.com",
-      "frame-src https://accounts.google.com",
+      "frame-src https://accounts.google.com https://www.google.com",
       "object-src 'none'",
       "base-uri 'self'",
     ].join('; '),
