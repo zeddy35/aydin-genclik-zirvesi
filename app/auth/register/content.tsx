@@ -325,9 +325,9 @@ export default function RegisterPageContent() {
               <p className={sectionLabelCls}>// 03 — MOTİVASYON & PROFİL</p>
 
               <div className={groupCls}>
-                <label className={labelCls}>MOTİVASYON * <span className="text-[#4a4568] text-[11px]">(100-500 karakter)</span></label>
+                <label className={labelCls}>MOTİVASYON </label>
                 <textarea {...register('motivasyon')} className={`${inputCls} resize-y min-h-[110px] leading-relaxed`}
-                  placeholder="Bu etkinliğe neden katılmak istiyorsun? Seni buraya ne getiriyor?" maxLength={500} />
+                  placeholder="Bu etkinliğe neden katılmak istiyorsun? Seni buraya ne getiriyor?" />
                 <p className={`text-xs text-right mt-1 ${watchedMotivon.length > 475 ? 'text-red-400' : watchedMotivon.length > 400 ? 'text-amber-500' : 'text-[#4a4568]'}`}>
                   {watchedMotivon.length}/500
                 </p>
