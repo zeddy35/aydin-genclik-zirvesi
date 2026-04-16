@@ -214,13 +214,13 @@ export function SummitInfo() {
       { time: "11:00", title: "Konuşma Başlıyor", desc: "1. Konuşmacı",                  type: "talk" },
       { time: "11:45", title: "Game Jam & Hackathon Tema Açıklanışı",                     type: "milestone" },
       { time: "12:00", title: "Hackathon & Game Jam Başlangıç",                           type: "competition" },
-      { time: "13:00", title: "Öğle Yemeği",                                              type: "food" },
+      { time: "13:00", title: "Network Session",                                              type: "food" },
       { time: "15:00", title: "2. Konuşmacı",                                             type: "talk" },
       { time: "16:00 – 00:00", title: "Geliştirme Saati", desc: "Takımlar projelerini geliştiriyor", type: "devblock" },
     ],
     day2: [
       { time: "00:00 – 11:00", title: "Geliştirme Saati", desc: "Takımlar projelerini geliştiriyor", type: "devblock" },
-      { time: "11:00", title: "Konuşma Başlıyor", desc: "3. Konuşmacı — Berk Durmuş Bayar", type: "talk" },
+      { time: "11:00", title: "Konuşma Başlıyor", desc: "3. Konuşmacı ", type: "talk" },
       { time: "12:00", title: "Hackathon Bitiş",                                             type: "competition" },
       { time: "13:00", title: "Konuşma Başlıyor", desc: "4. Konuşmacı",      type: "talk" },
       { time: "14:00", title: "Hackathon Sunum Başlangıcı",                                  type: "presentation" },
@@ -233,7 +233,7 @@ export function SummitInfo() {
   const FAQS = [
     { q: "Katılım ücretsiz mi?", a: "Evet, tamamen ücretsiz. GDG on Campus Aydın, Oyun & Tasarım Topluluğu ve Huawei Student Developers desteğiyle düzenleniyor." },
     { q: "Hackathon, Game Jam ve konuşmacılar aynı anda mı?", a: "Aydın Gençlik Zirvesi çatısı altında eş zamanlı ilerliyor. İstediğin etkinliğe katılabilirsin. Sadece Jam ve Hackathon'a aynı anda başvuramazsın." },
-    { q: "Daha önce hiç katılmadım, uygun muyum?", a: "Kesinlikle. Tüm seviyelere açık. Mentorlar ve rehber içerikler her adımda yanında." },
+    { q: "Daha önce hiç katılmadım, uygun muyum?", a: "Kesinlikle. Tüm seviyelere açık. Rehber içerikler her adımda yanında." },
   ];
 
   return (
@@ -266,7 +266,7 @@ export function SummitInfo() {
           <div className="sum-inner">
             <SumSecHeader title="Zirve Nedir?" label="◈ Genel Bakış" />
             <p className="sum-about-txt">
-              <strong>Aydın Gençlik Zirvesi</strong>, teknoloji ve tasarım alanında yetkinlik geliştirmek isteyen öğrencilerin bir araya geldiği 48 saatlik yoğun üretim etkinliğidir. <strong>GDG on Campus Aydın</strong>, <strong>Oyun ve Tasarım Topluluğu</strong> ve <strong>Huawei Student Developers</strong> ortaklığında gerçekleştirilen zirvede, Hackathon ve Game Jam pist pist ilerliyor. Baştan sona mentoring, network, ve gerçek dünya tecrübesi sana kazandırıyoruz.
+              <strong>Aydın Gençlik Zirvesi</strong>, teknoloji ve tasarım alanında yetkinlik geliştirmek isteyen öğrencilerin bir araya geldiği 2 gün yoğun üretim etkinliğidir. <strong>GDG on Campus Aydın</strong>, <strong>Oyun ve Tasarım Topluluğu</strong> ve <strong>Huawei Student Developers</strong> ortaklığında gerçekleştirilen zirvede, <strong>konuşmacılar, Hackathon ve Game Jam </strong>pist pist ilerliyor. Baştan sona network ve gerçek dünya tecrübesi sana kazandırıyoruz.
             </p>
             <div className="sum-about-cards">
               <div className="sum-about-card sum-about-card--hack">

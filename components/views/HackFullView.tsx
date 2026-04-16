@@ -41,7 +41,7 @@ const PEOPLE: Person[] = [
     statusLabel: "Aktif",
     description:
       "24 saatlik soruşturmanın lideri. Ekiplere rehberlik eder, mentor ağını koordine eder ve projelerin nihai değerlendirmesini yürütür. Her kritik anda sahadaki ilk ajan.",
-    tags: ["Mentörlük", "Yazılım", "Liderlik"],
+    tags: ["Yazılım", "Liderlik"],
     image: "/dino/dino_bw.png",
     intel: [
       "GÖZLEM — 22:47 · Tüm mentor check-in'lerini tek başına koordine etti. Uyku ihtiyacı belirsiz.",
@@ -124,9 +124,9 @@ const INTEL_STATS = [
 ] as const;
 
 const PHASES = [
-  { day: "GÜN 1 · 5 MAYIS", n: "01", label: "AÇILIŞ",      note: "Saat 10:00'da alan kontrolü · 14:00'de kick-off · tema açıklanıyor · takım eşleşmesi.", accent: false },
-  { day: "GÜN 1 · 5 MAYIS", n: "02", label: "İNŞA",        note: "Kod · tasarım · mentor checkpoint'leri · 24 saatlik süre başlıyor.",                     accent: false },
-  { day: "GÜN 2 · 6 MAYIS", n: "03", label: "SON SPRINT",  note: "Geliştirme tamamlanıyor · prototip hazırlanıyor · site yüklemesi yapılıyor.",            accent: false },
+  { day: "GÜN 1 · 5 MAYIS", n: "01", label: "AÇILIŞ",      note: "Saat 10.00'da alan kontrolü · 12.00'de kick-off · tema açıklanıyor · takım eşleşmesi.", accent: false },
+  { day: "GÜN 1 · 5 MAYIS", n: "02", label: "İNŞA",        note: "24 saatlik süre başlıyor. Bilgisayaralarınızı hazırlayın.",                     accent: false },
+  { day: "GÜN 2 · 6 MAYIS", n: "03", label: "SON SPRINT",  note: "Geliştirme tamamlanıyor · prototip hazırlanıyor · kullanıcı paneline proje yüklemesi yapılıyor.",            accent: false },
   { day: "GÜN 2 · 6 MAYIS", n: "04", label: "KAPANIŞ",     note: "Demo · jüriye kısa sunum · projenin amacı + hedef kitle + çözüm · ödüller.",            accent: true  },
 ];
 
@@ -138,7 +138,7 @@ const FAQS = [
   { q: "Ne teslim etmem gerekiyor?",           a: "Projeyi sitedeki 'yükleme' kısmına yüklemen ve ardından jüriye kısa sunum yaparak çalışan bir demo göstermen zorunludur. Sunumda projenin amacı, hedef kitlesi ve çözümün detayları yer almalıdır." },
   { q: "Değerlendirme nasıl yapılıyor?",       a: "Jüri; problemin tanımı ve önemi, çözümün özgünlüğü ve yaratıcılığı, teknik uygulanabilirlik, projenin çalışır durumda olması ve sunumun etkinliğini değerlendirir. Ayrıca yapay zeka kullanımının sınırlı tutulması ve projenin büyük ölçüde katılımcılar tarafından geliştirilmesi beklenir." },
   { q: "Yapay zeka araçları kullanabilir miyim?", a: "Açık kaynak kütüphaneler ve araçlar serbesttir; ancak projenin özgün olması şarttır. Yapay zeka kullanımının sınırlı tutulması değerlendirme kriterlerinden biridir — projenin büyük bölümü siz geliştirmelisiniz." },
-  { q: "Hackathon ücretsiz mi, nerede yapılıyor?", a: "Evet, tamamen ücretsiz. Etkinlik, Aydın Adnan Menderes Üniversitesi merkez kampüsündeki Atatürk Kültür Merkezi'nde fiziksel olarak gerçekleşecek. Katılımcıların saat 10:00'da alanda hazır olması, yarışma ise 14:00'de başlayacak." },
+  { q: "Hackathon ücretsiz mi, nerede yapılıyor?", a: "Evet, tamamen ücretsiz. Etkinlik, Aydın Adnan Menderes Üniversitesi merkez kampüsündeki Atatürk Kültür Merkezi'nde fiziksel olarak gerçekleşecek. Katılımcıların saat 10.00'da alanda hazır olması, yarışma ise 12.00'de başlayacak." },
 ];
 
 /* ════════════════════════════════════════════════════════════════

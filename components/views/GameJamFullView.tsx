@@ -125,7 +125,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
       Icon: Trophy,
       title: "Ödüller & Eğlence",
       desc: "Sürpriz ödüller, mini-challenge'lar, sahnede demo keyfi.",
-      bullets: ["Nakit & teknik ödüller", "Anlık mini-challenge'lar", "Sahne demo sunumu"],
+      bullets: ["Teknik ödüller", "Anlık mini-challenge'lar", "Sahne demo sunumu"],
     },
   ];
 
@@ -156,7 +156,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
     },
     {
       q: "Deneyimim yok, katılabilir miyim?",
-      a: "Kesinlikle. Mentor desteği, atölye ve rehber içerikler mevcut olacak.",
+      a: "Kesinlikle. Rehber içerikler mevcut olacak.",
     },
   ];
 
@@ -220,6 +220,10 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
             ))}
           </section>
 
+          <section className={`gj-reveal ${styles.infoSection}`}></section>
+
+            {/* UNITY'NIN 1. OLAN EKIBE PRO VERMESI GELECEK BURAYA */}
+
           {/* ── TEMEL BİLGİLER ── */}
           <section className={`gj-reveal ${styles.infoSection}`}>
             <div className={styles.sectionHeader}>
@@ -260,7 +264,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
               </div>
             </div>
             <p className={styles.whatIsText}>
-              Aydın Game Jam, belirlenen bir tema etrafında 30 saat içinde sıfırdan oyun geliştirdiğin yaratıcı bir etkinliktir. Tek başına ya da 5 kişilik bir ekiple katılabilirsin. Önemli olan bitmemiş ama çalışan bir prototip ortaya çıkarmak; mükemmel değil, gerçek.
+              Game Jam Aydın, belirlenen bir tema etrafında 30 saat içinde sıfırdan oyun geliştirdiğin yaratıcı bir etkinliktir. Tek başına ya da 1–4 kişilik bir ekiple katılabilirsin. Önemli olan bitmemiş ama çalışan bir prototip ortaya çıkarmak; mükemmel değil, gerçek.
             </p>
             <p className={styles.whatIsText}>
               Tema başlangıçta açıklanır; o andan itibaren fikirler, kodlar ve pikseller birbirini kovalamaya başlar. Mentor desteği, atölyeler ve birlikte üretmenin enerjisiyle dolu bir hafta sonu seni bekliyor.
