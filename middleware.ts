@@ -36,7 +36,8 @@ export async function middleware(request: NextRequest) {
   const hostname = request.headers.get("host") ?? "";
 
   // Subdomain routing: lore.* → /lore
-  if (hostname.startsWith("lore.")) {
+  // Skip rewrite for static asset requests (files with extensions)
+  if (hostname.startsWith("lore.") && !/\.[a-zA-Z0-9]+$/.test(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = "/lore" + (pathname === "/" ? "" : pathname);
     return NextResponse.rewrite(url);
@@ -95,12 +96,12 @@ export async function middleware(request: NextRequest) {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://www.gstatic.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://www.gstatic.com https://www.google.com https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
-      "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.cloudfunctions.net wss://*.firebaseio.com",
-      "frame-src https://accounts.google.com",
+      "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.cloudfunctions.net wss://*.firebaseio.com https://www.google.com",
+      "frame-src https://accounts.google.com https://www.google.com https://challenges.cloudflare.com",
       "object-src 'none'",
       "base-uri 'self'",
     ].join('; '),

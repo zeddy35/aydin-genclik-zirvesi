@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { easterEggEngine } from "@/lib/easterEggs/engine";
 import { eggs } from "@/lib/easterEggs/eggs";
-import { createKonamiListener } from "@/lib/easterEggs/konami";
 import { EasterToast } from "./EasterToast";
 import { useEasterEggs } from "./EasterEggContext";
 
@@ -13,13 +12,18 @@ import { useEasterEggs } from "./EasterEggContext";
 type OutputEntry = { text: string; type: "success" | "error" | "info" | "special" };
 
 const TERMINAL_COMMANDS: Record<string, () => OutputEntry[]> = {
+  404:     () => [{ text: "Sen 2024 Stand etkinliğinde oradaydın...", type: "special" }],
   RAWR:    () => [{ text: "TANRI SIZI KORUSUN. RAWR! 🦕  [ekran titredi]", type: "special" }],
-  ERKEN:   () => [{ text: "*bıyığını büker* Henüz hazır değil. v0.0.1 yeter. — E.E.", type: "info" }],
-  SHIPPIT: () => [{ text: "🎮 JAM STARTED. GOOD LUCK. DON'T SLEEP.", type: "success" }],
+  EARLY:   () => [{ text: "*bıyığını büker* Henüz hazır değil. v0.0.1 yeter. — E.E.", type: "info" }],
+  HSD:     () => [{ text: "Pandayı üzmeyin :3 ", type: "success" }],
   DINO:    () => [{ text: "🦕 ~wob wob wob~  [Dino dans ediyor]", type: "success" }],
+  MIRZAHAN: () => [
+    { text: "MIRZAHAN", type: "special" },
+    { text: "// THE DICTATOR //", type: "special" },
+  ],
   GDG:     () => [
-    { text: "GOOGLE DEVELOPER GROUP AYDIN", type: "success" },
-    { text: "// CHAPTER ACTIVE // MEMBERS: ???", type: "success" },
+    { text: "GOOGLE DEVELOPER GROUPS on ADU", type: "success" },
+    { text: "// CHAPTER ACTIVE // MEMBERS: ???,", type: "success" },
   ],
   OTT: () => [
     { text: "OYUN VE TASARIM TOPLULUĞU", type: "special" },
@@ -103,12 +107,9 @@ export function EasterEggProvider({ children }: { children: React.ReactNode }) {
     }
   }, [terminalInput, attempts]);
 
-  // ── Konami + engines ─────────────────────────────────────────
+  // ── Easter egg engines ───────────────────────────────────────
   useEffect(() => {
     eggs.forEach((egg) => easterEggEngine.registerEgg(egg));
-    const unsubscribeKonami = createKonamiListener(() => {
-      easterEggEngine.triggerEgg("konami-credits");
-    });
     const handleEasterEggUnlocked = (e: Event) => {
       const event = e as CustomEvent;
       const { name } = event.detail;
@@ -116,7 +117,6 @@ export function EasterEggProvider({ children }: { children: React.ReactNode }) {
     };
     window.addEventListener("easter-egg-unlocked", handleEasterEggUnlocked);
     return () => {
-      unsubscribeKonami();
       window.removeEventListener("easter-egg-unlocked", handleEasterEggUnlocked);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps

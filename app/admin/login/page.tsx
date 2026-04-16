@@ -23,12 +23,21 @@ export default function AdminLoginPage() {
 
     try {
       const { user } = await signInWithEmailAndPassword(auth, eposta, sifre);
-      const adminSnap = await getDoc(doc(db, 'admins', user.uid));
+      const [idToken, adminSnap] = await Promise.all([
+        user.getIdToken(),
+        getDoc(doc(db, 'admins', user.uid)),
+      ]);
       if (!adminSnap.exists()) {
         setHata('Bu hesabın admin yetkisi yok.');
         setYukleniyor(false);
         return;
       }
+      const sessionRes = await fetch('/api/auth/session', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ idToken }),
+      });
+      if (!sessionRes.ok) throw new Error('session_failed');
       router.push('/admin');
     } catch (err: unknown) {
       const code = (err as { code?: string }).code;

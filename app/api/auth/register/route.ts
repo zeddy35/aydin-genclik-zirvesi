@@ -4,20 +4,6 @@ import { adminAuth, adminDb } from '@/lib/firebase-admin';
 import { registerSchema } from '@/lib/validations/register';
 import { sendVerificationEmail } from '@/lib/email';
 
-// ── Cloudflare Turnstile verification ────────────────────────────────────────
-async function verifyTurnstile(token: string, ip: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) return true; // skip in dev if not configured
-
-  const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ secret, response: token, remoteip: ip }),
-  });
-  const data = await res.json() as { success: boolean };
-  return data.success;
-}
-
 // ── Rate limit config ─────────────────────────────────────────────────────────
 const RL_MAX    = 5;               // max attempts
 const RL_WINDOW = 15 * 60 * 1000; // 15 minutes in ms
@@ -68,7 +54,11 @@ export async function POST(request: NextRequest) {
     request.headers.get('x-real-ip') ??
     'unknown';
 
-  const allowed = await checkRateLimit(ip);
+  const [allowed, settingsSnap] = await Promise.all([
+    checkRateLimit(ip),
+    adminDb.collection('settings').doc('basvuru').get(),
+  ]);
+
   if (!allowed) {
     return NextResponse.json(
       { code: 'rate_limited', message: 'Çok fazla deneme. 15 dakika sonra tekrar deneyin.' },
@@ -77,7 +67,6 @@ export async function POST(request: NextRequest) {
   }
 
   // 2. Application gate — settings/basvuru.acik must be true
-  const settingsSnap = await adminDb.collection('settings').doc('basvuru').get();
   if (!settingsSnap.exists || settingsSnap.data()?.acik !== true) {
     return NextResponse.json(
       { code: 'applications_closed', message: 'Başvurular şu anda kapalı.' },
@@ -93,17 +82,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ code: 'invalid_request' }, { status: 400 });
   }
 
-  // 4. Turnstile CAPTCHA verification
-  const turnstileToken = (body as Record<string, unknown>)?.turnstileToken as string | undefined;
-  if (!turnstileToken) {
-    return NextResponse.json({ code: 'captcha_required' }, { status: 422 });
-  }
-  const captchaOk = await verifyTurnstile(turnstileToken, ip);
-  if (!captchaOk) {
-    return NextResponse.json({ code: 'captcha_failed', message: 'CAPTCHA doğrulaması başarısız.' }, { status: 422 });
-  }
-
-  // 5. Server-side schema validation (never trust client-side only)
+  // 4. Server-side schema validation (never trust client-side only)
   const parsed = registerSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(

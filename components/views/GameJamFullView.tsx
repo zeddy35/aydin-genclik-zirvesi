@@ -44,52 +44,6 @@ function PixelBurst({ x, y, color }: { x: number; y: number; color: string }) {
   );
 }
 
-// ── COUNTDOWN ──
-function GameCountdown() {
-  const [t, setT] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const calc = () => {
-      const diff = new Date("2026-05-16T09:00:00+03:00").getTime() - Date.now();
-      if (diff > 0)
-        setT({
-          days: Math.floor(diff / 86400000),
-          hours: Math.floor((diff / 3600000) % 24),
-          minutes: Math.floor((diff / 60000) % 60),
-          seconds: Math.floor((diff / 1000) % 60),
-        });
-    };
-    calc();
-    const id = setInterval(calc, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  if (!mounted) return null;
-
-  return (
-    <div className={styles.countdownWrap}>
-      <div className={styles.countdownLabel}>— Başlamasına Kalan —</div>
-      <div className={styles.countdownUnits}>
-        {[
-          { v: t.days, l: "GÜN" },
-          { v: t.hours, l: "SAAT" },
-          { v: t.minutes, l: "DAK" },
-          { v: t.seconds, l: "SN" },
-        ].map(({ v, l }, i) => (
-          <React.Fragment key={l}>
-            {i > 0 && <span className={styles.countdownColon}>:</span>}
-            <div className={styles.countdownUnit}>
-              <div className={styles.countdownValue}>{String(v).padStart(2, "0")}</div>
-              <div className={styles.countdownUnitLabel}>{l}</div>
-            </div>
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 // ── SCROLL REVEAL ──
 function GJReveal() {
@@ -245,10 +199,6 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
 
     <div className={styles.heroTagline}>
       ★ PLAYER 1 READY? ★
-    </div>
-
-    <div className={styles.countdownBox}>
-      <GameCountdown />
     </div>
 
   </div>

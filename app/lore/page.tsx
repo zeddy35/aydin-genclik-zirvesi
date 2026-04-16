@@ -54,15 +54,15 @@ const CHARACTERS: Character[] = [
   {
     id:      "02",
     name:    "Beta",
-    role:    "Rol / Unvan",
+    role:    "Sürgün Dedektif",
     status:  "KAYIP · ARAŞTIRILIYOR",
     suspect: false,
     photo:   "/lore/beta_lore.svg",
     details: [
-      { label: "Konum",       value: "—" },
-      { label: "Son Görülme", value: "—" },
+      { label: "Konum",       value: "???" },
+      { label: "Son Görülme", value: "??? Gün Önce" },
       { label: "Durum",       value: "BİLİNMİYOR" },
-      { label: "İlişki",      value: "—" },
+      { label: "İlişki",      value: "???" },
     ],
     story:
       "Bu karakter hakkında hikaye buraya gelecek. Kişinin geçmişi, motivasyonları ve vakadaki rolü burada kısaca anlatılacak. Detaylar eklendikçe bu metin güncellenecek.",
@@ -107,6 +107,32 @@ export default function LorePage() {
   const [animating, setAnimating] = useState(false);
   const [leaving, setLeaving]     = useState(false);
   const timerRef                  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [gate, setGate]             = useState(true);
+  const [jumpscare, setJumpscare]   = useState(false);
+  const [jsDuration, setJsDuration] = useState(900);
+
+  const handleEnter = useCallback(() => {
+    setGate(false);
+    const actx  = new AudioContext();
+    const gain  = actx.createGain();
+    gain.gain.value = 1.5;
+    gain.connect(actx.destination);
+
+    fetch("/early-akses/jumpscare.mp3")
+      .then(r => r.arrayBuffer())
+      .then(buf => actx.decodeAudioData(buf))
+      .then(decoded => {
+        const src = actx.createBufferSource();
+        src.buffer = decoded;
+        src.connect(gain);
+        src.start();
+        const ms = decoded.duration * 1000;
+        setJsDuration(ms);
+        setJumpscare(true);
+        setTimeout(() => setJumpscare(false), ms);
+      })
+      .catch(() => {});
+  }, []);
 
   const navigate = useCallback((dir: 1 | -1) => {
     if (animating) return;
@@ -320,6 +346,75 @@ export default function LorePage() {
           .lore-arrow:first-child { grid-column: 1; }
           .lore-arrow:last-child  { grid-column: 3; }
           .lore-img-wrap { width: min(260px, 70%); }
+        }
+      `}</style>
+
+      {/* ── Gate (click to enter) ── */}
+      {gate && (
+        <div
+          onClick={handleEnter}
+          style={{
+            position: "fixed", inset: 0, zIndex: 9999,
+            background: "#070709",
+            display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center",
+            cursor: "pointer", gap: 16,
+          }}
+        >
+          <span style={{ fontSize: 15, letterSpacing: "0.35em", textTransform: "uppercase", color: C.txtCode }}>
+            AGZ · VAKA DOSYASI
+          </span>
+          <span style={{
+            fontSize: "clamp(18px, 3vw, 28px)",
+            letterSpacing: "0.12em", textTransform: "uppercase", color: C.redText,
+            animation: "gate-pulse 2s ease-in-out infinite", fontWeight: "bold",
+          }}>
+            [ Dosyaya Gir ]
+          </span>
+          <span style={{ fontSize: 12, letterSpacing: "0.2em", color: C.txtCode }}>
+            GİZLİ · YETKİSİZ ERİŞİM YASAKTIR
+          </span>
+        </div>
+      )}
+      <style>{`
+        @keyframes gate-pulse {
+          0%, 100% { opacity: 1; }
+          50%       { opacity: 0.35; }
+        }
+      `}</style>
+
+      {/* ── Jumpscare ── */}
+      {jumpscare && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 9999,
+          background: "#000",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          animation: `js-flash ${jsDuration}ms ease-in forwards`,
+          pointerEvents: "none",
+        }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/early-akses/cursedakses1.png"
+            alt=""
+            style={{
+              maxWidth: "100vw", maxHeight: "100vh",
+              objectFit: "contain",
+              animation: `js-img ${jsDuration}ms ease-in forwards`,
+            }}
+          />
+        </div>
+      )}
+      <style>{`
+        @keyframes js-flash {
+          0%   { opacity: 1; }
+          60%  { opacity: 1; }
+          100% { opacity: 0; }
+        }
+        @keyframes js-img {
+          0%   { transform: scale(1.08); opacity: 0; }
+          10%  { opacity: 1; }
+          60%  { transform: scale(1); opacity: 1; }
+          100% { transform: scale(0.96); opacity: 0; }
         }
       `}</style>
 
