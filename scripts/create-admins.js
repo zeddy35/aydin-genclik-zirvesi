@@ -10,7 +10,7 @@ const API_KEY    = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 const PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
 
 const ADMINS = [
-  { email: 'dinogdg@mail.com',  password: 'AdminDino#$26',  isim: 'Dino',  soyisim: 'GDG' },
+  { email: 'Admin26',  password: 'Master123a',  isim: 'Dino',  soyisim: 'GDG' },
   { email: 'betaott@mail.com',  password: 'AdminBeTa$26',   isim: 'Beta',  soyisim: 'Ott' },
   { email: 'pandahsd@mail.com', password: 'AdmiNPndDa$26',  isim: 'Panda', soyisim: 'HSD' },
 ];

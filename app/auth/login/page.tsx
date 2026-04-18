@@ -7,6 +7,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase/config';
 import { Eye, EyeOff } from 'lucide-react';
 import FluidBackground from '@/components/FluidBackground';
+import { useThemeMode } from '@/hooks/useThemeMode';
 
 export default function LoginPage() {
   const [eposta, setEposta] = useState('');
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const [hata, setHata] = useState('');
   const [yukleniyor, setYukleniyor] = useState(false);
   const router = useRouter();
+  const isDark = useThemeMode() === 'dark';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,37 +54,62 @@ export default function LoginPage() {
     }
   };
 
-  const inputClass =
-    'w-full bg-[#0d0b18] border border-[#2a2545] rounded-lg px-3.5 py-2.5 text-[#d1cfe8] font-[Lexend] text-base outline-none transition-[border-color,box-shadow] duration-150 placeholder:text-[#3d3660] focus:border-violet-600 focus:ring-2 focus:ring-violet-600/15';
+  const inputCls = isDark
+    ? 'w-full bg-[#0d0b18] border border-[#2a2545] rounded-lg px-3.5 py-2.5 text-[#d1cfe8] font-[Lexend] text-base outline-none transition-[border-color,box-shadow] duration-150 placeholder:text-[#3d3660] focus:border-violet-600 focus:ring-2 focus:ring-violet-600/15'
+    : 'w-full bg-white border border-[#DDD6FE] rounded-lg px-3.5 py-2.5 text-[#1E1B4B] font-[Lexend] text-base outline-none transition-[border-color,box-shadow] duration-150 placeholder:text-[#C4BBE8] focus:border-violet-600 focus:ring-2 focus:ring-violet-600/15';
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4 py-6 font-[Lexend] relative overflow-hidden">
-      <FluidBackground />
-      <div className="relative z-10 w-full max-w-[420px] bg-[#13111f]/80 backdrop-blur-xl border border-[#1e1a2e] rounded-2xl px-8 py-10">
+    <div
+      className="min-h-screen flex items-center justify-center px-4 py-6 font-[Lexend] relative overflow-hidden transition-colors duration-700"
+      style={{ backgroundColor: isDark ? '#0a0a0f' : '#F8F7FF' }}
+    >
+      <FluidBackground key={isDark ? 'dark' : 'light'} dark={isDark} />
 
-        <p className="font-[Share_Tech_Mono] text-sm tracking-[0.35em] text-[#4a4568] uppercase text-center mb-2">
+      <div
+        className="relative z-10 w-full max-w-[420px] rounded-2xl px-8 py-10 transition-all duration-700"
+        style={{
+          background:   isDark ? 'rgba(19,17,31,0.85)' : '#ffffff',
+          backdropFilter: isDark ? 'blur(20px)' : 'none',
+          border:       `1px solid ${isDark ? '#1e1a2e' : '#EDE9FE'}`,
+          boxShadow:    isDark ? 'none' : '0 4px 24px rgba(99,60,200,0.07), 0 1px 4px rgba(0,0,0,0.06)',
+        }}
+      >
+        <p
+          className="font-[Share_Tech_Mono] text-sm tracking-[0.35em] uppercase text-center mb-2"
+          style={{ color: isDark ? '#4a4568' : '#A09BBF' }}
+        >
           ◈ AGZ — GİRİŞ SİSTEMİ ◈
         </p>
-        <h1 className="font-[Lexend] font-extrabold text-[28px] text-[#d1cfe8] text-center mb-1">
+        <h1
+          className="font-[Lexend] font-extrabold text-[28px] text-center mb-1"
+          style={{ color: isDark ? '#d1cfe8' : '#1E1B4B' }}
+        >
           Giriş Yap
         </h1>
-        <p className="text-base text-[#6b6485] text-center mb-8">
+        <p
+          className="text-base text-center mb-8"
+          style={{ color: isDark ? '#6b6485' : '#6D6594' }}
+        >
           Hesabınıza erişmek için giriş yapın.
         </p>
 
         {hata && (
-          <div className="bg-red-500/8 border border-red-500/30 rounded-lg px-3.5 py-2.5 text-red-300 text-sm mb-5 leading-relaxed">
+          <div className="bg-red-500/8 border border-red-500/30 rounded-lg px-3.5 py-2.5 text-red-400 text-sm mb-5 leading-relaxed">
             {hata}
           </div>
         )}
 
         <form onSubmit={handleSubmit} autoComplete="on">
           <div className="mb-5">
-            <label className="block text-[13px] text-[#9490b0] tracking-wide mb-1.5" htmlFor="eposta">
+            <label
+              className="block text-[13px] tracking-wide mb-1.5"
+              style={{ color: isDark ? '#9490b0' : '#5B5280' }}
+              htmlFor="eposta"
+            >
               E-POSTA
             </label>
             <input
-              id="eposta" type="email" className={inputClass}
+              id="eposta" type="email" className={inputCls}
               placeholder="ornek@eposta.com"
               value={eposta} onChange={e => setEposta(e.target.value)}
               autoComplete="email" required
@@ -90,13 +117,17 @@ export default function LoginPage() {
           </div>
 
           <div className="mb-5">
-            <label className="block text-[13px] text-[#9490b0] tracking-wide mb-1.5" htmlFor="sifre">
+            <label
+              className="block text-[13px] tracking-wide mb-1.5"
+              style={{ color: isDark ? '#9490b0' : '#5B5280' }}
+              htmlFor="sifre"
+            >
               ŞİFRE
             </label>
             <div className="relative">
               <input
                 id="sifre" type={sifreGoster ? 'text' : 'password'}
-                className={`${inputClass} pr-11`}
+                className={`${inputCls} pr-11`}
                 placeholder="············"
                 value={sifre} onChange={e => setSifre(e.target.value)}
                 autoComplete="current-password" required
@@ -105,7 +136,8 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => setSifreGoster(v => !v)}
                 aria-label={sifreGoster ? 'Şifreyi gizle' : 'Şifreyi göster'}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6b6485] hover:text-[#9490b0] transition-colors duration-150 p-1 cursor-pointer bg-transparent border-none"
+                className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors duration-150 p-1 cursor-pointer bg-transparent border-none"
+                style={{ color: isDark ? '#6b6485' : '#A09BBF' }}
               >
                 {sifreGoster ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -121,14 +153,23 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <hr className="border-none border-t border-dashed border-[#1e1a2e] my-6" />
+        <hr
+          className="border-none h-px my-6"
+          style={{ backgroundColor: isDark ? '#1e1a2e' : '#EDE9FE' }}
+        />
 
         <div className="flex flex-col gap-2 text-center">
-          <a href="/auth/register" className="text-sm text-[#6b6485] no-underline ">
-            Hesabın yok mu? <span className="text-violet-600 hover:text-[#c4b5fd] transition-colors duration-150">Kayıt Ol →</span>
+          <a
+            href="/auth/register"
+            className="text-sm no-underline"
+            style={{ color: isDark ? '#6b6485' : '#6D6594' }}
+          >
+            Hesabın yok mu?{' '}
+            <span className="text-violet-600 hover:text-violet-500 transition-colors duration-150">
+              Kayıt Ol →
+            </span>
           </a>
         </div>
-
       </div>
     </div>
   );

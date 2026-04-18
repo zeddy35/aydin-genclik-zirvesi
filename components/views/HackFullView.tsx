@@ -141,6 +141,12 @@ const FAQS = [
   { q: "Hackathon ücretsiz mi, nerede yapılıyor?", a: "Evet, tamamen ücretsiz. Etkinlik, Aydın Adnan Menderes Üniversitesi merkez kampüsündeki Atatürk Kültür Merkezi'nde fiziksel olarak gerçekleşecek. Katılımcıların saat 10.00'da alanda hazır olması, yarışma ise 12.00'de başlayacak." },
 ];
 
+const JURY = [ 
+  { name: "Dr. Öğr. Üyesi Erhan Ertürk", role: "ADÜ Bilgisayar Mühendisliği Bölüm Başkanı" },
+  { name: "Dr. Öğr. Üyesi Eser Ertürk", role: "ADÜ Yazılım Mühendisliği Bölüm Başkanı" },
+  { name: "Dr. Öğr. Üyesi Serdar Yilmaz", role: "ADÜ Bilgisayar Mühendisliği Öğretim Üyesi" },
+];
+
 /* ════════════════════════════════════════════════════════════════
    DESIGN TOKENS
 ════════════════════════════════════════════════════════════════ */

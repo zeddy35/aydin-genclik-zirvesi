@@ -2,7 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 
-export default function FluidBackground() {
+interface Props {
+  dark?: boolean;
+}
+
+export default function FluidBackground({ dark = true }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -29,7 +33,7 @@ export default function FluidBackground() {
         SPLAT_COUNT: 3,
         COLORFUL: true,
         COLOR_UPDATE_SPEED: 4,
-        BACK_COLOR: { r: 0, g: 0, b: 0 },
+        BACK_COLOR: dark ? { r: 0, g: 0, b: 0 } : { r: 248, g: 247, b: 255 },
         TRANSPARENT: false,
         SHADING: true,
         BLOOM: true,
