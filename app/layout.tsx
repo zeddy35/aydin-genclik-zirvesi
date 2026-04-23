@@ -30,18 +30,43 @@ const oswald = Oswald({
 });
 
 export const metadata: Metadata = {
-  title: "Aydın Gençlik Zirvesi 2026",
+  metadataBase: new URL("https://aydin-genclik-zirvesi.vercel.app"),
+  title: {
+    default: "Aydın Gençlik Zirvesi 2026",
+    template: "%s | Aydın Gençlik Zirvesi 2026",
+  },
   description:
-    "Aydın Gençlik Zirvesi - Game Jam ve HackathOn etkinliğine katıl",
+    "Aydın Gençlik Zirvesi 2026 — Game Jam ve Hackathon etkinliğine katıl. Aydın'ın en büyük gençlik teknoloji zirvesi.",
+  keywords: [
+    "Aydın Gençlik Zirvesi",
+    "AGZ 2026",
+    "Game Jam",
+    "Hackathon",
+    "Aydın",
+    "gençlik etkinliği",
+    "teknoloji",
+    "oyun geliştirme",
+  ],
   icons: {
     icon: "/favicon.ico",
+  },
+  alternates: {
+    canonical: "/",
   },
   openGraph: {
     title: "Aydın Gençlik Zirvesi 2026",
     description:
-      "Aydın Gençlik Zirvesi - Game Jam ve HackathOn etkinliğine katıl",
+      "Aydın Gençlik Zirvesi 2026 — Game Jam ve Hackathon etkinliğine katıl.",
     url: "https://aydin-genclik-zirvesi.vercel.app",
     siteName: "Aydın Gençlik Zirvesi",
+    locale: "tr_TR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aydın Gençlik Zirvesi 2026",
+    description:
+      "Aydın Gençlik Zirvesi 2026 — Game Jam ve Hackathon etkinliğine katıl.",
   },
 };
 

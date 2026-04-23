@@ -146,6 +146,7 @@ const SPONSORS: { id: string; name: string; url: string; accent: string; image?:
   { id: "SP-02", name: "Gençlik ve Spor Bakanlığı", url: "https://genclikhizmetleri.gov.tr/", accent: T.violetLight, image: "/sponsors/unides_logo.svg" },
   { id: "SP-03", name: "Adnan Menderes Üniversitesi", url: "https://www.adu.edu.tr/", accent: T.gold, image: "/sponsors/adu_logo.png" },
   { id: "SP-04", name: "Unity", url: "https://unity.com/", accent: T.violetLight, image: "/sponsors/unity_logo.svg" },
+  { id: "SP-05", name: "Oyun Sektörü Etkinlikleri", url: "https://oyunsektoruetkinlikleri.com/", accent: T.violetLight, image: "/sponsors/ose.png" }
 ];
 
 // ─────────────────────────────────────────────────────────────
