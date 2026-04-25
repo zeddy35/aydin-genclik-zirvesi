@@ -260,7 +260,7 @@ export function SummitInfo() {
               <EventCountdown />
             </div>
 
-            {/* ── PRIZES ── */}
+            {/* ── PRIZES ── 
             <div className="sum-prizes">
               <div className="sum-prize-row sum-prize-row--left">
                 <div className="sum-prize-logo-box sum-prize-logo-box--gold">
@@ -279,6 +279,7 @@ export function SummitInfo() {
                 </div>
               </div>
             </div>
+            */}
           </div>
         </section>
 
