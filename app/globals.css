@@ -164,6 +164,52 @@
 .sum-badge-text--jam  { color: var(--c-violet-l); }
 .sum-hero-cd { background: transparent; border: none; border-radius: 0; overflow: visible; max-width: 860px; width: 100%; margin: 0 auto; }
 
+/* ── HERO PRIZES ── */
+.sum-prizes {
+  display: flex; flex-direction: column; gap: 12px;
+  width: 100%; max-width: 860px; margin: 28px auto 0;
+}
+.sum-prize-row { display: flex; align-items: stretch; width: fit-content; }
+.sum-prize-row--left  { align-self: flex-start; }
+.sum-prize-row--right { align-self: flex-end; }
+
+.sum-prize-logo-box {
+  width: 110px; min-width: 110px; height: 72px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; border-radius: 14px;
+}
+.sum-prize-logo-box--gold {
+  background: rgba(91,200,245,0.09);
+  border: 1.5px solid rgba(91,200,245,0.4);
+}
+.sum-prize-logo-box--violet {
+  background: rgba(146,64,204,0.09);
+  border: 1.5px solid rgba(146,64,204,0.38);
+}
+
+.sum-prize-banner {
+  display: flex; align-items: center;
+  padding: 0 22px; height: 72px;
+  font-family: var(--fn-body); font-size: clamp(13px,1.6vw,15px);
+  font-weight: 500; color: var(--c-text); white-space: nowrap;
+  background: var(--c-surf); border-radius: 14px;
+}
+.sum-prize-banner--gold {
+  border: 1.5px solid rgba(91,200,245,0.35);
+  border-radius: 0 14px 14px 0;
+  margin-left: -6px;
+}
+.sum-prize-banner--violet {
+  border: 1.5px solid rgba(146,64,204,0.32);
+  border-radius: 14px 0 0 14px;
+  margin-right: -6px;
+}
+
+@media (max-width: 600px) {
+  .sum-prize-logo-box { width: 80px; min-width: 80px; height: 60px; }
+  .sum-prize-banner { height: 60px; font-size: 12px; padding: 0 14px; white-space: normal; max-width: 220px; }
+}
+
 /* ── ABOUT ── */
 .sum-about-txt { font-family: var(--fn-body); font-size: 16px; line-height: 1.8; color: var(--c-muted); max-width: 640px; margin-bottom: 28px; }
 .sum-about-txt strong { color: var(--c-text); font-weight: 600; }

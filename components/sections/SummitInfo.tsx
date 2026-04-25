@@ -259,6 +259,26 @@ export function SummitInfo() {
             <div className="sum-hero-cd">
               <EventCountdown />
             </div>
+
+            {/* ── PRIZES ── */}
+            <div className="sum-prizes">
+              <div className="sum-prize-row sum-prize-row--left">
+                <div className="sum-prize-logo-box sum-prize-logo-box--gold">
+                  <Image src="/logos/hsd-logo.svg" alt="Huawei Student Developers" width={52} height={52} />
+                </div>
+                <div className="sum-prize-banner sum-prize-banner--gold">
+                  Hackathon 1.&apos;si takıma Huawei&apos;den staj imkânı
+                </div>
+              </div>
+              <div className="sum-prize-row sum-prize-row--right">
+                <div className="sum-prize-banner sum-prize-banner--violet">
+                  Game Jam 1.&apos;si takıma 1 yıllık Unity Pro
+                </div>
+                <div className="sum-prize-logo-box sum-prize-logo-box--violet">
+                  <Image src="/sponsors/unity_logo.svg" alt="Unity" width={52} height={52} />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

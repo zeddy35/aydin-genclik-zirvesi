@@ -236,7 +236,7 @@ export default function RegisterPageContent() {
             </div>
             <div className={groupCls}>
               <label className={labelCls}>E-POSTA *</label>
-              <input {...register('eposta')} type="email" className={inputCls} placeholder="ornek@eposta.com" />
+              <input {...register('eposta')} type="email" className={inputCls} placeholder="ornstokat@pau.edu.tr@eposta.com" />
               {errors.eposta && <span className={errorCls}>{errors.eposta.message}</span>}
             </div>
             <div className={groupCls}>
@@ -297,7 +297,7 @@ export default function RegisterPageContent() {
             <div className={dividerCls} />
 
             <div className={groupCls}>
-              <label className={labelCls}>KATILIM TÜRÜ *</label>
+              <label className={labelCls}>KATILIM TÜRÜ * Ekipseniz bir ekip arkadaşının başvurması yeterlidir</label>
               <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3.5 mb-1.5">
                 {[
                   { id: 'bireysel', icon: <User size={28} />,  name: 'BİREYSEL', desc: 'Kendi başıma\n(eşleşme mümkün)' },
