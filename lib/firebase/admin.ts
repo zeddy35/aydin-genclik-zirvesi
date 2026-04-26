@@ -15,10 +15,11 @@ export interface KullaniciWithDurum extends Kullanici {
 
 export interface AdminStats {
   toplamKullanici: number;
+  toplamKisiSayisi: number;
   hackathonKullanici: number;
   gamejamKullanici: number;
   durumDagilimi: Record<string, number>;
-  sonKayitlar: Pick<Kullanici, 'uid' | 'isim' | 'soyisim' | 'etkinlikTuru'>[];
+  sonKayitlar: Pick<Kullanici, 'uid' | 'isim' | 'soyisim' | 'etkinlikTuru' | 'katilimTuru' | 'takimUyeleri'>[];
 }
 
 export async function getAllKullanicilarWithDurum(): Promise<KullaniciWithDurum[]> {
@@ -73,6 +74,7 @@ export async function getAdminStats(): Promise<AdminStats> {
 
   let hackathonKullanici = 0;
   let gamejamKullanici = 0;
+  let toplamKisiSayisi = 0;
   const durumDagilimi: Record<string, number> = {};
   const sonKayitlar: AdminStats['sonKayitlar'] = [];
 
@@ -80,8 +82,9 @@ export async function getAdminStats(): Promise<AdminStats> {
     const k = d.data() as Kullanici;
     if (k.etkinlikTuru === 'hackathon') hackathonKullanici++;
     else if (k.etkinlikTuru === 'gamejam') gamejamKullanici++;
+    toplamKisiSayisi += k.katilimTuru === 'takim' ? 1 + (k.takimUyeleri?.length ?? 0) : 1;
     if (sonKayitlar.length < 5) {
-      sonKayitlar.push({ uid: k.uid, isim: k.isim, soyisim: k.soyisim, etkinlikTuru: k.etkinlikTuru });
+      sonKayitlar.push({ uid: k.uid, isim: k.isim, soyisim: k.soyisim, etkinlikTuru: k.etkinlikTuru, katilimTuru: k.katilimTuru, takimUyeleri: k.takimUyeleri });
     }
   });
 
@@ -92,6 +95,7 @@ export async function getAdminStats(): Promise<AdminStats> {
 
   return {
     toplamKullanici: kullanicilarSnap.size,
+    toplamKisiSayisi,
     hackathonKullanici,
     gamejamKullanici,
     durumDagilimi,

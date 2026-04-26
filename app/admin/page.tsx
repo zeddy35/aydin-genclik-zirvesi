@@ -90,10 +90,11 @@ export default function AdminPage() {
           {/* Stat cards */}
           <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-3.5 mb-7">
             {[
-              { val: stats.toplamKullanici,                   label: 'Toplam Kayıt', color: '#7c3aed' },
-              { val: stats.hackathonKullanici,                label: 'Hackathon',    color: '#d4a843' },
-              { val: stats.gamejamKullanici,                  label: 'Game Jam',     color: '#7c3aed' },
-              { val: stats.durumDagilimi['onaylandi'] ?? 0,   label: 'Onaylanan',    color: '#10b981' },
+              { val: stats.toplamKullanici,                   label: 'Toplam Başvuru', color: '#7c3aed' },
+              { val: stats.toplamKisiSayisi,                  label: 'Toplam Kişi',   color: '#06b6d4' },
+              { val: stats.hackathonKullanici,                label: 'Hackathon',     color: '#d4a843' },
+              { val: stats.gamejamKullanici,                  label: 'Game Jam',      color: '#7c3aed' },
+              { val: stats.durumDagilimi['onaylandi'] ?? 0,   label: 'Onaylanan',     color: '#10b981' },
             ].map(s => (
               <div key={s.label} className="bg-[#13111f] border border-[#1e1a2e] rounded-xl p-5 text-center relative overflow-hidden"
                 style={{ borderTop: `3px solid ${s.color}` }}>
@@ -138,6 +139,10 @@ export default function AdminPage() {
                   <span className="font-[Share_Tech_Mono] text-[10px] tracking-[0.15em] uppercase flex-shrink-0"
                     style={{ color: k.etkinlikTuru === 'hackathon' ? '#d4a843' : '#7c3aed' }}>
                     {k.etkinlikTuru === 'hackathon' ? '🔍 HACK' : '🎮 JAM'}
+                  </span>
+                  <span className="font-[Share_Tech_Mono] text-[10px] tracking-[0.1em] uppercase flex-shrink-0"
+                    style={{ color: k.katilimTuru === 'takim' ? '#06b6d4' : '#64748b' }}>
+                    {k.katilimTuru === 'takim' ? `👥 ${1 + (k.takimUyeleri?.length ?? 0)} KİŞİ` : '👤 BİREYSEL'}
                   </span>
                 </Link>
               ))}

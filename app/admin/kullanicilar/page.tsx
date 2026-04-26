@@ -163,6 +163,7 @@ export default function KullanicilarPage() {
                 <th className="px-3.5 py-3 text-left font-[Share_Tech_Mono] text-[10px] tracking-[0.2em] text-[#4a4568] uppercase border-b border-[#1e1a2e] whitespace-nowrap">Kullanıcı</th>
                 <th className="px-3.5 py-3 text-left font-[Share_Tech_Mono] text-[10px] tracking-[0.2em] text-[#4a4568] uppercase border-b border-[#1e1a2e] whitespace-nowrap hidden md:table-cell">Üniversite</th>
                 <th className="px-3.5 py-3 text-left font-[Share_Tech_Mono] text-[10px] tracking-[0.2em] text-[#4a4568] uppercase border-b border-[#1e1a2e] whitespace-nowrap">Etkinlik</th>
+                <th className="px-3.5 py-3 text-left font-[Share_Tech_Mono] text-[10px] tracking-[0.2em] text-[#4a4568] uppercase border-b border-[#1e1a2e] whitespace-nowrap hidden sm:table-cell">Katılım</th>
                 <th className="px-3.5 py-3 text-left font-[Share_Tech_Mono] text-[10px] tracking-[0.2em] text-[#4a4568] uppercase border-b border-[#1e1a2e] whitespace-nowrap">Durum</th>
                 <th className="px-3.5 py-3 border-b border-[#1e1a2e]"></th>
               </tr>
@@ -185,6 +186,16 @@ export default function KullanicilarPage() {
                         style={{ background: k.etkinlikTuru === 'hackathon' ? 'rgba(212,168,67,0.15)' : 'rgba(124,58,237,0.15)', color: k.etkinlikTuru === 'hackathon' ? '#d4a843' : '#c4b5fd' }}>
                         {k.etkinlikTuru === 'hackathon' ? 'HACK' : 'JAM'}
                       </span>
+                    </td>
+                    <td className="px-3.5 py-3 border-b border-[#0f0d1a] align-middle group-last:border-b-0 group-hover:bg-white/[0.01] hidden sm:table-cell">
+                      {k.katilimTuru === 'takim' ? (
+                        <div>
+                          <span className="font-[Share_Tech_Mono] text-[10px] tracking-[0.12em] px-2 py-0.5 rounded bg-[rgba(6,182,212,0.12)] text-[#06b6d4]">TAKIM</span>
+                          <span className="font-[Share_Tech_Mono] text-[10px] text-[#4a4568] ml-1.5">{1 + (k.takimUyeleri?.length ?? 0)} kişi</span>
+                        </div>
+                      ) : (
+                        <span className="font-[Share_Tech_Mono] text-[10px] tracking-[0.12em] px-2 py-0.5 rounded bg-[rgba(100,116,139,0.12)] text-[#94a3b8]">BİREYSEL</span>
+                      )}
                     </td>
                     <td className="px-3.5 py-3 border-b border-[#0f0d1a] align-middle group-last:border-b-0 group-hover:bg-white/[0.01]">
                       <span className="font-[Share_Tech_Mono] text-[10px] tracking-[0.12em] px-2 py-0.5 rounded-full whitespace-nowrap"
