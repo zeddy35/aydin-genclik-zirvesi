@@ -165,50 +165,47 @@
 .sum-hero-cd { background: transparent; border: none; border-radius: 0; overflow: visible; max-width: 860px; width: 100%; margin: 0 auto; }
 
 /* ── HERO PRIZES ── */
-.sum-prizes {
-  display: flex; flex-direction: column; gap: 12px;
-  width: 100%; max-width: 860px; margin: 28px auto 0;
+.sum-prize-cards {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  width: 100%; max-width: 860px; margin: 36px auto 0;
 }
-.sum-prize-row { display: flex; align-items: stretch; width: fit-content; }
-.sum-prize-row--left  { align-self: flex-start; }
-.sum-prize-row--right { align-self: flex-end; }
-
-.sum-prize-logo-box {
-  width: 110px; min-width: 110px; height: 72px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; border-radius: 14px;
+.sum-prize-card {
+  border-radius: 16px; padding: 26px 24px 20px;
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+  border: 1px solid var(--c-border);
+  transition: transform .22s ease, box-shadow .22s ease;
 }
-.sum-prize-logo-box--gold {
-  background: rgba(91,200,245,0.09);
-  border: 1.5px solid rgba(91,200,245,0.4);
+.sum-prize-card:hover { transform: translateY(-4px); box-shadow: 0 10px 36px rgba(0,0,0,0.09); }
+.sum-prize-card--hack {
+  background: linear-gradient(140deg, rgba(91,200,245,0.1) 0%, var(--c-surf) 55%);
+  border-top: 3px solid var(--c-gold);
 }
-.sum-prize-logo-box--violet {
-  background: rgba(146,64,204,0.09);
-  border: 1.5px solid rgba(146,64,204,0.38);
+.sum-prize-card--jam {
+  background: linear-gradient(140deg, rgba(146,64,204,0.1) 0%, var(--c-surf) 55%);
+  border-top: 3px solid var(--c-violet);
 }
-
-.sum-prize-banner {
-  display: flex; align-items: center;
-  padding: 0 22px; height: 72px;
-  font-family: var(--fn-body); font-size: clamp(13px,1.6vw,15px);
-  font-weight: 500; color: var(--c-text); white-space: nowrap;
-  background: var(--c-surf); border-radius: 14px;
-}
-.sum-prize-banner--gold {
-  border: 1.5px solid rgba(91,200,245,0.35);
-  border-radius: 0 14px 14px 0;
-  margin-left: -6px;
-}
-.sum-prize-banner--violet {
-  border: 1.5px solid rgba(146,64,204,0.32);
-  border-radius: 14px 0 0 14px;
-  margin-right: -6px;
+.sum-prize-card::before {
+  content: '1';
+  position: absolute; right: 12px; top: -4px;
+  font-family: var(--fn-display); font-weight: 900; font-size: 130px; line-height: 1;
+  opacity: 0.045; color: var(--c-text); pointer-events: none; user-select: none;
 }
 
-@media (max-width: 600px) {
-  .sum-prize-logo-box { width: 80px; min-width: 80px; height: 60px; }
-  .sum-prize-banner { height: 60px; font-size: 12px; padding: 0 14px; white-space: normal; max-width: 220px; }
-}
+.sum-prize-eyebrow { font-family: var(--fn-mono); font-size: 10px; letter-spacing: 0.36em; text-transform: uppercase; margin-bottom: 20px; }
+.sum-prize-eyebrow--gold   { color: var(--c-gold); }
+.sum-prize-eyebrow--violet { color: var(--c-violet); }
+
+.sum-prize-body { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; flex: 1; }
+.sum-prize-medal { flex-shrink: 0; filter: drop-shadow(0 5px 14px rgba(0,0,0,0.2)); }
+.sum-prize-text-wrap { display: flex; flex-direction: column; gap: 0; }
+.sum-prize-text { font-family: var(--fn-display); font-weight: 800; font-size: clamp(19px,2.8vw,26px); color: var(--c-text); line-height: 1.2; }
+.sum-prize-subtext { font-family: var(--fn-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--c-muted); margin-top: 6px; }
+
+.sum-prize-footer { display: flex; align-items: center; gap: 10px; padding-top: 16px; border-top: 1px solid var(--c-border); }
+.sum-prize-sponsor-name { font-family: var(--fn-mono); font-size: 10px; letter-spacing: 0.18em; color: var(--c-muted); text-transform: uppercase; }
+
+@media (max-width: 520px) { .sum-prize-cards { grid-template-columns: 1fr; } }
 
 /* ── ABOUT ── */
 .sum-about-txt { font-family: var(--fn-body); font-size: 16px; line-height: 1.8; color: var(--c-muted); max-width: 640px; margin-bottom: 28px; }

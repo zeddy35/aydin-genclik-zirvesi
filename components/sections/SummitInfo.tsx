@@ -260,26 +260,39 @@ export function SummitInfo() {
               <EventCountdown />
             </div>
 
-            {/* ── PRIZES ── 
-            <div className="sum-prizes">
-              <div className="sum-prize-row sum-prize-row--left">
-                <div className="sum-prize-logo-box sum-prize-logo-box--gold">
-                  <Image src="/logos/hsd-logo.svg" alt="Huawei Student Developers" width={52} height={52} />
+            {/* ── PRIZES ── */}
+            <div className="sum-prize-cards">
+              {/* Hackathon */}
+              <div className="sum-prize-card sum-prize-card--hack">
+                <div className="sum-prize-eyebrow sum-prize-eyebrow--gold">◈ Hackathon · 1. Odul</div>
+                <div className="sum-prize-body">
+                  <Image src="/altinmadalya.png" alt="Altin Madalya" width={64} height={64} className="sum-prize-medal" />
+                  <div className="sum-prize-text-wrap">
+                    <div className="sum-prize-text">Huawei&apos;de<br />Staj Imkani</div>
+                    <div className="sum-prize-subtext">Kazanan takima</div>
+                  </div>
                 </div>
-                <div className="sum-prize-banner sum-prize-banner--gold">
-                  Hackathon 1.&apos;si takıma Huawei&apos;den staj imkânı
+                <div className="sum-prize-footer">
+                  <Image src="/logos/hsd-logo.svg" alt="Huawei Student Developers" width={28} height={28} />
+                  <span className="sum-prize-sponsor-name">HUAWEI Student Developers</span>
                 </div>
               </div>
-              <div className="sum-prize-row sum-prize-row--right">
-                <div className="sum-prize-banner sum-prize-banner--violet">
-                  Game Jam 1.&apos;si takıma 1 yıllık Unity Pro
+              {/* Game Jam */}
+              <div className="sum-prize-card sum-prize-card--jam">
+                <div className="sum-prize-eyebrow sum-prize-eyebrow--violet">◈ Game Jam · 1. Odul</div>
+                <div className="sum-prize-body">
+                  <Image src="/altinmadalya.png" alt="Altin Madalya" width={64} height={64} className="sum-prize-medal" />
+                  <div className="sum-prize-text-wrap">
+                    <div className="sum-prize-text">Unity Pro<br />Lisans</div>
+                    <div className="sum-prize-subtext">1 Yillik abonelik</div>
+                  </div>
                 </div>
-                <div className="sum-prize-logo-box sum-prize-logo-box--violet">
-                  <Image src="/sponsors/unity_logo.svg" alt="Unity" width={52} height={52} />
+                <div className="sum-prize-footer">
+                  <Image src="/sponsors/unity_logo.svg" alt="Unity" width={28} height={28} />
+                  <span className="sum-prize-sponsor-name">UNITY Technologıes</span>
                 </div>
               </div>
             </div>
-            */}
           </div>
         </section>
 
