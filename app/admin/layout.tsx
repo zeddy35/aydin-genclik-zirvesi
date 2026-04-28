@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { BarChart2, Users, LogOut } from 'lucide-react';
+import { BarChart2, Users, FolderOpen, LogOut } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, isAdmin, loading } = useAuth();
@@ -30,8 +30,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   const navItems = [
-    { href: '/admin',             icon: <BarChart2 size={17} />, label: 'Genel Bakış' },
-    { href: '/admin/kullanicilar', icon: <Users size={17} />,    label: 'Kullanıcılar' },
+    { href: '/admin',              icon: <BarChart2 size={17} />,   label: 'Genel Bakış' },
+    { href: '/admin/kullanicilar', icon: <Users size={17} />,       label: 'Kullanıcılar' },
+    { href: '/admin/projeler',     icon: <FolderOpen size={17} />,  label: 'Projeler' },
   ];
 
   return (

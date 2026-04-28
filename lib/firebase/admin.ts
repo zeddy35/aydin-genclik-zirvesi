@@ -5,9 +5,59 @@ import {
   collection,
   writeBatch,
   serverTimestamp,
+  Timestamp,
 } from 'firebase/firestore';
 import { db } from './config';
 import type { Kullanici, BasvuruDurumuDoc, BasvuruDurumu } from './types';
+
+export interface ProjeWithKullanici {
+  uid: string;
+  etkinlikTuru: 'hackathon' | 'gamejam';
+  gonderiTarihi: Timestamp | null;
+  // hackathon
+  projeAdi?: string;
+  aciklama?: string;
+  githubUrl?: string | null;
+  canlıUrl?: string | null;
+  // gamejam
+  oyunAdi?: string;
+  itchUrl?: string;
+  // kullanici
+  isim: string;
+  soyisim: string;
+  eposta: string;
+}
+
+export async function getAllProjelerWithKullanici(): Promise<ProjeWithKullanici[]> {
+  const [projelerSnap, kullanicilarSnap] = await Promise.all([
+    getDocs(collection(db, 'projeler')),
+    getDocs(collection(db, 'users')),
+  ]);
+
+  const kullaniciMap: Record<string, Kullanici> = {};
+  kullanicilarSnap.docs.forEach(d => {
+    kullaniciMap[d.id] = d.data() as Kullanici;
+  });
+
+  return projelerSnap.docs.map(d => {
+    const proje = d.data() as Record<string, unknown>;
+    const k = kullaniciMap[d.id];
+    return {
+      uid: d.id,
+      etkinlikTuru: proje.etkinlikTuru as 'hackathon' | 'gamejam',
+      gonderiTarihi: (proje.gonderiTarihi as Timestamp) ?? null,
+      projeAdi: proje.projeAdi as string | undefined,
+      aciklama: proje.aciklama as string | undefined,
+      githubUrl: proje.githubUrl as string | null | undefined,
+      canlıUrl: proje.canlıUrl as string | null | undefined,
+      oyunAdi: proje.oyunAdi as string | undefined,
+      itchUrl: proje.itchUrl as string | undefined,
+      isim: k?.isim ?? '—',
+      soyisim: k?.soyisim ?? '',
+      eposta: k?.eposta ?? '—',
+    };
+  });
+}
 
 export interface KullaniciWithDurum extends Kullanici {
   basvuruDurumu: BasvuruDurumu | null;
