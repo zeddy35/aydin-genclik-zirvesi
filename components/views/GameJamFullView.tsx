@@ -219,9 +219,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
               </div>
             ))}
           </section>
-
-          <section className={`gj-reveal ${styles.infoSection}`}></section>
-
+          
             {/* UNITY'NIN 1. OLAN EKIBE PRO VERMESI GELECEK BURAYA */}
 
           {/* ── TEMEL BİLGİLER ── */}
@@ -267,7 +265,7 @@ export function GameJamFullView({ onBack }: GameJamFullViewProps) {
               Game Jam Aydın, belirlenen bir tema etrafında 30 saat içinde sıfırdan oyun geliştirdiğin yaratıcı bir etkinliktir. Tek başına ya da 1–4 kişilik bir ekiple katılabilirsin. Önemli olan bitmemiş ama çalışan bir prototip ortaya çıkarmak; mükemmel değil, gerçek.
             </p>
             <p className={styles.whatIsText}>
-              Tema başlangıçta açıklanır; o andan itibaren fikirler, kodlar ve pikseller birbirini kovalamaya başlar. Mentor desteği, atölyeler ve birlikte üretmenin enerjisiyle dolu bir hafta sonu seni bekliyor.
+              Tema başlangıçta açıklanır; o andan itibaren fikirler, kodlar ve pikseller birbirini kovalamaya başlar. Atölyeler ve birlikte üretmenin enerjisiyle dolu iki gün seni bekliyor.
             </p>
           </section>
 
