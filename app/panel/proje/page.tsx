@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase/config';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface HackathonProje { projeAdi: string; aciklama: string; githubUrl?: string; canlıUrl?: string; dosya?: FileList; }
@@ -10,7 +12,15 @@ interface GameJamProje { oyunAdi: string; aciklama: string; itchUrl: string; }
 export default function ProjePage() {
   const { user, kullanici } = useAuth();
   const [basarili, setBasarili] = useState(false);
+  const [kontrol, setKontrol] = useState(true);
   const [hata, setHata] = useState('');
+
+  useEffect(() => {
+    if (!user) return;
+    getDoc(doc(db, 'projeler', user.uid))
+      .then(snap => { if (snap.exists()) setBasarili(true); })
+      .finally(() => setKontrol(false));
+  }, [user]);
 
   const isHack    = kullanici?.etkinlikTuru === 'hackathon';
   const accent    = isHack ? '#e8c84a'               : '#a78bfa';
@@ -41,7 +51,7 @@ export default function ProjePage() {
   const onHack = async (data: HackathonProje) => { await postProje({ type: 'hackathon', ...data }); };
   const onJam  = async (data: GameJamProje)   => { await postProje({ type: 'gamejam',   ...data }); };
 
-  if (!user) return null;
+  if (!user || kontrol) return null;
 
   const inputCls = `w-full rounded-lg px-3.5 py-2.5 text-[15px] font-[Lexend] outline-none transition-[border-color,box-shadow] duration-150`;
   const fieldLblCls = `block text-[12px] font-semibold tracking-[0.05em] mb-1.5`;

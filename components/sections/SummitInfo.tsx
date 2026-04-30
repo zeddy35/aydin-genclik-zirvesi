@@ -146,6 +146,7 @@ const SPONSORS: { id: string; name: string; url: string; accent: string; image?:
   { id: "SP-02", name: "Gençlik ve Spor Bakanlığı", url: "https://genclikhizmetleri.gov.tr/", accent: T.violetLight, image: "/sponsors/unides_logo.svg" },
   { id: "SP-03", name: "Adnan Menderes Üniversitesi", url: "https://www.adu.edu.tr/", accent: T.gold, image: "/sponsors/adu_logo.png" },
   { id: "SP-04", name: "Unity", url: "https://unity.com/", accent: T.violetLight, image: "/sponsors/unity_logo.svg" },
+  { id: "SP-05", name: "Oyun Sektörü Etkinlikleri", url: "https://oyunsektoruetkinlikleri.com/", accent: T.violetLight, image: "/sponsors/ose.png" }
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -257,6 +258,40 @@ export function SummitInfo() {
             </p>
             <div className="sum-hero-cd">
               <EventCountdown />
+            </div>
+
+            {/* ── PRIZES ── */}
+            <div className="sum-prize-cards">
+              {/* Hackathon */}
+              <div className="sum-prize-card sum-prize-card--hack">
+                <div className="sum-prize-eyebrow sum-prize-eyebrow--gold">◈ Hackathon · 1. Odul</div>
+                <div className="sum-prize-body">
+                  <Image src="/altinmadalya.png" alt="Altin Madalya" width={64} height={64} className="sum-prize-medal" />
+                  <div className="sum-prize-text-wrap">
+                    <div className="sum-prize-text">Huawei&apos;de<br />Staj Imkani</div>
+                    <div className="sum-prize-subtext">Kazanan takima</div>
+                  </div>
+                </div>
+                <div className="sum-prize-footer">
+                  <Image src="/logos/hsd-logo.svg" alt="Huawei Student Developers" width={28} height={28} />
+                  <span className="sum-prize-sponsor-name">HUAWEI Student Developers</span>
+                </div>
+              </div>
+              {/* Game Jam */}
+              <div className="sum-prize-card sum-prize-card--jam">
+                <div className="sum-prize-eyebrow sum-prize-eyebrow--violet">◈ Game Jam · 1. Odul</div>
+                <div className="sum-prize-body">
+                  <Image src="/altinmadalya.png" alt="Altin Madalya" width={64} height={64} className="sum-prize-medal" />
+                  <div className="sum-prize-text-wrap">
+                    <div className="sum-prize-text">Unity Pro<br />Lisans</div>
+                    <div className="sum-prize-subtext">1 Yillik abonelik</div>
+                  </div>
+                </div>
+                <div className="sum-prize-footer">
+                  <Image src="/sponsors/unity_logo.svg" alt="Unity" width={28} height={28} />
+                  <span className="sum-prize-sponsor-name">UNITY Technologıes</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>

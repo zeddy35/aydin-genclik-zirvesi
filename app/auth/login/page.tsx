@@ -54,7 +54,7 @@ export default function LoginPage() {
     }
   };
 
-  const inputCls = isDark
+  const inputClass = isDark
     ? 'w-full bg-[#0d0b18] border border-[#2a2545] rounded-lg px-3.5 py-2.5 text-[#d1cfe8] font-[Lexend] text-base outline-none transition-[border-color,box-shadow] duration-150 placeholder:text-[#3d3660] focus:border-violet-600 focus:ring-2 focus:ring-violet-600/15'
     : 'w-full bg-white border border-[#DDD6FE] rounded-lg px-3.5 py-2.5 text-[#1E1B4B] font-[Lexend] text-base outline-none transition-[border-color,box-shadow] duration-150 placeholder:text-[#C4BBE8] focus:border-violet-600 focus:ring-2 focus:ring-violet-600/15';
 
@@ -64,16 +64,16 @@ export default function LoginPage() {
       style={{ backgroundColor: isDark ? '#0a0a0f' : '#F8F7FF' }}
     >
       <FluidBackground key={isDark ? 'dark' : 'light'} dark={isDark} />
-
       <div
-        className="relative z-10 w-full max-w-[420px] rounded-2xl px-8 py-10 transition-all duration-700"
+        className="relative z-10 w-full max-w-[420px] rounded-2xl px-8 py-10"
         style={{
-          background:   isDark ? 'rgba(19,17,31,0.85)' : '#ffffff',
-          backdropFilter: isDark ? 'blur(20px)' : 'none',
-          border:       `1px solid ${isDark ? '#1e1a2e' : '#EDE9FE'}`,
-          boxShadow:    isDark ? 'none' : '0 4px 24px rgba(99,60,200,0.07), 0 1px 4px rgba(0,0,0,0.06)',
+          background:     isDark ? 'rgba(19,17,31,0.80)' : '#ffffff',
+          backdropFilter: isDark ? 'blur(24px)' : 'none',
+          border:         `1px solid ${isDark ? '#1e1a2e' : '#EDE9FE'}`,
+          boxShadow:      isDark ? 'none' : '0 1px 6px rgba(99,60,200,0.06)',
         }}
       >
+
         <p
           className="font-[Share_Tech_Mono] text-sm tracking-[0.35em] uppercase text-center mb-2"
           style={{ color: isDark ? '#4a4568' : '#A09BBF' }}
@@ -109,7 +109,7 @@ export default function LoginPage() {
               E-POSTA
             </label>
             <input
-              id="eposta" type="email" className={inputCls}
+              id="eposta" type="email" className={inputClass}
               placeholder="ornek@eposta.com"
               value={eposta} onChange={e => setEposta(e.target.value)}
               autoComplete="email" required
@@ -127,7 +127,7 @@ export default function LoginPage() {
             <div className="relative">
               <input
                 id="sifre" type={sifreGoster ? 'text' : 'password'}
-                className={`${inputCls} pr-11`}
+                className={`${inputClass} pr-11`}
                 placeholder="············"
                 value={sifre} onChange={e => setSifre(e.target.value)}
                 autoComplete="current-password" required
@@ -164,12 +164,10 @@ export default function LoginPage() {
             className="text-sm no-underline"
             style={{ color: isDark ? '#6b6485' : '#6D6594' }}
           >
-            Hesabın yok mu?{' '}
-            <span className="text-violet-600 hover:text-violet-500 transition-colors duration-150">
-              Kayıt Ol →
-            </span>
+            Hesabın yok mu? <span className="text-violet-600 hover:text-violet-500 transition-colors duration-150">Kayıt Ol →</span>
           </a>
         </div>
+
       </div>
     </div>
   );
