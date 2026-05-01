@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { FieldValue } from 'firebase-admin/firestore';
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
-import { sendApplicationStatusEmail } from '@/lib/email';
+import { sendApplicationStatusEmail, sendKapasiteDoluEmail } from '@/lib/email';
 import { z } from 'zod';
 
 const bodySchema = z.object({
   uid:           z.string().min(1),
-  durum:         z.enum(['beklemede', 'inceleniyor', 'onaylandi', 'reddedildi', 'bekleme_listesi']),
+  durum:         z.enum(['beklemede', 'inceleniyor', 'onaylandi', 'reddedildi', 'bekleme_listesi', 'kontenjan_dolu']),
   adminNotu:     z.string().optional(),
   adminGizliNot: z.string().optional(),
 });
@@ -53,12 +53,16 @@ export async function POST(request: NextRequest) {
   );
 
   // Send status email for final decisions
-  if (durum === 'onaylandi' || durum === 'reddedildi' || durum === 'bekleme_listesi') {
+  if (durum === 'onaylandi' || durum === 'reddedildi' || durum === 'bekleme_listesi' || durum === 'kontenjan_dolu') {
     try {
       const userSnap = await adminDb.collection('users').doc(uid).get();
       if (userSnap.exists) {
         const u = userSnap.data() as { eposta: string; isim: string };
-        await sendApplicationStatusEmail(u.eposta, u.isim, durum, adminNotu);
+        if (durum === 'kontenjan_dolu') {
+          await sendKapasiteDoluEmail(u.eposta, u.isim, adminNotu);
+        } else {
+          await sendApplicationStatusEmail(u.eposta, u.isim, durum, adminNotu);
+        }
       }
     } catch {
       // Non-fatal: status was saved, email failed silently

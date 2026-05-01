@@ -2,7 +2,7 @@ import { Timestamp } from 'firebase/firestore';
 
 export type EtkinlikTuru = 'hackathon' | 'gamejam';
 export type KatilimTuru = 'bireysel' | 'takim';
-export type BasvuruDurumu = 'beklemede' | 'inceleniyor' | 'onaylandi' | 'reddedildi' | 'bekleme_listesi';
+export type BasvuruDurumu = 'beklemede' | 'inceleniyor' | 'onaylandi' | 'reddedildi' | 'bekleme_listesi' | 'kontenjan_dolu';
 export type BelgeTuru = 'ogrenci_belgesi' | 'nufus_fotokopisi' | 'cv' | 'katilim_sertifikasi' | 'diger';
 export type AdminBelgeTuru = 'katilim_sertifikasi' | 'finalist_belgesi' | 'odul_belgesi' | 'diger';
 
