@@ -14,7 +14,7 @@ const DURUM_MAP: Record<string, { label: string; color: string; bg: string; icon
   bekleme_listesi:{ label: 'BEKLEME LİSTESİ',color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)', icon: <ClipboardList size={52} color="#8b5cf6" />, desc: 'Kontenjan açıldığında bildirim alacaksınız.' },
 };
 
-const ADIMLAR = ['beklemede', 'inceleniyor', 'onaylandi'];
+const ADIMLAR = ['beklemede', 'inceleniyor', '  '];
 
 export default function DurumPage() {
   const { user, kullanici } = useAuth();
@@ -61,7 +61,7 @@ export default function DurumPage() {
         ) : (
           <>
             {/* Status badge */}
-            <div className="rounded-2xl p-8 flex flex-col items-center text-center mb-6 relative overflow-hidden"
+            <div className="rounded-2xl p-8 text-center mb-6 relative overflow-hidden"
               style={{ background: durumInfo.bg, border: `1px solid ${durumInfo.color}40` }}>
               <div className={`mb-3 ${(durumKey === 'beklemede' || durumKey === 'inceleniyor') ? '[animation:pulse-slow_2s_ease-in-out_infinite]' : ''}`}>
                 {durumInfo.icon}
@@ -81,8 +81,8 @@ export default function DurumPage() {
               </p>
               <div className="flex items-center">
                 {ADIMLAR.map((adim, i) => {
-                  const isDone   = !isRedded && (durumKey === 'onaylandi' ? true : stepIndex > i);
-                  const isActive = !isRedded && !isDone && stepIndex === i;
+                  const isDone   = !isRedded && stepIndex > i;
+                  const isActive = !isRedded && stepIndex === i;
                   const isFail   = isRedded && i === 1;
                   return (
                     <div key={adim} className="flex-1 relative">
