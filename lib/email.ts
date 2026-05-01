@@ -69,7 +69,7 @@ export async function sendKapasiteDoluEmail(
           <p style="font-size:14px;color:#fbbf24;font-weight:700;margin:0 0 10px 0;">⚠️ Kontenjan Doldu</p>
           <p style="font-size:14px;color:#c8c4e0;line-height:1.7;margin:0;">
             Ne yazık ki hackathon kontenjanımız tamamen doldu ve başvurunu değerlendirme sürecine 
-            alamıyoruz. Bu durum başvurunun kalitesiyle hiçbir şekilde ilgili değil — 
+            alamıyoruz. Bu durum başvurunun kalitesiyle hiçbir şekilde ilgili değil
             tamamen sınırlı kapasiteden kaynaklanıyor. Bunu sana iletmek zorunda olmak bizim için de üzücü. 💜
           </p>
         </div>
