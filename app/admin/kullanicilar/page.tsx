@@ -8,10 +8,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import type { BasvuruDurumu } from '@/lib/firebase/types';
 
 const DURUM_COLORS: Record<string, string> = {
-  beklemede: '#f59e0b', inceleniyor: '#3b82f6', onaylandi: '#10b981', reddedildi: '#ef4444', bekleme_listesi: '#8b5cf6',
+  beklemede: '#f59e0b', inceleniyor: '#3b82f6', onaylandi: '#10b981', reddedildi: '#ef4444', bekleme_listesi: '#8b5cf6', kontenjan_dolu: '#f97316',
 };
 const DURUM_TR: Record<string, string> = {
-  beklemede: 'Beklemede', inceleniyor: 'İnceleniyor', onaylandi: 'Onaylandı', reddedildi: 'Reddedildi', bekleme_listesi: 'Bekleme L.',
+  beklemede: 'Beklemede', inceleniyor: 'İnceleniyor', onaylandi: 'Onaylandı', reddedildi: 'Reddedildi', bekleme_listesi: 'Bekleme L.', kontenjan_dolu: 'Kontenjan Dolu',
 };
 
 const inputCls = 'bg-[#13111f] border border-[#2a2545] rounded-lg px-3.5 py-2.5 text-[#d1cfe8] font-[Lexend] text-sm outline-none transition-[border-color] duration-150 placeholder:text-[#3d3660] focus:border-violet-600';

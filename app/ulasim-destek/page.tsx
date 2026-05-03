@@ -2,40 +2,26 @@
 
 import Link from "next/link";
 
-const C = {
-  bg:       "#070709",
-  surf:     "#0c0c12",
-  border:   "#1c1c28",
-  borderHi: "#2a2a3a",
-  red:      "#c0392b",
-  redDim:   "#3a0a0a",
-  redText:  "#e05050",
-  gold:     "#c8a84b",
-  goldDim:  "#2a1f00",
-  amber:    "#d97706",
-  txt:      "#ede9f8",
-  txtSec:   "#918da8",
-  txtMuted: "#524e68",
-  txtCode:  "#3c3a52",
-  green:    "#2d6a4f",
-  greenText:"#52b788",
-  mono:     "var(--font-share-tech-mono), monospace",
-  display:  "var(--font-oswald), sans-serif",
-  ui:       "var(--font-lexend), sans-serif",
+/* ── Design tokens — mirrors SummitInfo ─────────────────────── */
+const T = {
+  bg:          "#f0edf8",
+  surf:        "#faf9fd",
+  surfHigh:    "#e8e4f4",
+  border:      "#ddd8ef",
+  borderHigh:  "#c4bce0",
+  text:        "#16142a",
+  muted:       "#5c5778",
+  faint:       "#c0b9d8",
+  sky:         "#5BC8F5",
+  skyDim:      "#dff3fc",
+  violet:      "#9240CC",
+  violetDim:   "#6B2B98",
+  violetLight: "#ede0f8",
+  green:       "#1a7a4a",
+  greenLight:  "#e0f5eb",
+  mono:        "var(--font-share-tech-mono), monospace",
+  display:     "var(--font-lexend), sans-serif",
 } as const;
-
-interface RouteNode {
-  label: string;
-  sublabel?: string;
-  type: "start" | "mid" | "end";
-}
-
-const FLOW: RouteNode[] = [
-  { label: "AYDIN OTOGAR", sublabel: "Şehirlerarası Terminal", type: "start" },
-  { label: "1 NUMARA — BEYAZ OTOBÜs", sublabel: "Opsmall AVM tarafındaki şehiriçi durağından · 06:45 ilk sefer · ~8 dk aralık · NAKİT", type: "mid" },
-  { label: "KENT MEYDANI", sublabel: "Aktarma Noktası", type: "mid" },
-  { label: "ADÜ KONGRE MERKEZİ", sublabel: "Varış — Zirve Ana Alanı", type: "end" },
-];
 
 const YELLOW_BUSES = ["103","106","401","402","403","404","405","501","504"];
 const WHITE_BUSES  = ["10","11","16"];
@@ -45,34 +31,61 @@ export default function UlasimDestekPage() {
     <>
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: ${C.bg}; color: ${C.txt}; }
 
         .ud-root {
           min-height: 100dvh;
-          background: ${C.bg};
-          font-family: ${C.ui};
-          color: ${C.txt};
+          background: ${T.bg};
+          font-family: ${T.display};
+          color: ${T.text};
         }
 
-        /* topbar */
+        /* ── Topbar ─────────────────────────────────────────── */
         .ud-topbar {
           position: sticky;
           top: 0;
           z-index: 50;
-          height: 44px;
+          height: 52px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 24px;
-          border-bottom: 1px solid ${C.border};
-          background: ${C.bg};
+          padding: 0 28px;
+          background: ${T.surf};
+          border-bottom: 1px solid ${T.border};
+        }
+        .ud-topbar-brand {
+          font-family: ${T.mono};
+          font-size: 9px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          color: ${T.faint};
+        }
+        .ud-back-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 7px 16px;
+          border-radius: 999px;
+          border: 1.5px solid ${T.violet}55;
+          background: ${T.violetLight};
+          color: ${T.violet};
+          font-family: ${T.mono};
+          font-size: 9px;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          text-decoration: none;
+          transition: background 0.2s, border-color 0.2s;
+        }
+        .ud-back-btn:hover {
+          background: ${T.violet}18;
+          border-color: ${T.violet}99;
         }
 
-        /* hero */
+        /* ── Hero ───────────────────────────────────────────── */
         .ud-hero {
+          background: ${T.surf};
+          border-bottom: 1px solid ${T.border};
+          padding: clamp(48px, 8vw, 88px) 24px clamp(32px, 5vw, 52px);
           text-align: center;
-          padding: clamp(48px, 8vw, 96px) 24px clamp(32px, 5vw, 56px);
-          border-bottom: 1px solid ${C.border};
           position: relative;
           overflow: hidden;
         }
@@ -80,141 +93,163 @@ export default function UlasimDestekPage() {
           content: "";
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse 60% 60% at 50% 0%, ${C.redDim}88 0%, transparent 70%);
+          background: radial-gradient(ellipse 70% 80% at 50% -10%, ${T.violet}18 0%, transparent 65%);
           pointer-events: none;
         }
         .ud-hero-eyebrow {
-          font-family: ${C.mono};
+          font-family: ${T.mono};
           font-size: 9px;
           letter-spacing: 0.35em;
           text-transform: uppercase;
-          color: ${C.redText};
-          margin-bottom: 16px;
+          color: ${T.violet};
+          margin-bottom: 14px;
         }
         .ud-hero-title {
-          font-family: ${C.display};
-          font-size: clamp(28px, 6vw, 64px);
-          font-weight: 700;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          line-height: 1;
+          font-family: ${T.display};
+          font-size: clamp(32px, 7vw, 72px);
+          font-weight: 800;
+          color: ${T.text};
+          line-height: 1.05;
           margin-bottom: 12px;
+          letter-spacing: -0.01em;
+        }
+        .ud-hero-title span {
+          background: linear-gradient(135deg, ${T.violet} 0%, ${T.sky} 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
         .ud-hero-sub {
-          font-family: ${C.ui};
-          font-size: clamp(13px, 1.2vw, 15px);
-          color: ${C.txtSec};
+          font-size: clamp(14px, 1.4vw, 16px);
+          color: ${T.muted};
+          max-width: 480px;
+          margin: 0 auto;
+          line-height: 1.6;
         }
 
-        /* layout */
+        /* ── Main layout ────────────────────────────────────── */
         .ud-main {
-          max-width: 820px;
+          max-width: 860px;
           margin: 0 auto;
-          padding: clamp(24px, 4vw, 48px) 20px clamp(48px, 6vw, 80px);
+          padding: clamp(28px, 5vw, 56px) 20px clamp(56px, 8vw, 96px);
           display: flex;
           flex-direction: column;
-          gap: 24px;
+          gap: 28px;
         }
 
-        /* section card */
-        .ud-card {
-          border: 1px solid ${C.border};
-          border-radius: 2px;
-          overflow: hidden;
-          background: ${C.surf};
-        }
-        .ud-card-header {
-          background: transparent;
-          border-bottom: 1px solid ${C.border};
-          padding: 12px 20px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-        .ud-card-label {
-          font-family: ${C.mono};
+        /* ── Section header (mirrors SummitInfo) ────────────── */
+        .ud-sec-hdr { margin-bottom: 20px; }
+        .ud-sec-lbl {
+          font-family: ${T.mono};
           font-size: 9px;
           letter-spacing: 0.3em;
           text-transform: uppercase;
-          color: ${C.txtCode};
+          color: ${T.faint};
+          margin-bottom: 6px;
         }
-        .ud-card-title {
-          font-family: ${C.display};
-          font-size: clamp(13px, 1.4vw, 15px);
-          font-weight: 600;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: ${C.txt};
-        }
-        .ud-card-body {
-          padding: 20px;
+        .ud-sec-title {
+          font-family: ${T.display};
+          font-size: clamp(20px, 2.5vw, 26px);
+          font-weight: 700;
+          color: ${T.text};
+          letter-spacing: -0.01em;
         }
 
-        /* location grid */
+        /* ── Card ───────────────────────────────────────────── */
+        .ud-card {
+          background: ${T.surf};
+          border: 1px solid ${T.border};
+          border-radius: 16px;
+          overflow: hidden;
+        }
+        .ud-card-top {
+          height: 3px;
+          background: linear-gradient(90deg, ${T.violet}, ${T.sky});
+        }
+        .ud-card-top.sky {
+          background: linear-gradient(90deg, ${T.sky}, ${T.violet}88);
+        }
+        .ud-card-top.green {
+          background: linear-gradient(90deg, #2d9c6a, #5BC8F5);
+        }
+        .ud-card-top.amber {
+          background: linear-gradient(90deg, #e69d17, ${T.violet}88);
+        }
+        .ud-card-body { padding: 24px; }
+
+        /* ── Location grid ──────────────────────────────────── */
         .ud-loc-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 12px;
+          gap: 14px;
         }
-        @media (max-width: 520px) { .ud-loc-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 540px) { .ud-loc-grid { grid-template-columns: 1fr; } }
 
         .ud-loc-item {
-          border: 1px solid ${C.border};
-          border-radius: 2px;
-          padding: 16px;
+          background: ${T.bg};
+          border: 1px solid ${T.border};
+          border-radius: 12px;
+          padding: 18px;
         }
-        .ud-loc-item-label {
-          font-family: ${C.mono};
+        .ud-loc-tag {
+          font-family: ${T.mono};
           font-size: 8px;
           letter-spacing: 0.25em;
           text-transform: uppercase;
-          color: ${C.txtCode};
+          color: ${T.faint};
           margin-bottom: 6px;
         }
-        .ud-loc-item-name {
-          font-family: ${C.display};
+        .ud-loc-name {
+          font-weight: 700;
           font-size: 15px;
-          font-weight: 600;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          color: ${C.gold};
+          color: ${T.text};
           margin-bottom: 4px;
         }
-        .ud-loc-item-addr {
+        .ud-loc-addr {
           font-size: 13px;
-          color: ${C.txtSec};
-          margin-bottom: 14px;
+          color: ${T.muted};
           line-height: 1.5;
+          margin-bottom: 16px;
         }
+
+        /* ── Buttons ────────────────────────────────────────── */
         .ud-btn {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          padding: 7px 14px;
-          font-family: ${C.mono};
+          padding: 9px 18px;
+          border-radius: 999px;
+          font-family: ${T.mono};
           font-size: 9px;
-          letter-spacing: 0.2em;
+          letter-spacing: 0.18em;
           text-transform: uppercase;
           text-decoration: none;
-          border: 1px solid;
-          border-radius: 2px;
-          transition: background 200ms, color 200ms;
+          border: 1.5px solid;
+          transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
           cursor: pointer;
+          font-weight: 700;
         }
-        .ud-btn-red {
-          color: ${C.redText};
-          border-color: ${C.red}55;
-          background: ${C.redDim};
+        .ud-btn-violet {
+          color: ${T.violet};
+          border-color: ${T.violet}55;
+          background: ${T.violetLight};
         }
-        .ud-btn-red:hover { background: ${C.red}33; border-color: ${C.red}99; }
-        .ud-btn-gold {
-          color: ${C.gold};
-          border-color: ${C.gold}55;
-          background: ${C.goldDim};
+        .ud-btn-violet:hover {
+          background: ${T.violet}18;
+          border-color: ${T.violet}99;
+          box-shadow: 0 0 12px ${T.violet}22;
         }
-        .ud-btn-gold:hover { background: ${C.gold}22; border-color: ${C.gold}99; }
+        .ud-btn-sky {
+          color: #1490c0;
+          border-color: ${T.sky}66;
+          background: ${T.skyDim};
+        }
+        .ud-btn-sky:hover {
+          background: ${T.sky}22;
+          border-color: ${T.sky};
+        }
 
-        /* flow */
+        /* ── Flow diagram ───────────────────────────────────── */
         .ud-flow {
           display: flex;
           flex-direction: column;
@@ -223,95 +258,112 @@ export default function UlasimDestekPage() {
         }
         .ud-flow-node {
           width: 100%;
-          max-width: 480px;
-          padding: 14px 20px;
-          border-radius: 2px;
-          border: 1px solid;
+          max-width: 520px;
+          padding: 16px 24px;
+          border-radius: 12px;
+          border: 1.5px solid;
           text-align: center;
         }
         .ud-flow-node-title {
-          font-family: ${C.display};
-          font-size: clamp(13px, 1.4vw, 15px);
+          font-family: ${T.display};
+          font-size: 14px;
           font-weight: 700;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.04em;
           text-transform: uppercase;
         }
         .ud-flow-node-sub {
-          font-family: ${C.ui};
           font-size: 12px;
           margin-top: 4px;
           line-height: 1.5;
         }
         .node-start {
-          background: ${C.redDim};
-          border-color: ${C.red}66;
+          background: ${T.violetLight};
+          border-color: ${T.violet}55;
         }
-        .node-start .ud-flow-node-title { color: ${C.redText}; }
-        .node-start .ud-flow-node-sub   { color: ${C.redText}88; }
+        .node-start .ud-flow-node-title { color: ${T.violet}; }
+        .node-start .ud-flow-node-sub   { color: ${T.violetDim}; }
 
-        .node-mid-route {
-          background: ${C.goldDim};
-          border-color: ${C.gold}44;
+        .node-route {
+          background: ${T.skyDim};
+          border-color: ${T.sky}66;
           border-style: dashed;
         }
-        .node-mid-route .ud-flow-node-title { color: ${C.gold}; }
-        .node-mid-route .ud-flow-node-sub   { color: ${C.amber}99; }
+        .node-route .ud-flow-node-title { color: #1490c0; }
+        .node-route .ud-flow-node-sub   { color: ${T.muted}; }
 
-        .node-mid {
-          background: ${C.surf};
-          border-color: ${C.border};
+        .node-transfer {
+          background: ${T.surfHigh};
+          border-color: ${T.borderHigh};
         }
-        .node-mid .ud-flow-node-title { color: ${C.txtSec}; }
-        .node-mid .ud-flow-node-sub   { color: ${C.txtMuted}; }
+        .node-transfer .ud-flow-node-title { color: ${T.muted}; }
+        .node-transfer .ud-flow-node-sub   { color: ${T.faint}; }
 
         .node-end {
-          background: #0a1a0e;
-          border-color: ${C.green}66;
+          background: ${T.greenLight};
+          border-color: #2d9c6a55;
         }
-        .node-end .ud-flow-node-title { color: ${C.greenText}; }
-        .node-end .ud-flow-node-sub   { color: ${C.greenText}88; }
+        .node-end .ud-flow-node-title { color: ${T.green}; }
+        .node-end .ud-flow-node-sub   { color: #2d9c6a99; }
 
         .ud-flow-arrow {
           display: flex;
           flex-direction: column;
           align-items: center;
           padding: 6px 0;
-          color: ${C.txtCode};
           gap: 2px;
+          color: ${T.faint};
         }
         .ud-flow-arrow-label {
-          font-family: ${C.mono};
+          font-family: ${T.mono};
           font-size: 8px;
           letter-spacing: 0.2em;
           text-transform: uppercase;
+          color: ${T.faint};
         }
 
-        /* transfer grid */
+        /* ── Intro box ──────────────────────────────────────── */
+        .ud-intro {
+          background: ${T.violetLight};
+          border: 1px solid ${T.violet}33;
+          border-radius: 12px;
+          padding: 16px 20px;
+          font-size: 14px;
+          line-height: 1.75;
+          color: ${T.muted};
+        }
+        .ud-intro strong { color: ${T.violet}; font-weight: 700; }
+
+        /* ── Divider ────────────────────────────────────────── */
+        .ud-divider { height: 1px; background: ${T.border}; margin: 20px 0; }
+
+        /* ── Transfer grid ──────────────────────────────────── */
         .ud-transfer-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 12px;
-          margin-top: 16px;
+          gap: 14px;
         }
-        @media (max-width: 480px) { .ud-transfer-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 500px) { .ud-transfer-grid { grid-template-columns: 1fr; } }
 
         .ud-transfer-box {
-          border: 1px solid ${C.border};
-          border-radius: 2px;
-          padding: 16px;
+          background: ${T.bg};
+          border: 1px solid ${T.border};
+          border-radius: 12px;
+          padding: 18px;
         }
         .ud-transfer-box-title {
-          font-family: ${C.display};
+          font-family: ${T.display};
           font-size: 13px;
-          font-weight: 600;
-          letter-spacing: 0.08em;
+          font-weight: 700;
           text-transform: uppercase;
+          letter-spacing: 0.04em;
           margin-bottom: 4px;
         }
         .ud-transfer-box-sub {
           font-size: 12px;
-          color: ${C.txtSec};
-          margin-bottom: 12px;
+          color: ${T.faint};
+          margin-bottom: 14px;
+          font-family: ${T.mono};
+          letter-spacing: 0.1em;
         }
         .ud-badge-row {
           display: flex;
@@ -320,140 +372,148 @@ export default function UlasimDestekPage() {
         }
         .ud-badge {
           display: inline-block;
-          padding: 4px 10px;
-          border-radius: 2px;
-          font-family: ${C.mono};
+          padding: 5px 12px;
+          border-radius: 999px;
+          font-family: ${T.mono};
           font-size: 11px;
           font-weight: 700;
-          letter-spacing: 0.08em;
-          min-width: 36px;
+          letter-spacing: 0.06em;
+          min-width: 40px;
           text-align: center;
+          border: 1.5px solid;
         }
-        .ud-badge-gold {
-          background: ${C.goldDim};
-          color: ${C.gold};
-          border: 1px solid ${C.gold}44;
+        .ud-badge-sky {
+          background: ${T.skyDim};
+          color: #1490c0;
+          border-color: ${T.sky}55;
         }
         .ud-badge-muted {
-          background: ${C.border};
-          color: ${C.txtSec};
-          border: 1px solid ${C.borderHi};
+          background: ${T.surfHigh};
+          color: ${T.muted};
+          border-color: ${T.borderHigh};
         }
 
-        /* info box */
-        .ud-info-box {
-          border-radius: 2px;
-          padding: 14px 18px;
-          border: 1px solid;
-          font-size: 13px;
-          line-height: 1.7;
-        }
-        .ud-info-box.red  { background: ${C.redDim}88; border-color: ${C.red}44; }
-        .ud-info-box.gold { background: ${C.goldDim};  border-color: ${C.gold}44; }
-        .ud-info-box ul   { padding-left: 16px; }
-        .ud-info-box li   { margin-bottom: 6px; }
-        .ud-info-box h4   {
-          font-family: ${C.mono};
-          font-size: 9px;
-          letter-spacing: 0.25em;
-          text-transform: uppercase;
-          color: ${C.txtCode};
-          margin-bottom: 10px;
-        }
-
-        /* track items */
+        /* ── Track items ────────────────────────────────────── */
         .ud-track-item {
           border-left: 3px solid;
-          padding: 12px 16px;
-          border-radius: 0 2px 2px 0;
-          margin-bottom: 10px;
-          background: ${C.bg};
+          padding: 14px 18px;
+          border-radius: 0 10px 10px 0;
+          margin-bottom: 12px;
+          background: ${T.bg};
         }
-        .ud-track-item.white { border-color: ${C.borderHi}; }
-        .ud-track-item.yellow { border-color: ${C.gold}; }
+        .ud-track-item.white  { border-color: ${T.borderHigh}; }
+        .ud-track-item.yellow { border-color: ${T.sky}; }
         .ud-track-item h4 {
-          font-family: ${C.display};
-          font-size: 13px;
-          font-weight: 600;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
+          font-family: ${T.display};
+          font-size: 14px;
+          font-weight: 700;
           margin-bottom: 4px;
         }
+        .ud-track-item.white h4  { color: ${T.muted}; }
+        .ud-track-item.yellow h4 { color: #1490c0; }
         .ud-track-item p {
-          font-size: 12px;
-          color: ${C.txtSec};
-          margin-bottom: 8px;
-        }
-        .ud-track-item.white h4 { color: ${C.txtSec}; }
-        .ud-track-item.yellow h4 { color: ${C.gold}; }
-
-        /* divider */
-        .ud-divider {
-          height: 1px;
-          background: ${C.border};
-          margin: 16px 0;
-        }
-
-        /* intro */
-        .ud-intro {
-          background: ${C.bg};
-          border: 1px solid ${C.border};
-          border-radius: 2px;
-          padding: 14px 18px;
           font-size: 13px;
-          line-height: 1.8;
-          color: ${C.txtSec};
+          color: ${T.faint};
+          margin-bottom: 10px;
         }
-        .ud-intro strong { color: ${C.gold}; }
 
+        /* ── Info boxes ─────────────────────────────────────── */
+        .ud-info-box {
+          border-radius: 12px;
+          padding: 16px 20px;
+          border: 1px solid;
+          margin-bottom: 10px;
+        }
+        .ud-info-box.violet {
+          background: ${T.violetLight};
+          border-color: ${T.violet}33;
+        }
+        .ud-info-box.sky {
+          background: ${T.skyDim};
+          border-color: ${T.sky}55;
+        }
+        .ud-info-box h4 {
+          font-family: ${T.mono};
+          font-size: 8px;
+          letter-spacing: 0.25em;
+          text-transform: uppercase;
+          color: ${T.faint};
+          margin-bottom: 10px;
+        }
+        .ud-info-box p {
+          font-size: 14px;
+          color: ${T.muted};
+          line-height: 1.65;
+        }
+        .ud-info-box p strong.violet { color: ${T.violet}; }
+        .ud-info-box p strong.sky    { color: #1490c0; }
+
+        /* ── Footer ─────────────────────────────────────────── */
         footer {
-          border-top: 1px solid ${C.border};
-          padding: 20px;
+          border-top: 1px solid ${T.border};
+          padding: 24px;
           text-align: center;
-          font-family: ${C.mono};
+          font-family: ${T.mono};
           font-size: 9px;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: ${C.txtCode};
+          color: ${T.faint};
+          background: ${T.surf};
+        }
+
+        /* ── Scroll reveal ──────────────────────────────────── */
+        .ud-reveal {
+          opacity: 0;
+          transform: translateY(14px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .ud-reveal.in {
+          opacity: 1;
+          transform: translateY(0);
         }
       `}</style>
+
+      {/* Scroll reveal script */}
+      <RevealScript />
 
       <div className="ud-root">
 
         {/* Topbar */}
         <div className="ud-topbar">
-          <span style={{ fontFamily: C.mono, fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", color: C.txtCode }}>
-            AGZ 2026 · ULAŞIM & DESTEK
-          </span>
-          <Link href="/" className="ud-btn ud-btn-red" style={{ textDecoration: "none" }}>
-            ← ANA SAYFA
-          </Link>
+          <span className="ud-topbar-brand">◈ AGZ 2026 · Ulaşım &amp; Destek</span>
+          <Link href="/" className="ud-back-btn">← Ana Sayfa</Link>
         </div>
 
         {/* Hero */}
         <div className="ud-hero">
-          <p className="ud-hero-eyebrow">AGZ 2026 · YOL HARİTASI</p>
-          <h1 className="ud-hero-title">ULAŞIM REHBERİ</h1>
-          <p className="ud-hero-sub">Aydın Otogar'dan ADÜ Kongre Merkezi'ne adım adım</p>
+          <p className="ud-hero-eyebrow">◈ Yol Haritası &amp; Rehber</p>
+          <h1 className="ud-hero-title">
+            <span>Ulaşım</span><br />Rehberi
+          </h1>
+          <p className="ud-hero-sub">
+            Aydın Otogar&apos;dan ADÜ Atatürk Kongre Merkezi&apos;ne<br />
+            adım adım nasıl ulaşırsın?
+          </p>
         </div>
 
-        {/* Main content */}
+        {/* Main */}
         <main className="ud-main">
 
-          {/* KONUM */}
-          <div className="ud-card">
-            <div className="ud-card-header">
-              <span className="ud-card-label">01 //</span>
-              <span className="ud-card-title">Etkinlik Konumları</span>
-            </div>
+          {/* 01 — Konum */}
+          <div className="ud-card ud-reveal">
+            <div className="ud-card-top" />
             <div className="ud-card-body">
+              <div className="ud-sec-hdr">
+                <div className="ud-sec-lbl">◈ 01 // Konum</div>
+                <h2 className="ud-sec-title">Etkinlik Konumları</h2>
+              </div>
               <div className="ud-loc-grid">
                 <div className="ud-loc-item">
-                  <div className="ud-loc-item-label">Zirve Ana Alanı</div>
-                  <div className="ud-loc-item-name">ADÜ Kongre Merkezi</div>
-                  <div className="ud-loc-item-addr">Adnan Menderes Üniversitesi<br />Atatürk Kongre Merkezi, Aydın</div>
+                  <div className="ud-loc-tag">Zirve Ana Alanı</div>
+                  <div className="ud-loc-name">ADÜ Kongre Merkezi</div>
+                  <div className="ud-loc-addr">Adnan Menderes Üniversitesi<br />Atatürk Kongre Merkezi, Aydın</div>
                   <a
-                    className="ud-btn ud-btn-gold"
+                    className="ud-btn ud-btn-violet"
                     href="https://maps.google.com/?q=Aydın+Adnan+Menderes+Üniversitesi+Atatürk+Kongre+Merkezi"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -462,11 +522,11 @@ export default function UlasimDestekPage() {
                   </a>
                 </div>
                 <div className="ud-loc-item">
-                  <div className="ud-loc-item-label">Varış Noktası</div>
-                  <div className="ud-loc-item-name">Aydın Otogarı</div>
-                  <div className="ud-loc-item-addr">Şehirlerarası Otobüs Terminali<br />Aydın Merkez</div>
+                  <div className="ud-loc-tag">Başlangıç Noktası</div>
+                  <div className="ud-loc-name">Aydın Otogarı</div>
+                  <div className="ud-loc-addr">Şehirlerarası Otobüs Terminali<br />Aydın Merkez</div>
                   <a
-                    className="ud-btn ud-btn-gold"
+                    className="ud-btn ud-btn-violet"
                     href="https://maps.google.com/?q=Aydın+Şehirlerarası+Otobüs+Terminali"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -478,88 +538,91 @@ export default function UlasimDestekPage() {
             </div>
           </div>
 
-          {/* ULAŞIM FLOW */}
-          <div className="ud-card">
-            <div className="ud-card-header">
-              <span className="ud-card-label">02 //</span>
-              <span className="ud-card-title">Güzergah — Otogar → ADÜ</span>
-            </div>
-            <div className="ud-card-body" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {/* 02 — Güzergah */}
+          <div className="ud-card ud-reveal">
+            <div className="ud-card-top sky" />
+            <div className="ud-card-body">
+              <div className="ud-sec-hdr">
+                <div className="ud-sec-lbl">◈ 02 // Güzergah</div>
+                <h2 className="ud-sec-title">Otogar → ADÜ Adım Adım</h2>
+              </div>
 
               <div className="ud-intro">
-                Aydın Otogarı'na ulaştığınızda, şehirlerarası peronların bulunduğu taraftan{" "}
-                (<strong>Opsmall AVM tarafı</strong>) şehiriçi otobüs kalkış noktasına geçin.
-                Sabah <strong>06:45</strong> ilk seferle başlayan,{" "}
-                ortalama <strong>8 dk</strong> aralıklı <strong>1 Numaralı Beyaz Otobüs</strong>&apos;e binin.{" "}
+                Aydın Otogarı&apos;na ulaştığında, şehirlerarası peronların bulunduğu taraftan{" "}
+                (<strong>Opsmall AVM tarafı</strong>) şehiriçi otobüs kalkış noktasına geç.
+                Sabah <strong>06:45</strong> ilk seferle başlayan, ortalama{" "}
+                <strong>8 dk</strong> aralıklı <strong>1 Numaralı Beyaz Otobüs</strong>&apos;e bin.{" "}
                 <strong>NAKİT GEÇERLİDİR.</strong>
               </div>
 
-              {/* Flow diagram */}
+              <div className="ud-divider" />
+
+              {/* Flow */}
               <div className="ud-flow">
                 <div className="ud-flow-node node-start">
-                  <div className="ud-flow-node-title">AYDIN OTOGAR</div>
+                  <div className="ud-flow-node-title">Aydın Otogar</div>
                   <div className="ud-flow-node-sub">Başlangıç noktası</div>
                 </div>
 
                 <div className="ud-flow-arrow">
-                  <svg width="14" height="24" viewBox="0 0 14 24" fill="none">
-                    <line x1="7" y1="0" x2="7" y2="17" stroke="currentColor" strokeWidth="1.5"/>
-                    <polyline points="2,12 7,19 12,12" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinejoin="round"/>
+                  <svg width="14" height="26" viewBox="0 0 14 26" fill="none">
+                    <line x1="7" y1="0" x2="7" y2="19" stroke="currentColor" strokeWidth="1.5"/>
+                    <polyline points="2,14 7,21 12,14" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinejoin="round"/>
                   </svg>
-                  <span className="ud-flow-arrow-label">binin</span>
+                  <span className="ud-flow-arrow-label">bin</span>
                 </div>
 
-                <div className="ud-flow-node node-mid-route">
-                  <div className="ud-flow-node-title">1 NUMARA — BEYAZ ŞEHİRİÇİ OTOBÜS</div>
+                <div className="ud-flow-node node-route">
+                  <div className="ud-flow-node-title">1 Numara — Beyaz Şehiriçi Otobüs</div>
                   <div className="ud-flow-node-sub">06:45 ilk sefer · ~8 dk aralık · Nakit ödeme</div>
                 </div>
 
                 <div className="ud-flow-arrow">
-                  <svg width="14" height="24" viewBox="0 0 14 24" fill="none">
-                    <line x1="7" y1="0" x2="7" y2="17" stroke="currentColor" strokeWidth="1.5"/>
-                    <polyline points="2,12 7,19 12,12" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinejoin="round"/>
+                  <svg width="14" height="26" viewBox="0 0 14 26" fill="none">
+                    <line x1="7" y1="0" x2="7" y2="19" stroke="currentColor" strokeWidth="1.5"/>
+                    <polyline points="2,14 7,21 12,14" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinejoin="round"/>
                   </svg>
-                  <span className="ud-flow-arrow-label">inin</span>
+                  <span className="ud-flow-arrow-label">in</span>
                 </div>
 
-                <div className="ud-flow-node node-mid">
-                  <div className="ud-flow-node-title">KENT MEYDANI</div>
+                <div className="ud-flow-node node-transfer">
+                  <div className="ud-flow-node-title">Kent Meydanı</div>
                   <div className="ud-flow-node-sub">Aktarma durağı</div>
                 </div>
 
                 <div className="ud-flow-arrow">
-                  <svg width="14" height="24" viewBox="0 0 14 24" fill="none">
-                    <line x1="7" y1="0" x2="7" y2="17" stroke="currentColor" strokeWidth="1.5"/>
-                    <polyline points="2,12 7,19 12,12" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinejoin="round"/>
+                  <svg width="14" height="26" viewBox="0 0 14 26" fill="none">
+                    <line x1="7" y1="0" x2="7" y2="19" stroke="currentColor" strokeWidth="1.5"/>
+                    <polyline points="2,14 7,21 12,14" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinejoin="round"/>
                   </svg>
-                  <span className="ud-flow-arrow-label">aktarma yapın</span>
+                  <span className="ud-flow-arrow-label">aktarma yap</span>
                 </div>
 
                 <div className="ud-flow-node node-end">
-                  <div className="ud-flow-node-title">ADÜ KONGRE MERKEZİ</div>
+                  <div className="ud-flow-node-title">ADÜ Kongre Merkezi</div>
                   <div className="ud-flow-node-sub">Varış — Zirve Ana Alanı</div>
                 </div>
               </div>
 
               <div className="ud-divider" />
 
-              {/* Transfer options */}
+              {/* Transfer seçenekleri */}
               <div>
-                <div style={{ fontFamily: C.mono, fontSize: 9, letterSpacing: "0.25em", textTransform: "uppercase", color: C.txtCode, marginBottom: 12 }}>
-                  // KENT MEYDANI&apos;NDAN ADÜ&apos;YE AKTARMAlar
+                <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: "0.25em", textTransform: "uppercase", color: T.faint, marginBottom: 12 }}>
+                  // Kent Meydanı&apos;ndan ADÜ&apos;ye aktarma seçenekleri
                 </div>
                 <div className="ud-transfer-grid">
                   <div className="ud-transfer-box">
-                    <div className="ud-transfer-box-title" style={{ color: C.gold }}>Sarı Belediye Hatları</div>
+                    <div className="ud-transfer-box-title" style={{ color: "#1490c0" }}>Sarı Belediye Hatları</div>
                     <div className="ud-transfer-box-sub">Temassız kart geçerli</div>
                     <div className="ud-badge-row">
                       {YELLOW_BUSES.map(n => (
-                        <span key={n} className="ud-badge ud-badge-gold">{n}</span>
+                        <span key={n} className="ud-badge ud-badge-sky">{n}</span>
                       ))}
                     </div>
                   </div>
                   <div className="ud-transfer-box">
-                    <div className="ud-transfer-box-title" style={{ color: C.txtSec }}>Beyaz Şehiriçi Hatları</div>
+                    <div className="ud-transfer-box-title" style={{ color: T.muted }}>Beyaz Şehiriçi Hatları</div>
                     <div className="ud-transfer-box-sub">Nakit ödeme</div>
                     <div className="ud-badge-row">
                       {WHITE_BUSES.map(n => (
@@ -569,56 +632,51 @@ export default function UlasimDestekPage() {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
 
-          {/* CANLI TAKİP */}
-          <div className="ud-card">
-            <div className="ud-card-header">
-              <span className="ud-card-label">03 //</span>
-              <span className="ud-card-title">Canlı Takip & Güzergah Kontrolü</span>
-            </div>
+          {/* 03 — Canlı Takip */}
+          <div className="ud-card ud-reveal">
+            <div className="ud-card-top green" />
             <div className="ud-card-body">
+              <div className="ud-sec-hdr">
+                <div className="ud-sec-lbl">◈ 03 // Canlı Takip</div>
+                <h2 className="ud-sec-title">Güzergah &amp; Saat Bilgisi</h2>
+              </div>
               <div className="ud-track-item white">
                 <h4>Beyaz Şehiriçi Minibüsler</h4>
                 <p>1, 10, 11, 16 numaralı hatlar — şehiriçi özel minibüsler</p>
               </div>
               <div className="ud-track-item yellow">
                 <h4>Büyükşehir Belediyesi — Sarı Otobüsler</h4>
-                <p>103, 106, 401–405, 501, 504 numaralı hatların saatleri</p>
+                <p>103, 106, 401–405, 501, 504 numaralı hatların saat bilgileri</p>
               </div>
               <a
-                className="ud-btn ud-btn-gold"
+                className="ud-btn ud-btn-sky"
                 href="https://aydin.bel.tr/mobil/detail/5257/otobus-guzergahlarimiz"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                ↗ TÜM GÜZERGAHLARI İNCELE
+                ↗ Tüm Güzergahları İncele
               </a>
             </div>
           </div>
 
-          {/* ÖDEME */}
-          <div className="ud-card">
-            <div className="ud-card-header">
-              <span className="ud-card-label">04 //</span>
-              <span className="ud-card-title">Ödeme Bilgileri</span>
-            </div>
-            <div className="ud-card-body" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <div className="ud-info-box red">
-                <h4>// Beyaz Şehiriçi Minibüsler</h4>
-                <p style={{ color: C.txtSec, fontSize: 13 }}>
-                  Ödemeler yalnızca <strong style={{ color: C.redText }}>NAKİT</strong> para ile yapılmaktadır.
-                  Kart kabul edilmez.
-                </p>
+          {/* 04 — Ödeme */}
+          <div className="ud-card ud-reveal">
+            <div className="ud-card-top amber" />
+            <div className="ud-card-body">
+              <div className="ud-sec-hdr">
+                <div className="ud-sec-lbl">◈ 04 // Ödeme</div>
+                <h2 className="ud-sec-title">Ödeme Bilgileri</h2>
               </div>
-              <div className="ud-info-box gold">
+              <div className="ud-info-box violet">
+                <h4>// Beyaz Şehiriçi Minibüsler</h4>
+                <p>Ödemeler yalnızca <strong className="violet">NAKİT</strong> para ile yapılmaktadır. Kart kabul edilmez.</p>
+              </div>
+              <div className="ud-info-box sky">
                 <h4>// Sarı Belediye Otobüsleri</h4>
-                <p style={{ color: C.txtSec, fontSize: 13 }}>
-                  Ödemeler <strong style={{ color: C.gold }}>temassız kredi / banka kartı</strong> ile yapılabilmektedir.
-                  Nakit de geçerlidir.
-                </p>
+                <p>Ödemeler <strong className="sky">temassız kredi / banka kartı</strong> ile yapılabilmektedir. Nakit de geçerlidir.</p>
               </div>
             </div>
           </div>
@@ -631,5 +689,27 @@ export default function UlasimDestekPage() {
 
       </div>
     </>
+  );
+}
+
+/* Scroll reveal — runs after mount */
+function RevealScript() {
+  if (typeof window === "undefined") return null;
+  return (
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `
+          (function() {
+            var els = document.querySelectorAll('.ud-reveal');
+            var obs = new IntersectionObserver(function(entries) {
+              entries.forEach(function(e) {
+                if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+              });
+            }, { threshold: 0.05 });
+            els.forEach(function(el) { obs.observe(el); });
+          })();
+        `,
+      }}
+    />
   );
 }

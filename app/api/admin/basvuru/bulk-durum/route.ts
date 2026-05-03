@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { FieldValue } from 'firebase-admin/firestore';
 import { adminAuth, adminDb } from '@/lib/firebase-admin';
-import { sendApplicationStatusEmail } from '@/lib/email';
+import { sendApplicationStatusEmail, sendKapasiteDoluEmail } from '@/lib/email';
 import { z } from 'zod';
 
 const bodySchema = z.object({
   uids:  z.array(z.string().min(1)).min(1).max(100),
-  durum: z.enum(['beklemede', 'inceleniyor', 'onaylandi', 'reddedildi', 'bekleme_listesi']),
+  durum: z.enum(['beklemede', 'inceleniyor', 'onaylandi', 'reddedildi', 'bekleme_listesi', 'kontenjan_dolu']),
   adminNotu: z.string().optional(),
 });
 
@@ -61,14 +61,18 @@ export async function POST(request: NextRequest) {
   }
 
   // Send emails for final decisions (fire-and-forget, non-blocking)
-  if (durum === 'onaylandi' || durum === 'reddedildi' || durum === 'bekleme_listesi') {
+  if (durum === 'onaylandi' || durum === 'reddedildi' || durum === 'bekleme_listesi' || durum === 'kontenjan_dolu') {
     void (async () => {
       for (const uid of uids) {
         try {
           const userSnap = await adminDb.collection('users').doc(uid).get();
           if (userSnap.exists) {
             const u = userSnap.data() as { eposta: string; isim: string };
-            await sendApplicationStatusEmail(u.eposta, u.isim, durum, adminNotu);
+            if (durum === 'kontenjan_dolu') {
+              await sendKapasiteDoluEmail(u.eposta, u.isim, adminNotu);
+            } else {
+              await sendApplicationStatusEmail(u.eposta, u.isim, durum, adminNotu);
+            }
           }
         } catch { /* ignore per-user failures */ }
       }

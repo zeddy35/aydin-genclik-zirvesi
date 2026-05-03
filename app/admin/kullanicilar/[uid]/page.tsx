@@ -11,7 +11,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import type { Kullanici, BasvuruDurumuDoc, Belge, BasvuruDurumu } from '@/lib/firebase/types';
 
 const DURUM_COLORS: Record<string, string> = {
-  beklemede: '#f59e0b', inceleniyor: '#3b82f6', onaylandi: '#10b981', reddedildi: '#ef4444', bekleme_listesi: '#8b5cf6',
+  beklemede: '#f59e0b', inceleniyor: '#3b82f6', onaylandi: '#10b981', reddedildi: '#ef4444', bekleme_listesi: '#8b5cf6', kontenjan_dolu: '#f97316',
 };
 const DURUM_SECIMLERI: { value: BasvuruDurumu; label: string }[] = [
   { value: 'beklemede', label: 'Beklemede' },
@@ -19,6 +19,7 @@ const DURUM_SECIMLERI: { value: BasvuruDurumu; label: string }[] = [
   { value: 'onaylandi', label: 'Onaylandı' },
   { value: 'reddedildi', label: 'Reddedildi' },
   { value: 'bekleme_listesi', label: 'Bekleme Listesi' },
+  { value: 'kontenjan_dolu', label: 'Kontenjan Dolu' },
 ];
 const BELGE_LABELS: Record<string, string> = {
   ogrenci_belgesi: 'Öğrenci Belgesi', nufus_fotokopisi: 'Kimlik', cv: 'CV', katilim_sertifikasi: 'Katılım Sertifikası',
