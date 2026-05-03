@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 
 /* ── Design tokens — mirrors SummitInfo ─────────────────────── */
 const T = {
@@ -360,7 +361,7 @@ export default function UlasimDestekPage() {
         }
         .ud-transfer-box-sub {
           font-size: 12px;
-          color: ${T.faint};
+          color: ${T.muted};
           margin-bottom: 14px;
           font-family: ${T.mono};
           letter-spacing: 0.1em;
@@ -384,12 +385,12 @@ export default function UlasimDestekPage() {
         }
         .ud-badge-sky {
           background: ${T.skyDim};
-          color: #1490c0;
+          color: #0d6e94;
           border-color: ${T.sky}55;
         }
         .ud-badge-muted {
           background: ${T.surfHigh};
-          color: ${T.muted};
+          color: ${T.text};
           border-color: ${T.borderHigh};
         }
 
@@ -409,11 +410,11 @@ export default function UlasimDestekPage() {
           font-weight: 700;
           margin-bottom: 4px;
         }
-        .ud-track-item.white h4  { color: ${T.muted}; }
-        .ud-track-item.yellow h4 { color: #1490c0; }
+        .ud-track-item.white h4  { color: ${T.text}; }
+        .ud-track-item.yellow h4 { color: #0d6e94; }
         .ud-track-item p {
           font-size: 13px;
-          color: ${T.faint};
+          color: ${T.muted};
           margin-bottom: 10px;
         }
 
@@ -613,7 +614,7 @@ export default function UlasimDestekPage() {
                 </div>
                 <div className="ud-transfer-grid">
                   <div className="ud-transfer-box">
-                    <div className="ud-transfer-box-title" style={{ color: "#1490c0" }}>Sarı Belediye Hatları</div>
+                    <div className="ud-transfer-box-title" style={{ color: "#0d6e94" }}>Sarı Belediye Hatları</div>
                     <div className="ud-transfer-box-sub">Temassız kart geçerli</div>
                     <div className="ud-badge-row">
                       {YELLOW_BUSES.map(n => (
@@ -622,7 +623,7 @@ export default function UlasimDestekPage() {
                     </div>
                   </div>
                   <div className="ud-transfer-box">
-                    <div className="ud-transfer-box-title" style={{ color: T.muted }}>Beyaz Şehiriçi Hatları</div>
+                    <div className="ud-transfer-box-title" style={{ color: T.text }}>Beyaz Şehiriçi Hatları</div>
                     <div className="ud-transfer-box-sub">Nakit ödeme</div>
                     <div className="ud-badge-row">
                       {WHITE_BUSES.map(n => (
@@ -692,24 +693,15 @@ export default function UlasimDestekPage() {
   );
 }
 
-/* Scroll reveal — runs after mount */
 function RevealScript() {
-  if (typeof window === "undefined") return null;
-  return (
-    <script
-      dangerouslySetInnerHTML={{
-        __html: `
-          (function() {
-            var els = document.querySelectorAll('.ud-reveal');
-            var obs = new IntersectionObserver(function(entries) {
-              entries.forEach(function(e) {
-                if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
-              });
-            }, { threshold: 0.05 });
-            els.forEach(function(el) { obs.observe(el); });
-          })();
-        `,
-      }}
-    />
-  );
+  useEffect(() => {
+    const els = document.querySelectorAll(".ud-reveal");
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); obs.unobserve(e.target); } }),
+      { threshold: 0.05 }
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+  return null;
 }
