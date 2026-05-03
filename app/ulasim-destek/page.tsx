@@ -274,7 +274,8 @@ export default function UlasimDestekPage() {
         }
         .ud-flow-node-sub {
           font-size: 12px;
-          margin-top: 4px;
+          margin-top: 10px;
+          padding-bottom: 4px;
           line-height: 1.5;
         }
         .node-start {
@@ -589,6 +590,26 @@ export default function UlasimDestekPage() {
                 <div className="ud-flow-node node-transfer">
                   <div className="ud-flow-node-title">Kent Meydanı</div>
                   <div className="ud-flow-node-sub">Aktarma durağı</div>
+                  <div className="ud-transfer-grid">
+                  <div className="ud-transfer-box">
+                      <div className="ud-transfer-box-title" style={{ color: "#0d6e94" }}>Sarı Belediye Hatları</div>
+                      <div className="ud-transfer-box-sub">Temassız kart geçerli</div>
+                      <div className="ud-badge-row">
+                        {YELLOW_BUSES.map(n => (
+                          <span key={n} className="ud-badge ud-badge-sky">{n}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="ud-transfer-box">
+                      <div className="ud-transfer-box-title" style={{ color: T.text }}>Beyaz Şehiriçi Hatları</div>
+                      <div className="ud-transfer-box-sub">Nakit ödeme</div>
+                      <div className="ud-badge-row">
+                        {WHITE_BUSES.map(n => (
+                          <span key={n} className="ud-badge ud-badge-muted">{n}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="ud-flow-arrow">
@@ -607,32 +628,6 @@ export default function UlasimDestekPage() {
 
               <div className="ud-divider" />
 
-              {/* Transfer seçenekleri */}
-              <div>
-                <div style={{ fontFamily: T.mono, fontSize: 9, letterSpacing: "0.25em", textTransform: "uppercase", color: T.faint, marginBottom: 12 }}>
-                  // Kent Meydanı&apos;ndan ADÜ&apos;ye aktarma seçenekleri
-                </div>
-                <div className="ud-transfer-grid">
-                  <div className="ud-transfer-box">
-                    <div className="ud-transfer-box-title" style={{ color: "#0d6e94" }}>Sarı Belediye Hatları</div>
-                    <div className="ud-transfer-box-sub">Temassız kart geçerli</div>
-                    <div className="ud-badge-row">
-                      {YELLOW_BUSES.map(n => (
-                        <span key={n} className="ud-badge ud-badge-sky">{n}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="ud-transfer-box">
-                    <div className="ud-transfer-box-title" style={{ color: T.text }}>Beyaz Şehiriçi Hatları</div>
-                    <div className="ud-transfer-box-sub">Nakit ödeme</div>
-                    <div className="ud-badge-row">
-                      {WHITE_BUSES.map(n => (
-                        <span key={n} className="ud-badge ud-badge-muted">{n}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
